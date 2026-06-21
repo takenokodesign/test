@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中学社会 時事・公民クイズ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* アニメーション用の追加スタイル（Tailwindの既存アニメーションを利用） */
+    @keyframes pulse-fast {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(1.05); }
+    }
+    .animate-pulse-fast {
+      animation: pulse-fast 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex flex-col items-center justify-center p-4">
+
+  <!-- ==================== ホーム画面 ==================== -->
+  <div id="view-home" class="w-full max-w-md hidden">
+    <div class="bg-white rounded-2xl shadow-xl p-8 text-center border-t-8 border-blue-500">
+      <i data-lucide="book-open" class="w-16 h-16 text-blue-500 mx-auto mb-4"></i>
+      <h1 class="text-3xl font-bold mb-2 text-slate-800">中学社会 時事・公民クイズ</h1>
+      <p class="text-slate-600 mb-8 text-sm">30秒早押し！期末テスト対策に挑戦しよう。</p>
+      
+      <!-- 再開ボタンコンテナ -->
+      <div id="resume-container" class="mb-6 pb-6 border-b border-slate-200 hidden">
+        <button onclick="resumeQuiz()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center shadow-md transition-colors">
+          <i data-lucide="play" class="w-5 h-5 mr-2 fill-current"></i>
+          前回の続きから再開する
+        </button>
+      </div>
+
+      <!-- セットボタンコンテナ -->
+      <div id="set-buttons-container" class="space-y-3">
+        <!-- JSで生成 -->
+      </div>
+
+      <!-- 復習ボタンコンテナ -->
+      <div class="mt-8 pt-6 border-t border-slate-200">
+        <button id="btn-review" onclick="startQuiz('review')" class="w-full py-3 px-4 rounded-xl flex items-center justify-center font-bold transition-colors bg-slate-200 text-slate-400 cursor-not-allowed" disabled>
+          <i data-lucide="rotate-ccw" class="w-5 h-5 mr-2"></i>
+          間違えた問題を復習 (<span id="mistakes-count">0</span>問)
+        </button>
+        <p id="review-empty-text" class="text-xs text-slate-500 mt-2">現在、復習する問題はありません！</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== クイズ画面 ==================== -->
+  <div id="view-quiz" class="w-full max-w-lg hidden">
+    <!-- ヘッダー情報 -->
+    <div class="flex justify-between items-center mb-4 px-2">
+      <div class="flex items-center space-x-3">
+        <button onclick="saveProgressAndExit()" class="text-slate-500 hover:text-blue-600 transition-colors flex items-center bg-white px-2 py-1.5 rounded-lg shadow-sm text-xs font-bold border border-slate-200" title="一時保存してホームに戻る">
+          <i data-lucide="save" class="w-3.5 h-3.5 mr-1"></i>
+          保存して中断
+        </button>
+        <div id="quiz-progress-text" class="text-sm font-bold text-slate-500">
+          問題 1 / 20
+        </div>
+      </div>
+      <div id="timer-container" class="flex items-center font-bold bg-white px-3 py-1.5 rounded-full shadow-sm border border-slate-200 transition-transform">
+        <i data-lucide="clock" id="timer-icon" class="w-4 h-4 mr-1 text-slate-400"></i>
+        <span id="timer-text" class="text-lg text-slate-700">30秒</span>
+      </div>
+    </div>
+
+    <!-- タイマーバー -->
+    <div class="w-full bg-slate-200 h-2 rounded-full mb-6 overflow-hidden">
+      <div id="timer-bar" class="h-full bg-blue-500 transition-all duration-1000 ease-linear" style="width: 100%;"></div>
+    </div>
+
+    <!-- 問題カード -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-6 border-b-4 border-slate-200">
+      <h2 id="quiz-question-text" class="text-xl font-bold leading-relaxed mb-6">
+        <!-- 問題文 -->
+      </h2>
+      
+      <div id="quiz-options-container" class="space-y-3">
+        <!-- 選択肢（JSで生成） -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 解説画面 ==================== -->
+  <div id="view-explanation" class="w-full max-w-lg hidden">
+    <div class="mb-3 flex justify-between px-1">
+      <button onclick="saveProgressAndExit()" class="text-slate-500 hover:text-blue-600 transition-colors flex items-center bg-white px-3 py-1.5 rounded-lg shadow-sm text-sm font-bold border border-slate-200" title="一時保存してホームに戻る">
+        <i data-lucide="save" class="w-4 h-4 mr-1"></i>
+        保存して中断
+      </button>
+    </div>
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+      
+      <!-- 結果バナー -->
+      <div id="exp-banner" class="p-6 text-center text-white bg-green-500">
+        <div id="exp-icon-correct" class="hidden">
+          <i data-lucide="check-circle" class="w-16 h-16 mx-auto mb-2 opacity-90"></i>
+          <h2 class="text-3xl font-bold">正解！</h2>
+        </div>
+        <div id="exp-icon-incorrect" class="hidden">
+          <i data-lucide="x-circle" class="w-16 h-16 mx-auto mb-2 opacity-90"></i>
+          <h2 id="exp-incorrect-title" class="text-3xl font-bold">不正解</h2>
+        </div>
+      </div>
+
+      <div class="p-6">
+        <div class="mb-6 pb-6 border-b border-slate-100">
+          <h3 class="text-sm text-slate-500 font-bold mb-2">問題</h3>
+          <p id="exp-question" class="text-slate-800 font-medium"></p>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="text-sm text-slate-500 font-bold mb-2">正解</h3>
+          <div id="exp-correct-answer" class="bg-green-50 text-green-800 p-3 rounded-lg border border-green-200 font-bold">
+            <!-- 正解のテキスト -->
+          </div>
+          <div id="exp-user-answer-container" class="mt-2 text-sm text-red-500 flex items-center hidden">
+            <i data-lucide="alert-circle" class="w-4 h-4 mr-1"></i>
+            あなたの回答: <span id="exp-user-answer" class="ml-1"></span>
+          </div>
+        </div>
+
+        <div class="mb-8">
+          <h3 class="text-sm text-slate-500 font-bold mb-2">解説</h3>
+          <p id="exp-text" class="text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border border-slate-100">
+            <!-- 解説文 -->
+          </p>
+        </div>
+
+        <button onclick="nextQuestion()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center shadow-md transition-colors">
+          <span id="exp-next-btn-text">次の問題へ</span>
+          <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 結果画面 ==================== -->
+  <div id="view-result" class="w-full max-w-md hidden">
+    <div class="bg-white rounded-2xl shadow-xl p-8 text-center border-t-8 border-indigo-500">
+      <i data-lucide="trophy" class="w-20 h-20 text-yellow-400 mx-auto mb-4"></i>
+      <h2 class="text-2xl font-bold text-slate-800 mb-2">結果発表</h2>
+      
+      <div class="my-8 py-6 bg-slate-50 rounded-xl border border-slate-100">
+        <div class="text-6xl font-black text-indigo-600 mb-2">
+          <span id="result-score">0</span><span class="text-2xl text-slate-400" id="result-max-score">/100</span><span class="text-2xl ml-1">点</span>
+        </div>
+        <p id="result-message" class="text-slate-600 font-bold">メッセージ</p>
+      </div>
+
+      <div class="space-y-3">
+        <button onclick="startQuiz(currentSet)" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold py-3 px-4 rounded-xl flex items-center justify-center transition-colors">
+          <i data-lucide="rotate-ccw" class="w-5 h-5 mr-2"></i>
+          もう一度同じセットをプレイ
+        </button>
+        <button onclick="goHome()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center shadow-md transition-colors">
+          <i data-lucide="home" class="w-5 h-5 mr-2"></i>
+          ホームに戻る
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== JavaScript ==================== -->
+  <script>
+    // --- 問題データ (5セット x 20問 = 100問) ---
+    const quizData = [
+        // === セット1: 日本の政治・憲法 ===
+        { id: 1, setId: 1, text: "日本国憲法の三大原則は、「国民主権」「基本的人権の尊重」ともう一つは何ですか？", options: ["平和主義", "民主主義", "三権分立", "地方自治"], answer: 0, explanation: "日本国憲法の三大原則は、国民主権、基本的人権の尊重、平和主義です。" },
+        { id: 2, setId: 1, text: "衆議院の解散を決定する権限を持つのは誰（どこ）ですか？", options: ["天皇", "内閣", "最高裁判所", "参議院"], answer: 1, explanation: "内閣が衆議院の解散を決定し、天皇が国事行為として解散を行います。" },
+        { id: 3, setId: 1, text: "日本の国会において、予算の先議権（先に審議する権利）を持っているのはどちらですか？", options: ["衆議院", "参議院", "両院同時", "内閣"], answer: 0, explanation: "衆議院の優越の一つとして、予算はまず衆議院に提出され審議されます。" },
+        { id: 4, setId: 1, text: "現在の日本の選挙権は、満何歳以上の国民に与えられていますか？", options: ["16歳", "18歳", "20歳", "25歳"], answer: 1, explanation: "公職選挙法の改正により、2016年から選挙権年齢は満18歳以上に引き下げられました。" },
+        { id: 5, setId: 1, text: "衆議院議員選挙で行われている、1つの選挙区から1人を選ぶ制度と、政党の得票数に応じて議席を配分する制度を組み合わせたものを何といいますか？", options: ["大選挙区制", "小選挙区比例代表並立制", "比例代表制", "中選挙区制"], answer: 1, explanation: "衆議院は「小選挙区比例代表並立制」、参議院は「選挙区制と比例代表制」を採用しています。" },
+        { id: 6, setId: 1, text: "最高裁判所の裁判官がふさわしいかどうかを、衆議院議員総選挙の際に国民が投票で審査する制度を何といいますか？", options: ["弾劾裁判", "国民投票", "国民審査", "住民投票"], answer: 2, explanation: "国民審査で、罷免（辞めさせる）を可とする票が過半数を超えると、その裁判官は罷免されます。" },
+        { id: 7, setId: 1, text: "地方自治は「民主主義の（　　）」と呼ばれます。カッコに入る言葉は？", options: ["学校", "基礎", "土台", "鏡"], answer: 0, explanation: "イギリスの学者ブライスの言葉で、地方自治を通じて住民が政治に参加することを学ぶという意味です。" },
+        { id: 8, setId: 1, text: "裁判を慎重に行い、人権を守るために、同じ事件について原則として3回まで裁判を受けることができる制度を何といいますか？", options: ["三権分立", "三審制", "陪審制", "裁判員制度"], answer: 1, explanation: "第一審、第二審（控訴）、第三審（上告）と進むことができます。" },
+        { id: 9, setId: 1, text: "国会が持つ権限で、国の政治が正しく行われているかを調査する権限を何といいますか？", options: ["違憲審査権", "国政調査権", "条約の承認", "弾劾裁判"], answer: 1, explanation: "衆議院・参議院の両議院が持っており、証人の出頭や記録の提出を求めることができます。" },
+        { id: 10, setId: 1, text: "外国と結んだ「条約」を承認する権限を持つ機関はどこですか？", options: ["内閣", "国会", "最高裁判所", "外務省"], answer: 1, explanation: "内閣が条約を締結し、国会がそれを承認します。" },
+        { id: 11, setId: 1, text: "憲法第25条で保障されている「健康で文化的な最低限度の生活を営む権利」を何といいますか？", options: ["平等権", "自由権", "社会権", "参政権"], answer: 2, explanation: "社会権の中の「生存権」にあたります。これに基づき生活保護制度などがあります。" },
+        { id: 12, setId: 1, text: "私生活をみだりに公開されない権利や、自己の情報をコントロールする権利を何といいますか？", options: ["環境権", "知る権利", "プライバシーの権利", "肖像権"], answer: 2, explanation: "新しい人権の一つです。情報化社会の進展に伴い重要視されています。" },
+        { id: 13, setId: 1, text: "訪問販売などで商品を買ってしまった場合、一定期間内であれば無条件で契約を解除できる制度は？", options: ["PL法", "クーリング・オフ制度", "消費者契約法", "リコール"], answer: 1, explanation: "訪問販売の場合は原則8日以内であれば契約解除が可能です。" },
+        { id: 14, setId: 1, text: "欠陥商品によって消費者が被害を受けた場合、製造した企業の責任を問うことができる法律は？", options: ["独占禁止法", "製造物責任法（PL法）", "消費者基本法", "品質表示法"], answer: 1, explanation: "Product Liability（製造物責任）の略で、企業の過失を証明できなくても賠償を求めやすくなりました。" },
+        { id: 15, setId: 1, text: "国や地方公共団体が持つ情報（公文書など）を、人々の請求に応じて開示する制度を何といいますか？", options: ["情報公開制度", "個人情報保護制度", "オンブズマン制度", "知る権利"], answer: 0, explanation: "国民の「知る権利」を保障するための具体的な制度です。" },
+        { id: 16, setId: 1, text: "一定の年齢以上の国民から選ばれた人が、重大な刑事事件の裁判に裁判官と共に参加する制度は？", options: ["陪審制", "検察審査会", "裁判員制度", "弾劾裁判"], answer: 2, explanation: "市民の感覚を裁判に反映させるため、2009年から導入されました。" },
+        { id: 17, setId: 1, text: "都道府県知事や市区町村長の任期は何年ですか？", options: ["3年", "4年", "5年", "6年"], answer: 1, explanation: "地方公共団体の長（首長）や地方議会の議員の任期は原則4年です。" },
+        { id: 18, setId: 1, text: "住民が、条例の制定や改廃、首長や議員の解職などを直接請求できる権利を何といいますか？", options: ["請願権", "直接請求権", "参政権", "住民投票"], answer: 1, explanation: "間接民主制を補うための、地方自治における直接民主制的な制度です。" },
+        { id: 19, setId: 1, text: "憲法改正の発議を行うためには、各議院の総議員のどれだけの賛成が必要ですか？", options: ["過半数", "3分の2以上", "4分の3以上", "全会一致"], answer: 1, explanation: "衆参各議院で総議員の3分の2以上の賛成で発議され、その後、国民投票で過半数の賛成が必要です。" },
+        { id: 20, setId: 1, text: "日本国憲法において、天皇の地位は主権の存する「日本国民の総意」に基づく（　　）であるとされています。", options: ["元首", "象徴", "代表", "統治者"], answer: 1, explanation: "天皇は日本国および日本国民統合の象徴であり、国政に関する権能を有しません。" },
+
+        // === セット2: 日本の経済・財政 ===
+        { id: 21, setId: 2, text: "1ドル＝100円が、1ドル＝150円になることを何といいますか？", options: ["円高・ドル安", "円安・ドル高", "インフレーション", "デフレーション"], answer: 1, explanation: "同じ1ドルを買うためにより多くの円が必要になるため、円の価値が下がった「円安」です。" },
+        { id: 22, setId: 2, text: "円安が進んだ場合、日本経済にとって一般的に有利になるのはどちらですか？", options: ["輸出産業", "輸入産業", "どちらも有利", "どちらも不利"], answer: 0, explanation: "海外で日本の製品を安く売ることができるため、自動車などの輸出産業に有利に働きます。逆に輸入品は高くなります。" },
+        { id: 23, setId: 2, text: "日本銀行（日銀）の役割として当てはまらないものはどれですか？", options: ["発券銀行", "銀行の銀行", "政府の銀行", "企業の銀行"], answer: 3, explanation: "日銀は一般の個人や企業とは直接取引を行いません。" },
+        { id: 24, setId: 2, text: "物価が継続的に上がり続け、お金の価値が下がる経済現象を何といいますか？", options: ["デフレーション", "インフレーション", "スタグフレーション", "バブル経済"], answer: 1, explanation: "好景気の時に起こりやすいですが、賃金が上がらない中で物価だけが上がる悪いインフレもあります。" },
+        { id: 25, setId: 2, text: "市場での自由な競争を促し、一部の企業が価格を独占するのを防ぐための法律は？", options: ["消費者契約法", "独占禁止法", "労働基準法", "会社法"], answer: 1, explanation: "この法律を運用し、監視・指導を行う行政機関を「公正取引委員会」といいます。" },
+        { id: 26, setId: 2, text: "税金を納める人と、実際に負担する人が異なる税金を何といいますか？", options: ["直接税", "間接税", "累進課税", "地方税"], answer: 1, explanation: "消費税などが間接税にあたります。納めるのはお店ですが、負担しているのは消費者です。" },
+        { id: 27, setId: 2, text: "所得が高い人ほど、高い税率が適用される仕組みを何といいますか？", options: ["逆進性", "一律課税", "累進課税", "消費税"], answer: 2, explanation: "所得税などに採用されており、所得の再分配機能を持っています。" },
+        { id: 28, setId: 2, text: "国の収入である「歳入」のうち、税金だけで足りない分を補うために発行される国の借金を何といいますか？", options: ["地方債", "国債", "社債", "株式"], answer: 1, explanation: "国債の発行が増えると、将来の世代への返済負担（財政の硬直化）が大きな問題となります。" },
+        { id: 29, setId: 2, text: "株式会社が出資者（株主）に対して、利益の一部を分配するお金を何といいますか？", options: ["利子", "配当", "給与", "税金"], answer: 1, explanation: "株主は株式を買うことで企業に出資し、その見返りとして配当金を受け取ったり、株主総会での議決権を得たりします。" },
+        { id: 30, setId: 2, text: "労働者を守るための「労働三法」。労働基準法、労働組合法と、もう一つは何ですか？", options: ["労働契約法", "労働関係調整法", "男女雇用機会均等法", "最低賃金法"], answer: 1, explanation: "労働関係調整法は、労働争議（ストライキなど）の予防や解決を目的とした法律です。" },
+        { id: 31, setId: 2, text: "日本銀行が世の中に出回るお金の量を調整する政策を何といいますか？", options: ["財政政策", "金融政策", "為替介入", "成長戦略"], answer: 1, explanation: "不景気の時は世の中のお金を増やし（金融緩和）、インフレ時はお金を減らす（金融引き締め）操作を行います。" },
+        { id: 32, setId: 2, text: "商品を買いたい量（需要）が、売りたい量（供給）を上回っている時、価格はどうなりますか？", options: ["上がる", "下がる", "変わらない", "ゼロになる"], answer: 0, explanation: "欲しい人が多いのに品物が少ないと、価格は上がります（需要と供給の法則）。" },
+        { id: 33, setId: 2, text: "SDGs（持続可能な開発目標）は、いつまでに達成することを目指した国際目標ですか？", options: ["2025年", "2030年", "2040年", "2050年"], answer: 1, explanation: "2015年の国連サミットで採択され、17の大きな目標と169のターゲットで構成されています。" },
+        { id: 34, setId: 2, text: "企業が利益を追求するだけでなく、環境保護や地域貢献など社会に対して果たすべき責任をアルファベット3文字で何という？", options: ["NPO", "NGO", "CSR", "QOL"], answer: 2, explanation: "Corporate Social Responsibilityの略で「企業の社会的責任」と訳されます。" },
+        { id: 35, setId: 2, text: "日本の社会保障制度の4つの柱は、公衆衛生、社会福祉、社会保険と何ですか？", options: ["生活保護", "公的扶助", "介護保険", "雇用保険"], answer: 1, explanation: "公的扶助は、生活に困窮する人々に対し、国が最低限度の生活を保障する制度（生活保護など）です。" },
+        { id: 36, setId: 2, text: "特定の国や地域との間で、関税をなくしたり投資のルールを定めたりして、経済的な結びつきを強める協定を何といいますか？", options: ["FTA（自由貿易協定）", "EPA（経済連携協定）", "WTO（世界貿易機関）", "TPP（環太平洋パートナーシップ）"], answer: 1, explanation: "EPAはFTAの内容に加え、人の移動や知的財産権の保護なども含んだより幅広い協定です。" },
+        { id: 37, setId: 2, text: "電気・ガス・水道・鉄道など、国民生活に不可欠なサービスで、国や地方公共団体が価格を認可または決定する料金を何といいますか？", options: ["市場価格", "均衡価格", "公共料金", "独占価格"], answer: 2, explanation: "国民生活への影響が大きいため、市場の自由な競争に任せず、政府が価格を管理します。" },
+        { id: 38, setId: 2, text: "仕事と生活の調和を意味し、無理な働き方を防ぎ多様な生き方を実現しようとする考え方を何といいますか？", options: ["ダイバーシティ", "ワーク・ライフ・バランス", "フレックスタイム", "テレワーク"], answer: 1, explanation: "過労死問題などを背景に、働き方改革の一環として推進されています。" },
+        { id: 39, setId: 2, text: "発展途上国で作られた農作物や製品を、適正な価格で継続的に取引することで、生産者の生活向上を支援する貿易の仕組みは？", options: ["フリートレード", "フェアトレード", "保護貿易", "バーター貿易"], answer: 1, explanation: "「公平な貿易」という意味で、コーヒーやチョコレートなどで取り組みが広がっています。" },
+        { id: 40, setId: 2, text: "消費税の持つ、所得が低い人ほど所得に占める税の負担割合が大きくなってしまう性質を何といいますか？", options: ["逆進性", "累進性", "公平性", "直接性"], answer: 0, explanation: "この逆進性を緩和するために、飲食料品などの税率を低くする「軽減税率」が導入されています。" },
+
+        // === セット3: 国際社会・外交 ===
+        { id: 41, setId: 3, text: "国際連合（国連）の本部はどこにありますか？", options: ["ロンドン", "パリ", "ニューヨーク", "ジュネーブ"], answer: 2, explanation: "アメリカのニューヨークにあります。ちなみに前身の国際連盟の本部はスイスのジュネーブでした。" },
+        { id: 42, setId: 3, text: "国連の安全保障理事会において、常任理事国5カ国が持っている、1カ国でも反対すれば決定できない強い権限を何といいますか？", options: ["決定権", "拒否権", "発言権", "脱退権"], answer: 1, explanation: "アメリカ、イギリス、フランス、ロシア、中国の5カ国が持っており、しばしば機能不全の原因と指摘されます。" },
+        { id: 43, setId: 3, text: "ヨーロッパの政治・経済の統合を目指す組織「EU」の共通通貨は何ですか？", options: ["ドル", "ポンド", "ユーロ", "フラン"], answer: 2, explanation: "EU加盟国のうち、多くの国が共通通貨ユーロを導入しています。" },
+        { id: 44, setId: 3, text: "東南アジアの国々が結成している地域協力機構の略称は何ですか？", options: ["APEC", "ASEAN", "NATO", "OPEC"], answer: 1, explanation: "東南アジア諸国連合（ASEAN）は、インドネシア、タイ、シンガポールなど10カ国が加盟しています。" },
+        { id: 45, setId: 3, text: "日本がロシアとの間に抱えている、択捉島、国後島、色丹島、歯舞群島の返還を求める問題を何といいますか？", options: ["竹島問題", "尖閣諸島問題", "北方領土問題", "千島列島問題"], answer: 2, explanation: "第二次世界大戦末期に旧ソ連が不法占拠し、現在もロシアが実効支配しています。" },
+        { id: 46, setId: 3, text: "地球温暖化対策の国際的な枠組みで、2015年に採択され、すべての国が温室効果ガス削減に参加する協定は？", options: ["京都議定書", "パリ協定", "ワシントン条約", "ラムサール条約"], answer: 1, explanation: "京都議定書の後継として採択され、気温上昇を産業革命前と比べ1.5度以内に抑える努力目標を掲げています。" },
+        { id: 47, setId: 3, text: "先進国が多く集まる北半球と、発展途上国が多く集まる南半球の間の経済格差の問題を何といいますか？", options: ["南北問題", "南南問題", "東西問題", "貿易摩擦"], answer: 0, explanation: "発展途上国同士の格差の問題は「南南問題」と呼ばれます。" },
+        { id: 48, setId: 3, text: "日本政府が行う、発展途上国に対する資金や技術の経済協力（政府開発援助）の略称は？", options: ["NGO", "PKO", "ODA", "WHO"], answer: 2, explanation: "Official Development Assistanceの略。インフラ整備や教育・医療支援などを行います。" },
+        { id: 49, setId: 3, text: "国境を越えて活動する、政府から独立した民間・非営利の国際協力組織を何といいますか？", options: ["NPO", "NGO", "UNESCO", "UNICEF"], answer: 1, explanation: "Non-Governmental Organization（非政府組織）の略。国境なき医師団などが代表例です。" },
+        { id: 50, setId: 3, text: "世界中の人々の健康水準を高めることを目的とした国連の専門機関（世界保健機関）の略称は？", options: ["WTO", "WHO", "UNESCO", "ILO"], answer: 1, explanation: "新型コロナウイルスのパンデミック対応などで中心的な役割を果たしました。" },
+        { id: 51, setId: 3, text: "核兵器を持っている国がこれ以上増えないようにするための条約（核兵器不拡散条約）の略称は？", options: ["NPT", "CTBT", "PKO", "IAEA"], answer: 0, explanation: "NPT体制のもとで、核保有国は米・英・仏・露・中の5カ国に限定されています（例外あり）。" },
+        { id: 52, setId: 3, text: "紛争地域で停戦の監視や平和の維持を行う国連の活動（国連平和維持活動）の略称は？", options: ["NGO", "ODA", "PKO", "NATO"], answer: 2, explanation: "Peacekeeping Operationsの略。自衛隊もカンボジアや南スーダンなどに派遣されました。" },
+        { id: 53, setId: 3, text: "島根県に属し、現在韓国が不法占拠している島を巡る領土問題は何ですか？", options: ["尖閣諸島問題", "竹島問題", "北方領土問題", "対馬問題"], answer: 1, explanation: "日本政府は国際法に基づき平和的解決を目指していますが、韓国側は実効支配を続けています。" },
+        { id: 54, setId: 3, text: "沖縄県に属し、歴史的にも国際法上も日本固有の領土であるが、中国などが領有権を主張している諸島は？", options: ["竹島", "北方領土", "尖閣諸島", "小笠原諸島"], answer: 2, explanation: "日本は有効に支配しており「解決すべき領有権の問題は存在しない」という立場です。" },
+        { id: 55, setId: 3, text: "主要7カ国の首脳が集まり、世界経済や国際政治について話し合う会議を何といいますか？", options: ["G7サミット", "G20サミット", "国連総会", "APEC"], answer: 0, explanation: "日、米、英、仏、独、伊、加の7カ国とEUの代表が参加します。" },
+        { id: 56, setId: 3, text: "自由貿易を推進し、貿易のルールを定める国際機関（世界貿易機関）の略称は？", options: ["WHO", "WTO", "ILO", "IMF"], answer: 1, explanation: "World Trade Organizationの略。加盟国間の貿易摩擦の解決なども行います。" },
+        { id: 57, setId: 3, text: "世界遺産の登録を行っている国連の機関（国連教育科学文化機関）の略称は？", options: ["UNICEF", "UNESCO", "WHO", "UNHCR"], answer: 1, explanation: "教育、科学、文化の協力を通じて国際平和に貢献することを目的としています。" },
+        { id: 58, setId: 3, text: "絶滅の恐れがある野生動植物の国際取引を規制する条約を、採択された都市名から何といいますか？", options: ["ラムサール条約", "ワシントン条約", "ジュネーブ条約", "パリ協定"], answer: 1, explanation: "象牙や珍しい動植物の密輸を防ぐための重要な条約です。" },
+        { id: 59, setId: 3, text: "水鳥の生息地として重要な湿地を保護する条約を何といいますか？", options: ["ワシントン条約", "ラムサール条約", "バーゼル条約", "京都議定書"], answer: 1, explanation: "日本では釧路湿原や琵琶湖などが登録されています。" },
+        { id: 60, setId: 3, text: "人間の生存、生活、尊厳を脅かすあらゆる脅威から人々を守るという考え方を「（　　）の安全保障」といいます。", options: ["国家", "軍事", "人間", "経済"], answer: 2, explanation: "国連などで提唱され、貧困、環境破壊、感染症などから個人を守ることを重視する概念です。" },
+
+        // === セット4: 最新の時事・ニュース（2025〜2026年） ===
+        { id: 61, setId: 4, text: "日本憲政史上初の女性内閣総理大臣に就任した人物は誰ですか？", options: ["小池百合子", "高市早苗", "上川陽子", "野田聖子"], answer: 1, explanation: "高市早苗氏が内閣総理大臣に就任し、日本の歴史上初めての女性首相が誕生しました。" },
+        { id: 62, setId: 4, text: "2025年1月に第47代アメリカ合衆国大統領に就任し、再び政権を担うことになった人物は誰ですか？", options: ["ジョー・バイデン", "カマラ・ハリス", "ドナルド・トランプ", "バラク・オバマ"], answer: 2, explanation: "2024年の大統領選挙で勝利し、返り咲きを果たしました。「アメリカ第一主義」を掲げています。" },
+        { id: 63, setId: 4, text: "イスラエルとイスラム組織ハマスなどの間で激しい軍事衝突が続き、深刻な人道危機が起きているパレスチナの地区はどこですか？", options: ["エルサレム", "ガザ地区", "ヨルダン川西岸", "ゴラン高原"], answer: 1, explanation: "多数の市民が犠牲になっており、国際社会からの停戦や人道支援を求める声が強まっています。" },
+        { id: 64, setId: 4, text: "ロシアによる軍事侵攻が長期化しているウクライナに対して、日本を含む西側諸国が支援を続けていますが、ウクライナの現在の首都はどこですか？", options: ["モスクワ", "ワルシャワ", "キーウ", "ブカレスト"], answer: 2, explanation: "ウクライナは主権と領土を守るため、欧米からの武器支援などを受けながら抵抗を続けています。" },
+        { id: 65, setId: 4, text: "高市政権が重要政策の一つに掲げている、半導体などの重要物資の確保や技術流出を防ぐなど、経済面から国の安全を守る取り組みを何といいますか？", options: ["経済制裁", "経済安全保障", "保護貿易", "成長戦略"], answer: 1, explanation: "米中対立などを背景に、他国への過度な依存を減らし、自国の産業や技術を守ることが急務となっています。" },
+        { id: 66, setId: 4, text: "2025年4月から大阪の夢洲（ゆめしま）を会場に開催されている国際博覧会の公式キャラクターの名前は何ですか？", options: ["ミライトワ", "ソメイティ", "ミャクミャク", "モリゾー"], answer: 2, explanation: "「いのち輝く未来社会のデザイン」をテーマに開催され、空飛ぶクルマなどの最新技術が注目されています。" },
+        { id: 67, setId: 4, text: "日本銀行は長年続けてきた大規模な金融緩和を見直し、金利を引き上げる政策を行っています。一般的に金利が上がると、為替相場はどう動きやすいですか？", options: ["円高になりやすい", "円安になりやすい", "影響はない", "ドルがなくなる"], answer: 0, explanation: "日本の金利が上がると、利回りの良い円を持とうとする人が増えるため、円が買われて「円高」になりやすくなります。" },
+        { id: 68, setId: 4, text: "自民党の派閥による政治資金パーティーをめぐる裏金事件を受け、再発防止のために改正された法律は何ですか？", options: ["公職選挙法", "政治資金規正法", "政党助成法", "国家公務員法"], answer: 1, explanation: "政治資金の透明性を高め、政治への信頼を回復するための見直しが行われました。" },
+        { id: 69, setId: 4, text: "アメリカ第一主義（アメリカ・ファースト）を掲げるトランプ政権が、国内の産業を守るために輸入品にかける税率を高くすることを何といいますか？", options: ["消費税", "所得税", "関税", "法人税"], answer: 2, explanation: "自国の産業を保護するための政策ですが、相手国も関税をかけ返すなどして「貿易摩擦」が激しくなる懸念があります。" },
+        { id: 70, setId: 4, text: "文章や画像、プログラミングのコードなどを、指示に基づいて人工知能が自動で作ってくれる技術を総称して何といいますか？", options: ["メタバース", "ブロックチェーン", "生成AI", "クラウド"], answer: 2, explanation: "ChatGPTなどが有名ですが、偽情報の拡散や著作権侵害などのルール作りが国際的な課題となっています。" },
+        { id: 71, setId: 4, text: "日本の防衛力強化の目標として、政府は防衛費を国内総生産（GDP）の何％に達するように増額することを目指していますか？", options: ["1%", "2%", "5%", "10%"], answer: 1, explanation: "NATO（北大西洋条約機構）加盟国の目標水準に合わせており、東アジアの厳しい安全保障環境に対応するためです。" },
+        { id: 72, setId: 4, text: "台湾を自国の一部だと主張し、周辺での軍事演習を繰り返すなどして軍事的な圧力を強めている国はどこですか？", options: ["韓国", "ロシア", "中国", "北朝鮮"], answer: 2, explanation: "「台湾有事」への懸念が高まっており、周辺地域の平和と安定を揺るがす重大な問題となっています。" },
+        { id: 73, setId: 4, text: "日本の少子化対策として、国がすべての子育て世帯に支給する手当で、所得制限が撤廃され支給期間も延長されたものは何ですか？", options: ["児童扶養手当", "児童手当", "育児休業給付", "子ども手当"], answer: 1, explanation: "子育ての経済的負担を減らすため、抜本的な制度の拡充が行われました。" },
+        { id: 74, setId: 4, text: "日本国内の深刻な人手不足を補うため、特定の専門技能を持った外国人労働者を受け入れるための在留資格を何といいますか？", options: ["技能実習", "特定技能", "特別永住者", "高度専門職"], answer: 1, explanation: "運送業や飲食料品製造業など対象分野が拡大され、外国人材への依存が強まっています。" },
+        { id: 75, setId: 4, text: "従来の健康保険証が原則廃止され、今後は何というカードと一体化した仕組みを基本とすることになりましたか？", options: ["住基カード", "運転免許証", "マイナンバーカード", "パスポート"], answer: 2, explanation: "「マイナ保険証」として医療機関での受付がデジタル化されました。" },
+        { id: 76, setId: 4, text: "一般のドライバーが自家用車を使って有料で客を運ぶサービスで、タクシー不足解消のために日本でも一部解禁されたものを何といいますか？", options: ["カーシェアリング", "ライドシェア", "自動運転タクシー", "ヒッチハイク"], answer: 1, explanation: "地域の移動の足を守るため、タクシー会社の管理下で条件付きで運行が始まっています。" },
+        { id: 77, setId: 4, text: "2024年に発行された新しい千円札の肖像画に選ばれた、破傷風の治療法などを開発した細菌学者は誰ですか？", options: ["野口英世", "北里柴三郎", "福沢諭吉", "夏目漱石"], answer: 1, explanation: "「近代日本医学の父」と呼ばれ、伝染病予防や細菌学の発展に大きく貢献しました。" },
+        { id: 78, setId: 4, text: "トラック運転手などの時間外労働の上限が規制されたことで、荷物が運べなくなる恐れがあるなど懸念されている物流停滞の問題を何といいますか？", options: ["2024年問題", "物流クライシス", "2030年問題", "過労死問題"], answer: 0, explanation: "働き方改革の一環ですが、運転手不足と相まって私たちの生活にも影響が出始めています。" },
+        { id: 79, setId: 4, text: "地球温暖化対策として、二酸化炭素などの温室効果ガスの排出量を実質ゼロにすることを何といいますか？", options: ["エコバッグ", "リサイクル", "ゼロエミッション", "カーボンニュートラル"], answer: 3, explanation: "日本政府は2050年までにカーボンニュートラルを実現することを国際社会に宣言しています。" },
+        { id: 80, setId: 4, text: "国や企業の重要なシステムや情報を、インターネットを通じたサイバー攻撃から守るための対策を何といいますか？", options: ["サイバーセキュリティ", "情報リテラシー", "デジタルデバイド", "ハッキング"], answer: 0, explanation: "高市政権下でも、経済安全保障と並んでインフラ防衛のための対策強化が重要視されています。" },
+
+        // === セット5: 総合問題 ===
+        { id: 81, setId: 5, text: "衆議院と参議院のうち、解散がなく、任期が6年（半数改選）であるのはどちらですか？", options: ["衆議院", "参議院", "両方", "どちらでもない"], answer: 1, explanation: "参議院は解散がなく、任期も長いため、長期的な視点で審議を行う「良識の府」と呼ばれます。" },
+        { id: 82, setId: 5, text: "三権分立において、国会、内閣、裁判所はそれぞれ「立法権」「行政権」と何権を持っていますか？", options: ["司法権", "警察権", "外交権", "審査権"], answer: 0, explanation: "法律を作る（立法）、法律に基づいて政治を行う（行政）、法律に基づいて争いを裁く（司法）です。" },
+        { id: 83, setId: 5, text: "日本において、国会の議決によってのみ税金を課すことができるという原則を何といいますか？", options: ["財政民主主義", "租税法律主義", "国民主権", "応能負担の原則"], answer: 1, explanation: "歴史上、王様が勝手に税金を集めることを防ぐために確立された重要な原則です。" },
+        { id: 84, setId: 5, text: "労働者が使用者（会社）と対等な立場で交渉するために労働組合をつくる権利を何といいますか？", options: ["団結権", "団体交渉権", "団体行動権", "争議権"], answer: 0, explanation: "この3つを合わせて「労働基本権（労働三権）」といいます。" },
+        { id: 85, setId: 5, text: "経済において、何かを選ぶことは別の何かを諦めることを意味します。このような関係を何といいますか？", options: ["イノベーション", "トレード・オフ", "インフレーション", "デフレーション"], answer: 1, explanation: "資源や時間は限られているため、すべてを同時に得ることはできません。その際の選択の代償を「機会費用」とも呼びます。" },
+        { id: 86, setId: 5, text: "すべての国民に対して、政府が生活に最低限必要な一定額の現金を無条件で定期的に支給する構想を何といいますか？", options: ["ベーシック・インカム", "生活保護", "年金制度", "失業保険"], answer: 0, explanation: "貧困対策や行政コストの削減などのメリットが主張される一方、財源確保や労働意欲の低下が課題とされています。" },
+        { id: 87, setId: 5, text: "日本の裁判員制度において、裁判員はどのような事件の裁判に参加しますか？", options: ["すべての事件", "民事事件", "重大な刑事事件", "少年事件"], answer: 2, explanation: "殺人や放火など、重大な刑事事件の第一審のみに参加します。" },
+        { id: 88, setId: 5, text: "冷戦終結後、地域紛争が増加しましたが、その主な原因として挙げられないものはどれですか？", options: ["民族の違い", "宗教の対立", "資源の奪い合い", "宇宙開発競争"], answer: 3, explanation: "宇宙開発競争は冷戦期の米ソ対立の側面であり、現在の地域紛争の直接的な原因とは異なります。" },
+        { id: 89, setId: 5, text: "国民の祝日のうち、「日本国憲法の施行」を記念する日はどれですか？", options: ["建国記念の日", "昭和の日", "憲法記念日", "文化の日"], answer: 2, explanation: "5月3日の憲法記念日です。11月3日の文化の日は、日本国憲法の「公布」を記念したものです。" },
+        { id: 90, setId: 5, text: "国連の専門機関の一つで、世界の労働条件の改善を目的とする機関（国際労働機関）の略称は？", options: ["ILO", "WHO", "IMF", "FAO"], answer: 0, explanation: "International Labour Organizationの略です。" },
+        { id: 91, setId: 5, text: "裁判官が身分を保障される原則を何といいますか？", options: ["司法の独立", "三権分立", "国民主権", "法の下の平等"], answer: 0, explanation: "裁判官は、その良心に従い独立して職権を行い、憲法及び法律にのみ拘束されます。" },
+        { id: 92, setId: 5, text: "地方公共団体の収入のうち、使い道が自由な財源（地方税など）を総称して何といいますか？", options: ["一般財源", "特定財源", "地方交付税交付金", "国庫支出金"], answer: 0, explanation: "逆に、国から使い道を指定されて交付されるお金を「国庫支出金」といいます。" },
+        { id: 93, setId: 5, text: "地方公共団体間の財政格差をなくすため、国が使い道を制限せずに配分するお金を何といいますか？", options: ["国庫支出金", "地方債", "地方交付税交付金", "補助金"], answer: 2, explanation: "税収が豊かな自治体には交付されず、厳しい自治体に多く交付されます。" },
+        { id: 94, setId: 5, text: "企業同士が競争を避けるため、価格や生産量について協定を結ぶことを何といいますか？", options: ["トラスト", "コンツェルン", "カルテル", "ダンピング"], answer: 2, explanation: "消費者の不利益になるため、独占禁止法で原則として禁止されています。" },
+        { id: 95, setId: 5, text: "太陽光、風力、地熱など、自然界で常に補充され枯渇しないエネルギーを何といいますか？", options: ["化石燃料", "原子力エネルギー", "再生可能エネルギー", "バイオマス"], answer: 2, explanation: "温室効果ガスを排出しないため、地球温暖化対策の鍵とされています。" },
+        { id: 96, setId: 5, text: "自分たちが消費する食料のうち、国内の生産でまかなえる割合を何といいますか？", options: ["エンゲル係数", "食料自給率", "国内総生産", "地産地消"], answer: 1, explanation: "日本の食料自給率（カロリーベース）は38%前後と先進国の中で低く、課題となっています。" },
+        { id: 97, setId: 5, text: "日本の領海の外側にあり、沿岸国が水産資源や鉱物資源などを独占的に利用できる水域を何といいますか？", options: ["接続水域", "排他的経済水域(EEZ)", "公海", "領空"], answer: 1, explanation: "沿岸から200海里（約370km）以内の水域で、日本は世界有数の広さを持っています。" },
+        { id: 98, setId: 5, text: "基本的人権のうち、国家からの干渉を受けずに自由に考えたり行動したりできる権利を何といいますか？", options: ["平等権", "自由権", "社会権", "参政権"], answer: 1, explanation: "精神の自由、身体の自由、経済活動の自由などがあります。" },
+        { id: 99, setId: 5, text: "憲法第9条で定められている「戦争の放棄」「戦力の不保持」ともう一つは何ですか？", options: ["交戦権の否認", "非核三原則", "文民統制", "専守防衛"], answer: 0, explanation: "「国の交戦権は、これを認めない」と規定されています。" },
+        { id: 100, setId: 5, text: "インターネット上の誹謗中傷などを防ぐため、プロバイダに対して発信者の情報の開示を求めることができる法律は？", options: ["プロバイダ責任制限法", "個人情報保護法", "サイバーセキュリティ基本法", "不正アクセス禁止法"], answer: 0, explanation: "SNSでの権利侵害（名誉毀損など）に対する法的な対応として使われます。" }
+    ];
+
+    // --- 状態管理 ---
+    let currentView = 'home';
+    let currentSet = null;
+    let questions = [];
+    let currentQIndex = 0;
+    let score = 0;
+    let timeLeft = 30;
+    let selectedOption = null;
+    let isCorrect = false;
+    let mistakes = [];
+    let hasSavedProgress = false;
+    let highScores = {};
+    let timerInterval = null;
+
+    // --- 初期化 ---
+    document.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      renderHome();
+      switchView('home');
+    });
+
+    function loadData() {
+      const savedMistakes = localStorage.getItem('socialQuizMistakes');
+      if (savedMistakes) mistakes = JSON.parse(savedMistakes);
+      
+      const savedProgress = localStorage.getItem('socialQuizProgress');
+      if (savedProgress) hasSavedProgress = true;
+
+      const savedScores = localStorage.getItem('socialQuizScores');
+      if (savedScores) highScores = JSON.parse(savedScores);
+    }
+
+    function saveData() {
+      localStorage.setItem('socialQuizMistakes', JSON.stringify(mistakes));
+    }
+
+    function saveHighScores() {
+      localStorage.setItem('socialQuizScores', JSON.stringify(highScores));
+    }
+
+    // --- 画面切り替え処理 ---
+    function switchView(viewId) {
+      const views = ['home', 'quiz', 'explanation', 'result'];
+      views.forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (el) {
+          if (v === viewId) {
+            el.classList.remove('hidden');
+          } else {
+            el.classList.add('hidden');
+          }
+        }
+      });
+      currentView = viewId;
+      lucide.createIcons(); // アイコン再描画
+    }
+
+    // --- Home画面 ---
+    function renderHome() {
+      const btnReview = document.getElementById('btn-review');
+      const mistakesCount = document.getElementById('mistakes-count');
+      const reviewEmptyText = document.getElementById('review-empty-text');
+      const resumeContainer = document.getElementById('resume-container');
+
+      // 復習ボタンの状態
+      mistakesCount.textContent = mistakes.length;
+      if (mistakes.length > 0) {
+        btnReview.disabled = false;
+        btnReview.className = "w-full py-3 px-4 rounded-xl flex items-center justify-center font-bold transition-colors bg-amber-500 hover:bg-amber-600 text-white shadow-md cursor-pointer";
+        reviewEmptyText.classList.add('hidden');
+      } else {
+        btnReview.disabled = true;
+        btnReview.className = "w-full py-3 px-4 rounded-xl flex items-center justify-center font-bold transition-colors bg-slate-200 text-slate-400 cursor-not-allowed";
+        reviewEmptyText.classList.remove('hidden');
+      }
+
+      // 再開ボタンの状態
+      if (hasSavedProgress) {
+        resumeContainer.classList.remove('hidden');
+      } else {
+        resumeContainer.classList.add('hidden');
+      }
+
+      // セットボタンの生成
+      const setLabels = [
+        "日本の政治・憲法",
+        "日本の経済・財政",
+        "国際社会・外交",
+        "近年の時事問題",
+        "総合問題"
+      ];
+      
+      const setButtonsContainer = document.getElementById('set-buttons-container');
+      setButtonsContainer.innerHTML = '';
+      
+      for (let i = 1; i <= 5; i++) {
+        let highScoreHtml = '';
+        if (highScores[i] !== undefined) {
+          highScoreHtml = `<span class="text-xs bg-blue-200 text-blue-800 font-bold px-2 py-1 rounded-full mr-3 shadow-sm">最高: ${highScores[i]}点</span>`;
+        }
+
+        const btnHtml = `
+          <button onclick="startQuiz(${i})" class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold py-3 px-4 rounded-xl flex items-center justify-between transition-colors border border-blue-200">
+            <div class="flex flex-col items-start">
+              <span>セット ${i}</span>
+              <span class="text-sm font-normal text-blue-500">${setLabels[i-1]}</span>
+            </div>
+            <div class="flex items-center">
+              ${highScoreHtml}
+              <i data-lucide="play" class="w-5 h-5"></i>
+            </div>
+          </button>
+        `;
+        setButtonsContainer.innerHTML += btnHtml;
+      }
+    }
+
+    // --- クイズ開始処理 ---
+    function startQuiz(setId) {
+      localStorage.removeItem('socialQuizProgress');
+      hasSavedProgress = false;
+
+      let selectedQuestions = [];
+      if (setId === 'review') {
+        selectedQuestions = quizData.filter(q => mistakes.includes(q.id));
+        selectedQuestions.sort(() => Math.random() - 0.5); // シャッフル
+        if (selectedQuestions.length > 20) selectedQuestions = selectedQuestions.slice(0, 20); // 最大20問
+      } else {
+        selectedQuestions = quizData.filter(q => q.setId === setId);
+      }
+
+      if (selectedQuestions.length === 0) return;
+
+      questions = selectedQuestions;
+      currentSet = setId;
+      currentQIndex = 0;
+      score = 0;
+      
+      setupQuizView();
+    }
+
+    function resumeQuiz() {
+      const savedProgress = localStorage.getItem('socialQuizProgress');
+      if (savedProgress) {
+        const p = JSON.parse(savedProgress);
+        currentSet = p.currentSet;
+        currentQIndex = p.currentQIndex;
+        score = p.score;
+        questions = p.questions;
+        setupQuizView();
+      }
+    }
+
+    function saveProgressAndExit() {
+      const nextIndex = currentView === 'explanation' ? currentQIndex + 1 : currentQIndex;
+      
+      if (nextIndex >= questions.length) {
+        goHome();
+        return;
+      }
+
+      const progress = { currentSet, currentQIndex: nextIndex, score, questions };
+      localStorage.setItem('socialQuizProgress', JSON.stringify(progress));
+      hasSavedProgress = true;
+      goHome();
+    }
+
+    function goHome() {
+      stopTimer();
+      currentSet = null;
+      renderHome();
+      switchView('home');
+    }
+
+    // --- クイズ画面表示 ---
+    function setupQuizView() {
+      timeLeft = 30;
+      selectedOption = null;
+      isCorrect = false;
+
+      const question = questions[currentQIndex];
+      
+      // ヘッダー情報
+      document.getElementById('quiz-progress-text').textContent = `問題 ${currentQIndex + 1} / ${questions.length}`;
+      document.getElementById('quiz-question-text').textContent = question.text;
+
+      // 選択肢
+      const optionsContainer = document.getElementById('quiz-options-container');
+      optionsContainer.innerHTML = '';
+      question.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left bg-slate-50 hover:bg-blue-50 text-slate-700 font-medium py-4 px-5 rounded-xl border border-slate-200 hover:border-blue-300 transition-all active:scale-[0.98]";
+        btn.onclick = () => handleAnswer(idx);
+        btn.innerHTML = `<span class="inline-block w-6 text-slate-400 font-bold mr-2">${idx + 1}.</span>${opt}`;
+        optionsContainer.appendChild(btn);
+      });
+
+      updateTimerUI();
+      switchView('quiz');
+      startTimer();
+    }
+
+    // --- タイマー処理 ---
+    function startTimer() {
+      stopTimer();
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        updateTimerUI();
+        if (timeLeft <= 0) {
+          stopTimer();
+          handleTimeOut();
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+    }
+
+    function updateTimerUI() {
+      const timerContainer = document.getElementById('timer-container');
+      const timerIcon = document.getElementById('timer-icon');
+      const timerText = document.getElementById('timer-text');
+      const timerBar = document.getElementById('timer-bar');
+
+      timerText.textContent = `${timeLeft}秒`;
+      timerBar.style.width = `${(timeLeft / 30) * 100}%`;
+
+      // 残り5秒以下のエフェクト
+      if (timeLeft <= 5) {
+        timerContainer.classList.replace('border-slate-200', 'border-red-400');
+        timerContainer.classList.add('scale-110');
+        timerIcon.classList.replace('text-slate-400', 'text-red-600');
+        timerIcon.classList.add('animate-bounce');
+        timerText.classList.replace('text-slate-700', 'text-red-600');
+        timerText.classList.add('animate-pulse-fast');
+        timerBar.classList.replace('bg-blue-500', 'bg-red-600');
+        timerBar.classList.add('animate-pulse-fast');
+      } else {
+        timerContainer.classList.replace('border-red-400', 'border-slate-200');
+        timerContainer.classList.remove('scale-110');
+        timerIcon.classList.replace('text-red-600', 'text-slate-400');
+        timerIcon.classList.remove('animate-bounce');
+        timerText.classList.replace('text-red-600', 'text-slate-700');
+        timerText.classList.remove('animate-pulse-fast');
+        timerBar.classList.replace('bg-red-600', 'bg-blue-500');
+        timerBar.classList.remove('animate-pulse-fast');
+      }
+    }
+
+    // --- 回答処理 ---
+    function handleAnswer(optionIndex) {
+      stopTimer();
+      const question = questions[currentQIndex];
+      const correct = optionIndex === question.answer;
+      
+      selectedOption = optionIndex;
+      isCorrect = correct;
+      
+      if (correct) {
+        score += 5;
+        // 復習リストから削除
+        mistakes = mistakes.filter(id => id !== question.id);
+      } else {
+        // 復習リストに追加
+        if (!mistakes.includes(question.id)) {
+          mistakes.push(question.id);
+        }
+      }
+      saveData();
+      
+      setTimeout(() => showExplanation(), 500);
+    }
+
+    function handleTimeOut() {
+      const question = questions[currentQIndex];
+      selectedOption = null;
+      isCorrect = false;
+      
+      if (!mistakes.includes(question.id)) {
+        mistakes.push(question.id);
+      }
+      saveData();
+      showExplanation();
+    }
+
+    // --- 解説画面表示 ---
+    function showExplanation() {
+      const question = questions[currentQIndex];
+      
+      const banner = document.getElementById('exp-banner');
+      const iconCorrect = document.getElementById('exp-icon-correct');
+      const iconIncorrect = document.getElementById('exp-icon-incorrect');
+      const incorrectTitle = document.getElementById('exp-incorrect-title');
+      
+      if (isCorrect) {
+        banner.className = "p-6 text-center text-white bg-green-500";
+        iconCorrect.classList.remove('hidden');
+        iconIncorrect.classList.add('hidden');
+      } else {
+        banner.className = "p-6 text-center text-white bg-red-500";
+        iconCorrect.classList.add('hidden');
+        iconIncorrect.classList.remove('hidden');
+        incorrectTitle.textContent = timeLeft === 0 ? "時間切れ..." : "不正解";
+      }
+
+      document.getElementById('exp-question').textContent = question.text;
+      document.getElementById('exp-correct-answer').textContent = question.options[question.answer];
+      
+      const userAnswerContainer = document.getElementById('exp-user-answer-container');
+      if (!isCorrect && selectedOption !== null) {
+        userAnswerContainer.classList.remove('hidden');
+        document.getElementById('exp-user-answer').textContent = question.options[selectedOption];
+      } else {
+        userAnswerContainer.classList.add('hidden');
+      }
+
+      document.getElementById('exp-text').textContent = question.explanation;
+      document.getElementById('exp-next-btn-text').textContent = currentQIndex + 1 < questions.length ? "次の問題へ" : "結果を見る";
+
+      switchView('explanation');
+    }
+
+    function nextQuestion() {
+      if (currentQIndex + 1 < questions.length) {
+        currentQIndex++;
+        setupQuizView();
+      } else {
+        // クイズ終了
+        localStorage.removeItem('socialQuizProgress');
+        hasSavedProgress = false;
+        
+        if (currentSet !== 'review') {
+          if (!highScores[currentSet] || score > highScores[currentSet]) {
+            highScores[currentSet] = score;
+            saveHighScores();
+          }
+        }
+        showResult();
+      }
+    }
+
+    // --- 結果画面表示 ---
+    function showResult() {
+      const maxScore = questions.length * 5;
+      const percentage = Math.round((score / maxScore) * 100);
+      
+      let message = "";
+      if (percentage === 100) message = "完璧です！素晴らしい！";
+      else if (percentage >= 80) message = "大変よくできました！";
+      else if (percentage >= 60) message = "合格ライン！もう少し復習しよう。";
+      else message = "しっかり復習して再チャレンジ！";
+
+      document.getElementById('result-score').textContent = score;
+      document.getElementById('result-max-score').textContent = `/${maxScore}`;
+      document.getElementById('result-message').textContent = message;
+
+      switchView('result');
+    }
+
+  </script>
+</body>
+</html>
