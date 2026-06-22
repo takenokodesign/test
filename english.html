@@ -1,0 +1,1667 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Real Life English Listening Practice - 5 Sets</title>
+  <style>
+    :root {
+      --ink: #222;
+      --muted: #666;
+      --line: #d8d2c6;
+      --paper: #fffdf7;
+      --bg: #f4f0e8;
+      --accent: #2f5f7f;
+      --accent-weak: #e8f2f8;
+      --ok: #217a38;
+      --ng: #b3261e;
+      --warn: #8a5a00;
+      --shadow: 0 8px 22px rgba(30, 28, 24, .12);
+      --radius: 16px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f8f4ed 0%, var(--bg) 100%);
+      font-family: var(--sans);
+      line-height: 1.65;
+    }
+    button, input, select, textarea { font: inherit; }
+    button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: .55rem .9rem;
+      cursor: pointer;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+    }
+    button:hover { background: #f8fbfd; border-color: #bdd1df; }
+    button:active { transform: translateY(1px); }
+    button.primary { background: var(--accent); color: white; border-color: var(--accent); }
+    button.primary:hover { background: #264f6b; }
+    button.danger { color: var(--ng); border-color: #efc5c0; }
+    button.ghost { background: transparent; }
+    button.small { font-size: .9rem; padding: .35rem .7rem; }
+    button[disabled] { opacity: .55; cursor: not-allowed; }
+    input[type="text"], input[type="number"] {
+      border: 0;
+      border-bottom: 2px solid #444;
+      background: transparent;
+      min-width: 7.5rem;
+      padding: .25rem .35rem;
+      outline: none;
+    }
+    input[type="text"]:focus { border-bottom-color: var(--accent); background: #f7fbff; }
+    select, input[type="range"] { max-width: 100%; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 22px; }
+    .hero {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 22px 24px;
+      margin-bottom: 16px;
+    }
+    .heroTop { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; }
+    .brand { display: flex; gap: 14px; align-items: center; }
+    .brandMark {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: #222; color: #fff; display: grid; place-items: center;
+      font-size: 1.6rem; font-weight: 800;
+    }
+    h1 { font-size: clamp(1.35rem, 3vw, 2.05rem); margin: 0; line-height: 1.25; }
+    .subtitle { color: var(--muted); margin-top: .25rem; }
+    .pillRow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .pill {
+      border: 1px solid var(--line); background: #fff; border-radius: 999px;
+      padding: .35rem .7rem; color: #444; font-size: .92rem;
+    }
+    .tabs {
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(10px);
+      background: rgba(244, 240, 232, .88);
+      border: 1px solid rgba(216, 210, 198, .8);
+      border-radius: 18px;
+      padding: 10px;
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .tabs button.active { background: var(--accent-weak); border-color: var(--accent); color: #14384f; font-weight: 700; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 14px rgba(30,28,24,.06);
+      padding: 18px;
+    }
+    .setHeader { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; align-items: flex-start; }
+    .scoreBox { display: grid; gap: 6px; min-width: 220px; }
+    .scoreLine { font-weight: 800; font-size: 1.15rem; }
+    .section {
+      margin-top: 18px;
+      border: 1px solid #cfc7b8;
+      border-radius: 14px;
+      background: #fff;
+      overflow: hidden;
+    }
+    .sectionHead {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      background: #f7f3ea;
+      border-bottom: 1px solid #ddd5c8;
+      padding: 12px 14px;
+    }
+    .sectionTitle { display: flex; align-items: flex-start; gap: 10px; font-weight: 800; }
+    .numBadge {
+      display: inline-grid; place-items: center; min-width: 30px; height: 30px;
+      background: #222; color: white; border-radius: 8px; font-weight: 800;
+    }
+    .cdBadge {
+      border: 1px solid #aaa; border-radius: 8px; padding: .25rem .55rem;
+      background: #fff; font-family: var(--mono); font-size: .9rem;
+    }
+    .sectionControls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .sectionBody { padding: 14px; }
+    .note { color: var(--muted); font-size: .95rem; margin: 0 0 12px; }
+    .qBlock { margin: 14px 0 18px; }
+    .qLabel { font-weight: 800; margin-bottom: 8px; }
+    .choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    @media (max-width: 740px) { .choices { grid-template-columns: 1fr; } }
+    .choice {
+      border: 2px solid #ded7ca;
+      border-radius: 12px;
+      padding: 8px;
+      display: grid; gap: 6px;
+      background: #fff;
+      cursor: pointer;
+    }
+    .choice:hover { border-color: #aac8da; }
+    .choice input { width: 1.05rem; height: 1.05rem; }
+    .choiceTop { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-weight: 800; }
+    .choiceKey { font-size: 1.05rem; }
+    .choice svg { width: 100%; height: auto; display: block; border: 1px solid #e0ddd5; border-radius: 10px; background: #fcfbf7; }
+    .sentenceList { display: grid; gap: 12px; }
+    .sentence {
+      border-left: 4px solid #d3c9b7;
+      padding: 10px 10px 10px 12px;
+      background: #fffefa;
+      border-radius: 8px;
+    }
+    .blankNo { font-weight: 800; margin-right: .3rem; }
+    .memo {
+      border: 2px solid #333;
+      background: #fffdf9;
+      max-width: 680px;
+      padding: 12px 16px;
+      margin: 8px 0 12px;
+    }
+    .memoTitle { text-align: center; font-weight: 800; margin-bottom: 8px; }
+    .memo ul { margin: 0; padding-left: 1.15rem; }
+    .memo li { margin: 8px 0; }
+    .feedback {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-left: 8px;
+      border-radius: 999px;
+      padding: .18rem .55rem;
+      font-size: .88rem;
+      vertical-align: middle;
+    }
+    .feedback.ok { background: #e9f6ec; color: var(--ok); border: 1px solid #bee5c6; }
+    .feedback.ng { background: #fff0ee; color: var(--ng); border: 1px solid #f1c4c0; }
+    .feedback.neutral { background: #f0f0f0; color: #555; border: 1px solid #ddd; }
+    .answerLine { color: var(--muted); font-size: .92rem; margin-top: 4px; }
+    .scriptBox {
+      margin-top: 12px;
+      border: 1px dashed #b8ad9d;
+      background: #faf7f0;
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .scriptLine { margin: 4px 0; }
+    .speaker { font-weight: 800; color: #344e62; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; align-items: center; }
+    .status {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+    .historyTable { width: 100%; border-collapse: collapse; font-size: .95rem; }
+    .historyTable th, .historyTable td { border-bottom: 1px solid #e4ded4; padding: 9px 7px; text-align: left; vertical-align: top; }
+    .historyTable th { background: #f7f3ea; }
+    .wrongList { margin: 8px 0 0; padding-left: 1.1rem; }
+    .wrongList li { margin: 4px 0; }
+    .reviewGrid { display: grid; gap: 14px; }
+    .reviewCard {
+      border: 1px solid #d8d2c6;
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .reviewMeta { color: var(--muted); font-size: .9rem; margin-bottom: 8px; }
+    .empty {
+      border: 1px dashed #bbb2a5;
+      background: #fffdf8;
+      border-radius: 14px;
+      padding: 18px;
+      color: #555;
+    }
+    .settingsGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    @media (max-width: 780px) { .settingsGrid { grid-template-columns: 1fr; } }
+    .settingCard { border: 1px solid #e0d8ca; border-radius: 12px; padding: 12px; background: #fff; }
+    .settingCard label { display: block; font-weight: 700; margin-bottom: 6px; }
+    .notice {
+      border-left: 5px solid var(--accent);
+      background: var(--accent-weak);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-top: 12px;
+    }
+    .warn {
+      border-left-color: var(--warn);
+      background: #fff8e7;
+    }
+    .srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .svgLabel { font-weight: 800; font-size: 13px; }
+    .svgSmall { font-size: 10px; }
+    .footer { color: var(--muted); font-size: .9rem; padding: 18px 2px 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap" id="app"></div>
+
+<script>
+(() => {
+  'use strict';
+
+  const STORAGE_KEY = 'rle_listening_practice_5sets_v1';
+  const APP_VERSION = '1.1.0';
+  const DEFAULT_SETTINGS = Object.freeze({
+    rate: 0.94,
+    pitch: 1.0,
+    voiceA: '',
+    voiceB: '',
+    voiceMode: 'single'
+  });
+
+  const state = {
+    view: 'set',
+    currentSetId: 'set1',
+    answers: {},
+    reviewAnswers: {},
+    history: [],
+    settings: { ...DEFAULT_SETTINGS },
+    openScripts: {},
+    activeAttemptId: null,
+    message: '',
+    voicesLoaded: false
+  };
+
+  const SETS = [
+    {
+      id: 'set1',
+      title: 'Set 1  Friends and Plans',
+      unit: 'Unit 2 / Real Life English Practice 1',
+      sections: [
+        {
+          id: 'pic', kind: 'picture', no: '1', cd: 'CD-1 1-3', repeat: 1,
+          title: '英文の内容に合う絵を、ア〜ウの中から1つ選び、記号で答えなさい。',
+          note: '英語は1回ずつ放送されます。再生後、各問の記号を選びましょう。',
+          audio: [
+            { text: 'Number one. People go to this place when they want to borrow books.' },
+            { pause: 500 },
+            { speaker: 'A', text: 'Number two. Do you want to play tennis after school?' },
+            { speaker: 'B', text: 'Sorry, I can\'t. I have piano practice today.' },
+            { pause: 500 },
+            { speaker: 'A', text: 'Number three. May I use your eraser?' },
+            { speaker: 'B', text: 'Sure. Here you are.' }
+          ],
+          questions: [
+            { id: 'p1', no: '(1)', answer: ['イ'], choices: [
+              { key: 'ア', kind: 'bookstore', label: 'Bookstore' },
+              { key: 'イ', kind: 'library', label: 'Library' },
+              { key: 'ウ', kind: 'stationery', label: 'Stationery' }
+            ]},
+            { id: 'p2', no: '(2)', answer: ['イ'], choices: [
+              { key: 'ア', kind: 'tennis', label: 'Tennis' },
+              { key: 'イ', kind: 'piano', label: 'Piano' },
+              { key: 'ウ', kind: 'study', label: 'Study' }
+            ]},
+            { id: 'p3', no: '(3)', answer: ['ウ'], choices: [
+              { key: 'ア', kind: 'pen', label: 'Pen' },
+              { key: 'イ', kind: 'notebook', label: 'Notebook' },
+              { key: 'ウ', kind: 'eraser', label: 'Eraser' }
+            ]}
+          ]
+        },
+        {
+          id: 'fill', kind: 'fill', no: '2', cd: 'CD-1 4-5', repeat: 2,
+          title: '英文を聞いて、（　）に入る英語を書きなさい。',
+          note: 'スピーチは2回読まれます。空所には1語を書きましょう。',
+          audio: [
+            { text: 'Hello, everyone. I\'m Nana. This is my favorite picture book.' },
+            { text: 'When I was an elementary school student, I read it for the first time.' },
+            { text: 'The main character is a small fox. At first, he is afraid of the dark because he cannot see well at night.' },
+            { text: 'His mother says, Try something new every day. The fox walks outside with his friends.' },
+            { text: 'Now he likes the stars. I want to be brave like him. Thank you.' }
+          ],
+          questions: [
+            { id: 'f1', no: '(1)', before: 'Nana first read the book', after: 'she was in elementary school.', answer: ['when'] },
+            { id: 'f2', no: '(2)', before: 'At first, the fox is afraid of the dark', after: 'he cannot see well at night.', answer: ['because'] },
+            { id: 'f3', no: '(3)', before: 'Nana wants to try something', after: 'like the fox.', answer: ['new'] }
+          ]
+        },
+        {
+          id: 'dialog', kind: 'dialog', no: '3', cd: 'CD-1 6-7', repeat: 2,
+          title: '対話を聞いて、メモの①から④の（　）に入る英語または数字を書きなさい。',
+          note: '数字は半角で書いても、英語で書いても正解になります。',
+          memoTitle: 'Craft Day at Green Community Center',
+          memo: [
+            'Students can make a paper {{d1}}.',
+            'It costs {{d2}} dollars.',
+            'Amy will go with {{d3}}.',
+            'They will meet at the center at 1:{{d4}}.'
+          ],
+          audio: [
+            { speaker: 'Sota', text: 'Green Community Center is going to have a craft day for students this Saturday.' },
+            { speaker: 'Amy', text: 'Oh, really? What can students make?' },
+            { speaker: 'Sota', text: 'They can make a paper bird for two dollars.' },
+            { speaker: 'Amy', text: 'Are you going to go?' },
+            { speaker: 'Sota', text: 'Yes. I\'m going to make one with Mike. Can you join us, Amy?' },
+            { speaker: 'Amy', text: 'Sure. I like making things. What time does it start?' },
+            { speaker: 'Sota', text: 'It starts at one thirty. Let\'s meet at the center at one fifteen.' },
+            { speaker: 'Amy', text: 'OK.' }
+          ],
+          questions: [
+            { id: 'd1', no: '①', prompt: 'Students can make a paper (　).', answer: ['bird'] },
+            { id: 'd2', no: '②', prompt: 'It costs (　) dollars.', answer: ['2', 'two'] },
+            { id: 'd3', no: '③', prompt: 'Amy will go with (　).', answer: ['Mike'] },
+            { id: 'd4', no: '④', prompt: 'They will meet at 1:(　).', answer: ['15', 'fifteen'] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'set2',
+      title: 'Set 2  Shops and Directions',
+      unit: 'Unit 2 / Real Life English Practice 2',
+      sections: [
+        {
+          id: 'pic', kind: 'picture', no: '1', cd: 'CD-2 1-3', repeat: 1,
+          title: '英文の内容に合う絵を、ア〜ウの中から1つ選び、記号で答えなさい。',
+          note: '場所・位置・物を聞き取りましょう。',
+          audio: [
+            { text: 'Number one. You can buy bread and cakes at this shop.' },
+            { pause: 500 },
+            { speaker: 'A', text: 'Number two. Where is the bus stop?' },
+            { speaker: 'B', text: 'It is in front of the hospital.' },
+            { pause: 500 },
+            { text: 'Number three. Please put the blue bag under the desk.' }
+          ],
+          questions: [
+            { id: 'p1', no: '(1)', answer: ['ア'], choices: [
+              { key: 'ア', kind: 'bakery', label: 'Bakery' },
+              { key: 'イ', kind: 'flower', label: 'Flower Shop' },
+              { key: 'ウ', kind: 'fish', label: 'Fish Shop' }
+            ]},
+            { id: 'p2', no: '(2)', answer: ['イ'], choices: [
+              { key: 'ア', kind: 'busPark', label: 'Bus / Park' },
+              { key: 'イ', kind: 'busHospital', label: 'Bus / Hospital' },
+              { key: 'ウ', kind: 'busStore', label: 'Bus / Store' }
+            ]},
+            { id: 'p3', no: '(3)', answer: ['イ'], choices: [
+              { key: 'ア', kind: 'bagOnDesk', label: 'On the desk' },
+              { key: 'イ', kind: 'bagUnderDesk', label: 'Under the desk' },
+              { key: 'ウ', kind: 'bagChair', label: 'On the chair' }
+            ]}
+          ]
+        },
+        {
+          id: 'fill', kind: 'fill', no: '2', cd: 'CD-2 4-5', repeat: 2,
+          title: '英文を聞いて、（　）に入る英語を書きなさい。',
+          note: '接続語を中心に聞き取りましょう。',
+          audio: [
+            { text: 'Good morning. I\'m Riku. My favorite sport is volleyball.' },
+            { text: 'I started it last year when my sister joined a team.' },
+            { text: 'At first, I could not hit the ball well, so I practiced after school.' },
+            { text: 'My friends helped me. Now I enjoy playing volleyball because we can work together.' },
+            { text: 'I want to play in a big game next month. Thank you.' }
+          ],
+          questions: [
+            { id: 'f1', no: '(1)', before: 'Riku started volleyball last year', after: 'his sister joined a team.', answer: ['when'] },
+            { id: 'f2', no: '(2)', before: 'At first, he could not hit the ball well,', after: 'he practiced after school.', answer: ['so'] },
+            { id: 'f3', no: '(3)', before: 'He enjoys volleyball', after: 'the players can work together.', answer: ['because'] }
+          ]
+        },
+        {
+          id: 'dialog', kind: 'dialog', no: '3', cd: 'CD-2 6-7', repeat: 2,
+          title: '対話を聞いて、メモの①から④の（　）に入る英語または数字を書きなさい。',
+          note: 'イベントの内容・時刻・条件を聞き取りましょう。',
+          memoTitle: 'Zoo Trip next Sunday',
+          memo: [
+            'Student ticket: {{d1}} dollars.',
+            'They will see the {{d2}} show.',
+            'They will meet at the station at 9:{{d3}}.',
+            'If it is rainy, they will go by {{d4}}.'
+          ],
+          audio: [
+            { speaker: 'Ken', text: 'The city zoo has a special day for students next Sunday.' },
+            { speaker: 'Emma', text: 'How much is a ticket?' },
+            { speaker: 'Ken', text: 'Students can enter for four dollars.' },
+            { speaker: 'Emma', text: 'Great. What do you want to see?' },
+            { speaker: 'Ken', text: 'The penguin show. It starts at ten.' },
+            { speaker: 'Emma', text: 'Then let\'s meet at the station at nine twenty.' },
+            { speaker: 'Ken', text: 'OK. If it is rainy, my mother can take us there by car.' },
+            { speaker: 'Emma', text: 'Good idea.' }
+          ],
+          questions: [
+            { id: 'd1', no: '①', prompt: 'Student ticket: (　) dollars.', answer: ['4', 'four'] },
+            { id: 'd2', no: '②', prompt: 'They will see the (　) show.', answer: ['penguin'] },
+            { id: 'd3', no: '③', prompt: 'They will meet at 9:(　).', answer: ['20', 'twenty'] },
+            { id: 'd4', no: '④', prompt: 'If it is rainy, they will go by (　).', answer: ['car'] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'set3',
+      title: 'Set 3  School Life',
+      unit: 'Unit 2 / Real Life English Practice 3',
+      sections: [
+        {
+          id: 'pic', kind: 'picture', no: '1', cd: 'CD-3 1-3', repeat: 1,
+          title: '英文の内容に合う絵を、ア〜ウの中から1つ選び、記号で答えなさい。',
+          note: 'クラブ活動や学校生活の場面を聞き取りましょう。',
+          audio: [
+            { text: 'Number one. This club member practices shooting hoops in the gym.' },
+            { pause: 500 },
+            { speaker: 'A', text: 'Number two. Can you help me with this math problem?' },
+            { speaker: 'B', text: 'Sure. Let\'s study together after lunch.' },
+            { pause: 500 },
+            { text: 'Number three. Ken has to feed the rabbit before he goes home.' }
+          ],
+          questions: [
+            { id: 'p1', no: '(1)', answer: ['イ'], choices: [
+              { key: 'ア', kind: 'soccer', label: 'Soccer' },
+              { key: 'イ', kind: 'basketball', label: 'Basketball' },
+              { key: 'ウ', kind: 'swimming', label: 'Swimming' }
+            ]},
+            { id: 'p2', no: '(2)', answer: ['ア'], choices: [
+              { key: 'ア', kind: 'mathHelp', label: 'Math Help' },
+              { key: 'イ', kind: 'lunch', label: 'Lunch' },
+              { key: 'ウ', kind: 'drawing', label: 'Drawing' }
+            ]},
+            { id: 'p3', no: '(3)', answer: ['ア'], choices: [
+              { key: 'ア', kind: 'rabbitFeed', label: 'Feed Rabbit' },
+              { key: 'イ', kind: 'dogWalk', label: 'Walk Dog' },
+              { key: 'ウ', kind: 'cat', label: 'Cat' }
+            ]}
+          ]
+        },
+        {
+          id: 'fill', kind: 'fill', no: '2', cd: 'CD-3 4-5', repeat: 2,
+          title: '英文を聞いて、（　）に入る英語を書きなさい。',
+          note: '形容詞・副詞・順序を表す語を聞き取りましょう。',
+          audio: [
+            { text: 'Hello. I\'m Emi. I like cooking.' },
+            { text: 'My father teaches me easy dishes. Yesterday, I made curry for my family.' },
+            { text: 'I cut the vegetables carefully. It was my first time, but it was fun.' },
+            { text: 'My little brother said, It is delicious. I was very happy.' },
+            { text: 'I want to learn more recipes and cook dinner every Sunday.' }
+          ],
+          questions: [
+            { id: 'f1', no: '(1)', before: 'Emi\'s father teaches her', after: 'dishes.', answer: ['easy'] },
+            { id: 'f2', no: '(2)', before: 'Emi cut the vegetables', after: '.', answer: ['carefully'] },
+            { id: 'f3', no: '(3)', before: 'It was her', after: 'time to make curry.', answer: ['first'] }
+          ]
+        },
+        {
+          id: 'dialog', kind: 'dialog', no: '3', cd: 'CD-3 6-7', repeat: 2,
+          title: '対話を聞いて、メモの①から④の（　）に入る英語または数字を書きなさい。',
+          note: '曜日・内容・持ち物・時刻に注意しましょう。',
+          memoTitle: 'Story Time at West Library',
+          memo: [
+            'It is on {{d1}}.',
+            'They will listen to an {{d2}} story.',
+            'Amy will bring her {{d3}}.',
+            'They will meet at the library at 2:{{d4}}.'
+          ],
+          audio: [
+            { speaker: 'Taku', text: 'West Library is going to have story time this Sunday.' },
+            { speaker: 'Amy', text: 'Is it for students?' },
+            { speaker: 'Taku', text: 'Yes. We can listen to an English story.' },
+            { speaker: 'Amy', text: 'Nice. I want to go. Can I bring my sister?' },
+            { speaker: 'Taku', text: 'Sure. It starts at three, but many people will come.' },
+            { speaker: 'Amy', text: 'Then let\'s meet at the library at two forty-five.' },
+            { speaker: 'Taku', text: 'OK.' }
+          ],
+          questions: [
+            { id: 'd1', no: '①', prompt: 'It is on (　).', answer: ['Sunday'] },
+            { id: 'd2', no: '②', prompt: 'They will listen to an (　) story.', answer: ['English'] },
+            { id: 'd3', no: '③', prompt: 'Amy will bring her (　).', answer: ['sister'] },
+            { id: 'd4', no: '④', prompt: 'They will meet at 2:(　).', answer: ['45', 'forty-five', 'forty five'] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'set4',
+      title: 'Set 4  Health and Travel',
+      unit: 'Unit 2 / Real Life English Practice 4',
+      sections: [
+        {
+          id: 'pic', kind: 'picture', no: '1', cd: 'CD-4 1-3', repeat: 1,
+          title: '英文の内容に合う絵を、ア〜ウの中から1つ選び、記号で答えなさい。',
+          note: '健康・交通・買い物の場面を聞き取りましょう。',
+          audio: [
+            { text: 'Number one. She has a cold, so she should stay in bed.' },
+            { pause: 500 },
+            { speaker: 'A', text: 'Number two. How can we get to the museum?' },
+            { speaker: 'B', text: 'Let\'s take the train. The station is close.' },
+            { pause: 500 },
+            { text: 'Number three. The boy bought two postcards for his grandmother.' }
+          ],
+          questions: [
+            { id: 'p1', no: '(1)', answer: ['イ'], choices: [
+              { key: 'ア', kind: 'running', label: 'Running' },
+              { key: 'イ', kind: 'bedCold', label: 'In Bed' },
+              { key: 'ウ', kind: 'dentist', label: 'Dentist' }
+            ]},
+            { id: 'p2', no: '(2)', answer: ['ア'], choices: [
+              { key: 'ア', kind: 'trainMuseum', label: 'Train' },
+              { key: 'イ', kind: 'busMuseum', label: 'Bus' },
+              { key: 'ウ', kind: 'walkMuseum', label: 'Walk' }
+            ]},
+            { id: 'p3', no: '(3)', answer: ['ア'], choices: [
+              { key: 'ア', kind: 'postcard', label: 'Postcards' },
+              { key: 'イ', kind: 'book', label: 'Book' },
+              { key: 'ウ', kind: 'letter', label: 'Letter' }
+            ]}
+          ]
+        },
+        {
+          id: 'fill', kind: 'fill', no: '2', cd: 'CD-4 4-5', repeat: 2,
+          title: '英文を聞いて、（　）に入る英語を書きなさい。',
+          note: '旅行の経験を表す語を聞き取りましょう。',
+          audio: [
+            { text: 'Hi. I\'m Yuta. Last summer, I visited my grandfather in Hokkaido.' },
+            { text: 'I went there by plane. It was cool and beautiful.' },
+            { text: 'We walked around a lake and took many pictures.' },
+            { text: 'We also ate fresh corn. I want to visit him again because he knows many interesting places.' },
+            { text: 'Thank you.' }
+          ],
+          questions: [
+            { id: 'f1', no: '(1)', before: 'Yuta visited his grandfather last', after: '.', answer: ['summer'] },
+            { id: 'f2', no: '(2)', before: 'Yuta went to Hokkaido by', after: '.', answer: ['plane'] },
+            { id: 'f3', no: '(3)', before: 'He wants to visit again', after: 'his grandfather knows interesting places.', answer: ['because'] }
+          ]
+        },
+        {
+          id: 'dialog', kind: 'dialog', no: '3', cd: 'CD-4 6-7', repeat: 2,
+          title: '対話を聞いて、メモの①から④の（　）に入る英語または数字を書きなさい。',
+          note: '練習日、すること、持ち物、到着時刻を聞き取りましょう。',
+          memoTitle: 'Sports Day Practice',
+          memo: [
+            'Practice is after school on {{d1}}.',
+            'Students will run {{d2}} meters.',
+            'Bring a {{d3}}.',
+            'Ken will come at {{d4}}:00.'
+          ],
+          audio: [
+            { speaker: 'Mia', text: 'Are you going to sports day practice?' },
+            { speaker: 'Ken', text: 'Yes. It is after school on Wednesday.' },
+            { speaker: 'Mia', text: 'What will we do?' },
+            { speaker: 'Ken', text: 'We will run one hundred meters. Please bring a towel.' },
+            { speaker: 'Mia', text: 'OK. Can you come at three thirty?' },
+            { speaker: 'Ken', text: 'I have piano practice until three fifty, so I will come at four o\'clock.' },
+            { speaker: 'Mia', text: 'I see. See you then.' }
+          ],
+          questions: [
+            { id: 'd1', no: '①', prompt: 'Practice is after school on (　).', answer: ['Wednesday'] },
+            { id: 'd2', no: '②', prompt: 'Students will run (　) meters.', answer: ['100', 'one hundred', 'hundred'] },
+            { id: 'd3', no: '③', prompt: 'Bring a (　).', answer: ['towel'] },
+            { id: 'd4', no: '④', prompt: 'Ken will come at (　):00.', answer: ['4', 'four'] }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'set5',
+      title: 'Set 5  Food and Weekend',
+      unit: 'Unit 2 / Real Life English Practice 5',
+      sections: [
+        {
+          id: 'pic', kind: 'picture', no: '1', cd: 'CD-5 1-3', repeat: 1,
+          title: '英文の内容に合う絵を、ア〜ウの中から1つ選び、記号で答えなさい。',
+          note: '物の特徴や週末の行動を聞き取りましょう。',
+          audio: [
+            { text: 'Number one. This is a vegetable. It is orange and long. Rabbits like it.' },
+            { pause: 500 },
+            { speaker: 'A', text: 'Number two. What did you do yesterday?' },
+            { speaker: 'B', text: 'I cleaned my room and found my old cap.' },
+            { pause: 500 },
+            { speaker: 'A', text: 'Number three. Whose umbrella is this?' },
+            { speaker: 'B', text: 'It\'s mine. Thank you.' }
+          ],
+          questions: [
+            { id: 'p1', no: '(1)', answer: ['ア'], choices: [
+              { key: 'ア', kind: 'carrot', label: 'Carrot' },
+              { key: 'イ', kind: 'tomato', label: 'Tomato' },
+              { key: 'ウ', kind: 'potato', label: 'Potato' }
+            ]},
+            { id: 'p2', no: '(2)', answer: ['ア'], choices: [
+              { key: 'ア', kind: 'cleanRoom', label: 'Clean Room' },
+              { key: 'イ', kind: 'game', label: 'Game' },
+              { key: 'ウ', kind: 'readBook', label: 'Read Book' }
+            ]},
+            { id: 'p3', no: '(3)', answer: ['ア'], choices: [
+              { key: 'ア', kind: 'umbrella', label: 'Umbrella' },
+              { key: 'イ', kind: 'raincoat', label: 'Raincoat' },
+              { key: 'ウ', kind: 'cap', label: 'Cap' }
+            ]}
+          ]
+        },
+        {
+          id: 'fill', kind: 'fill', no: '2', cd: 'CD-5 4-5', repeat: 2,
+          title: '英文を聞いて、（　）に入る英語を書きなさい。',
+          note: '日課やペットについての語を聞き取りましょう。',
+          audio: [
+            { text: 'Hello, everyone. I\'m Saki. I have a dog named Pochi.' },
+            { text: 'Every morning, I walk him before breakfast.' },
+            { text: 'He runs very fast, but he always waits for me.' },
+            { text: 'On rainy days, he sleeps near the window.' },
+            { text: 'I think pets teach us many things. I want to take good care of him.' }
+          ],
+          questions: [
+            { id: 'f1', no: '(1)', before: 'Saki walks Pochi before', after: '.', answer: ['breakfast'] },
+            { id: 'f2', no: '(2)', before: 'Pochi always', after: 'for Saki.', answer: ['waits'] },
+            { id: 'f3', no: '(3)', before: 'On', after: 'days, Pochi sleeps near the window.', answer: ['rainy'] }
+          ]
+        },
+        {
+          id: 'dialog', kind: 'dialog', no: '3', cd: 'CD-5 6-7', repeat: 2,
+          title: '対話を聞いて、メモの①から④の（　）に入る英語または数字を書きなさい。',
+          note: '時刻・食べ物・値段・待ち合わせ場所を聞き取りましょう。',
+          memoTitle: 'Summer Festival at Sakura Park',
+          memo: [
+            'It starts at {{d1}}:00.',
+            'They will eat {{d2}}.',
+            'One plate is {{d3}} dollars.',
+            'They will meet near the {{d4}}.'
+          ],
+          audio: [
+            { speaker: 'Hana', text: 'The summer festival at Sakura Park is next Saturday.' },
+            { speaker: 'Luke', text: 'What time does it start?' },
+            { speaker: 'Hana', text: 'It starts at six o\'clock in the evening.' },
+            { speaker: 'Luke', text: 'I want to eat noodles there.' },
+            { speaker: 'Hana', text: 'Me too. One plate is three dollars.' },
+            { speaker: 'Luke', text: 'Where shall we meet?' },
+            { speaker: 'Hana', text: 'Let\'s meet near the fountain at five forty-five.' },
+            { speaker: 'Luke', text: 'OK.' }
+          ],
+          questions: [
+            { id: 'd1', no: '①', prompt: 'It starts at (　):00.', answer: ['6', 'six'] },
+            { id: 'd2', no: '②', prompt: 'They will eat (　).', answer: ['noodles', 'noodle'] },
+            { id: 'd3', no: '③', prompt: 'One plate is (　) dollars.', answer: ['3', 'three'] },
+            { id: 'd4', no: '④', prompt: 'They will meet near the (　).', answer: ['fountain'] }
+          ]
+        }
+      ]
+    }
+  ];
+
+  const QUESTION_INDEX = new Map();
+  for (const set of SETS) {
+    for (const section of set.sections) {
+      for (const q of section.questions) {
+        QUESTION_INDEX.set(makeQid(set.id, section.id, q.id), { set, section, q });
+      }
+    }
+  }
+
+  function makeQid(setId, sectionId, questionId) {
+    return `${setId}__${sectionId}__${questionId}`;
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[ch]));
+  }
+
+  function normalizeAnswer(value) {
+    return String(value ?? '')
+      .trim()
+      .replace(/[Ａ-Ｚａ-ｚ０-９]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xFEE0))
+      .replace(/　/g, ' ')
+      .replace(/[’]/g, "'")
+      .replace(/\s+/g, ' ')
+      .toLowerCase();
+  }
+
+  function isCorrect(q, value) {
+    const v = normalizeAnswer(value);
+    return (q.answer || []).some(ans => normalizeAnswer(ans) === v);
+  }
+
+  function displayAnswer(q) {
+    return q.answer && q.answer.length ? String(q.answer[0]) : '';
+  }
+
+  function flattenSet(set) {
+    const list = [];
+    for (const section of set.sections) {
+      for (const q of section.questions) list.push({ set, section, q, qid: makeQid(set.id, section.id, q.id) });
+    }
+    return list;
+  }
+
+  function clampNumber(value, min, max, fallback) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return fallback;
+    return Math.min(max, Math.max(min, n));
+  }
+
+  function normalizeSettings(input = {}, options = {}) {
+    const merged = { ...DEFAULT_SETTINGS, ...(input || {}) };
+    const normalized = {
+      rate: clampNumber(merged.rate, 0.86, 1.04, DEFAULT_SETTINGS.rate),
+      pitch: clampNumber(merged.pitch, 0.95, 1.05, DEFAULT_SETTINGS.pitch),
+      voiceA: typeof merged.voiceA === 'string' ? merged.voiceA : '',
+      voiceB: typeof merged.voiceB === 'string' ? merged.voiceB : '',
+      voiceMode: ['single', 'two'].includes(merged.voiceMode) ? merged.voiceMode : DEFAULT_SETTINGS.voiceMode
+    };
+    if (options.forceNatural) return { ...DEFAULT_SETTINGS };
+    return normalized;
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      state.answers = saved.answers || {};
+      state.history = Array.isArray(saved.history) ? saved.history : [];
+      const oldVoiceSettings = saved.settings && !Object.prototype.hasOwnProperty.call(saved.settings, 'voiceMode');
+      state.settings = normalizeSettings(saved.settings || {}, { forceNatural: oldVoiceSettings });
+      if (oldVoiceSettings) {
+        saveState('音声設定を自然会話向けに更新しました。必要に応じて「音声・保存設定」で音声テストをしてください。');
+      }
+    } catch (err) {
+      console.warn('Could not load saved data:', err);
+    }
+  }
+
+  function saveState(message = '保存しました。') {
+    try {
+      const payload = {
+        version: APP_VERSION,
+        savedAt: new Date().toISOString(),
+        answers: state.answers,
+        history: state.history,
+        settings: state.settings
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      state.message = message;
+      return true;
+    } catch (err) {
+      state.message = '保存できませんでした。ブラウザの保存容量や設定を確認してください。';
+      console.error(err);
+      return false;
+    }
+  }
+
+  function getSet(setId = state.currentSetId) {
+    return SETS.find(s => s.id === setId) || SETS[0];
+  }
+
+  function getSection(setId, sectionId) {
+    const set = getSet(setId);
+    return set.sections.find(s => s.id === sectionId);
+  }
+
+  function getLatestAttemptForSet(setId) {
+    for (let i = state.history.length - 1; i >= 0; i--) {
+      if (state.history[i].setId === setId) return state.history[i];
+    }
+    return null;
+  }
+
+  function getLatestDetail(qid) {
+    for (let i = state.history.length - 1; i >= 0; i--) {
+      const detail = (state.history[i].details || []).find(d => d.qid === qid);
+      if (detail) return detail;
+    }
+    return null;
+  }
+
+  function gradeSet(set) {
+    const details = flattenSet(set).map(item => {
+      const userAnswer = state.answers[item.qid] || '';
+      const correct = isCorrect(item.q, userAnswer);
+      return makeDetail(item, userAnswer, correct);
+    });
+    const correctCount = details.filter(d => d.correct).length;
+    const attempt = {
+      id: `attempt_${Date.now()}`,
+      type: 'set',
+      date: new Date().toISOString(),
+      setId: set.id,
+      title: set.title,
+      correct: correctCount,
+      total: details.length,
+      details
+    };
+    state.history.push(attempt);
+    state.activeAttemptId = attempt.id;
+    saveState('採点結果を保存しました。');
+    render();
+    setTimeout(() => document.getElementById('resultTop')?.scrollIntoView({ block: 'start' }), 0);
+  }
+
+  function makeDetail(item, userAnswer, correct) {
+    const q = item.q;
+    return {
+      qid: item.qid,
+      sourceSetId: item.set.id,
+      sourceSetTitle: item.set.title,
+      sectionId: item.section.id,
+      sectionNo: item.section.no,
+      sectionTitle: item.section.title,
+      questionNo: q.no,
+      kind: item.section.kind,
+      prompt: q.prompt || `${q.before || ''} ( ) ${q.after || ''}`.trim() || 'Picture choice',
+      userAnswer: String(userAnswer || ''),
+      correctAnswer: displayAnswer(q),
+      correct
+    };
+  }
+
+  function getActiveMistakeItems() {
+    const latestByQid = new Map();
+    for (const attempt of state.history) {
+      for (const detail of attempt.details || []) {
+        latestByQid.set(detail.qid, detail);
+      }
+    }
+    const mistakes = [];
+    for (const [qid, detail] of latestByQid.entries()) {
+      if (!detail.correct && QUESTION_INDEX.has(qid)) {
+        mistakes.push({ ...QUESTION_INDEX.get(qid), qid, latestDetail: detail });
+      }
+    }
+    return mistakes.sort((a, b) => a.set.id.localeCompare(b.set.id) || a.section.no.localeCompare(b.section.no) || a.q.id.localeCompare(b.q.id));
+  }
+
+  function gradeReview() {
+    const items = getActiveMistakeItems();
+    if (!items.length) return;
+    const details = items.map(item => {
+      const userAnswer = state.reviewAnswers[item.qid] || '';
+      const correct = isCorrect(item.q, userAnswer);
+      return makeDetail(item, userAnswer, correct);
+    });
+    const correctCount = details.filter(d => d.correct).length;
+    const attempt = {
+      id: `review_${Date.now()}`,
+      type: 'review',
+      date: new Date().toISOString(),
+      setId: 'review',
+      title: '間違い復習',
+      correct: correctCount,
+      total: details.length,
+      details
+    };
+    state.history.push(attempt);
+    state.reviewAnswers = {};
+    state.activeAttemptId = attempt.id;
+    saveState('復習の採点結果を保存しました。');
+    render();
+  }
+
+  function getVoices() {
+    if (!('speechSynthesis' in window)) return [];
+    const seen = new Set();
+    return window.speechSynthesis.getVoices()
+      .filter(v => /^en[-_]/i.test(v.lang) || /English/i.test(v.name))
+      .filter(v => {
+        const key = `${v.name}::${v.lang}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
+      .sort((a, b) => voiceScore(b) - voiceScore(a) || a.name.localeCompare(b.name));
+  }
+
+  function voiceScore(voice) {
+    const name = `${voice.name || ''} ${voice.voiceURI || ''}`.toLowerCase();
+    const lang = (voice.lang || '').toLowerCase();
+    let score = 0;
+    if (lang === 'en-us') score += 22;
+    else if (lang === 'en-gb') score += 18;
+    else if (lang.startsWith('en-')) score += 12;
+    if (/natural|neural|online|premium|enhanced/.test(name)) score += 45;
+    if (/microsoft|google|apple|samantha|ava|allison|victoria|susan|alex|daniel|arthur|oliver|serena|karen|moira/.test(name)) score += 22;
+    if (voice.localService === false) score += 8;
+    if (/compact|novelty|whisper|bells|boing|bubbles|cellos|zarvox|trinoids|bahh|organ|good news|bad news/.test(name)) score -= 100;
+    return score;
+  }
+
+  function chosenVoice(name) {
+    const voices = getVoices();
+    return voices.find(v => v.name === name) || null;
+  }
+
+  function bestVoice() {
+    return chosenVoice(state.settings.voiceA) || getVoices()[0] || null;
+  }
+
+  function compatibleSecondVoice(primaryVoice) {
+    const selected = chosenVoice(state.settings.voiceB);
+    if (selected) return selected;
+    const voices = getVoices().filter(v => !primaryVoice || v.name !== primaryVoice.name);
+    if (!voices.length) return primaryVoice || null;
+    const sameLang = voices.find(v => primaryVoice && v.lang === primaryVoice.lang);
+    return sameLang || voices[0] || primaryVoice || null;
+  }
+
+  function buildSpeakerRoleMap(section) {
+    const speakers = [];
+    for (const seg of section.audio || []) {
+      if (seg.speaker && !speakers.includes(seg.speaker)) speakers.push(seg.speaker);
+    }
+    const map = new Map();
+    speakers.forEach((speaker, index) => map.set(speaker, index % 2 === 0 ? 'primary' : 'secondary'));
+    if (speakers.includes('A')) map.set('A', 'primary');
+    if (speakers.includes('B')) map.set('B', 'secondary');
+    return map;
+  }
+
+  let currentAudioToken = 0;
+
+  function stopAudio() {
+    currentAudioToken++;
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  }
+
+  function normalizeSpeechText(text) {
+    return String(text || '')
+      .replace(/\bOK\b/g, 'Okay')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function splitSpeechText(text) {
+    const normalized = normalizeSpeechText(text);
+    if (!normalized) return [];
+    return normalized.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map(s => s.trim()).filter(Boolean) || [normalized];
+  }
+
+  function innerPauseMs(chunk) {
+    if (/^Number\s+(one|two|three|four|five)\./i.test(chunk)) return 430;
+    if (/\?$/.test(chunk)) return 310;
+    return 250;
+  }
+
+  function appendAudioSegment(queue, seg) {
+    if (seg.pause) {
+      queue.push(seg);
+      return;
+    }
+    const chunks = splitSpeechText(seg.text);
+    chunks.forEach((chunk, index) => {
+      queue.push({ ...seg, text: chunk });
+      if (index < chunks.length - 1) queue.push({ pause: innerPauseMs(chunk) });
+    });
+    if (chunks.length) queue.push({ pause: seg.speaker ? 300 : 360 });
+  }
+
+  function buildAudioQueue(section) {
+    const queue = [];
+    const repeats = section.repeat || 1;
+    for (let r = 0; r < repeats; r++) {
+      if (repeats > 1) {
+        appendAudioSegment(queue, { text: r === 0 ? 'First reading.' : 'Second reading.', system: true });
+        queue.push({ pause: 520 });
+      }
+      for (const seg of section.audio || []) appendAudioSegment(queue, seg);
+      if (r < repeats - 1) queue.push({ pause: 1100 });
+    }
+    return queue;
+  }
+
+  function playSection(setId, sectionId) {
+    const section = getSection(setId, sectionId);
+    if (!section) return;
+    if (!('speechSynthesis' in window)) {
+      alert('このブラウザでは音声読み上げに対応していません。Chrome、Edge、Safariなどで開いてください。');
+      return;
+    }
+    stopAudio();
+    const token = currentAudioToken;
+    const queue = buildAudioQueue(section);
+    const speakerRoles = buildSpeakerRoleMap(section);
+    const voiceA = bestVoice();
+    const voiceB = state.settings.voiceMode === 'two' ? compatibleSecondVoice(voiceA) : voiceA;
+    const baseRate = clampNumber(state.settings.rate, 0.86, 1.04, DEFAULT_SETTINGS.rate);
+    const basePitch = clampNumber(state.settings.pitch, 0.95, 1.05, DEFAULT_SETTINGS.pitch);
+    let i = 0;
+
+    function next() {
+      if (token !== currentAudioToken) return;
+      if (i >= queue.length) return;
+      const seg = queue[i++];
+      if (seg.pause) {
+        setTimeout(next, seg.pause);
+        return;
+      }
+      const secondarySpeaker = seg.speaker && speakerRoles.get(seg.speaker) === 'secondary';
+      const selectedVoice = secondarySpeaker && state.settings.voiceMode === 'two' ? voiceB : voiceA;
+      const utter = new SpeechSynthesisUtterance(seg.text);
+      utter.lang = selectedVoice?.lang || 'en-US';
+      utter.voice = selectedVoice;
+      const questionAdjust = /\?$/.test(seg.text.trim()) ? 0.985 : 1;
+      const speakerAdjust = secondarySpeaker ? 0.99 : 1;
+      const systemAdjust = seg.system ? 1.015 : 1;
+      utter.rate = clampNumber(baseRate * questionAdjust * speakerAdjust * systemAdjust, 0.84, 1.05, DEFAULT_SETTINGS.rate);
+      utter.pitch = basePitch;
+      utter.volume = 1;
+      utter.onend = next;
+      utter.onerror = next;
+      window.speechSynthesis.speak(utter);
+    }
+    next();
+  }
+
+  function render() {
+    const app = document.getElementById('app');
+    app.innerHTML = `
+      ${renderHero()}
+      ${renderTabs()}
+      ${state.message ? `<div class="notice" role="status">${escapeHtml(state.message)}</div>` : ''}
+      ${state.view === 'set' ? renderSetView() : ''}
+      ${state.view === 'review' ? renderReviewView() : ''}
+      ${state.view === 'history' ? renderHistoryView() : ''}
+      ${state.view === 'settings' ? renderSettingsView() : ''}
+      <div class="footer">このHTMLは1ファイルで動きます。解答・採点結果・音声設定は、このブラウザのlocalStorageに保存されます。</div>
+      <input class="srOnly" type="file" id="importFile" accept="application/json">
+    `;
+  }
+
+  function renderHero() {
+    return `
+      <header class="hero">
+        <div class="heroTop">
+          <div class="brand">
+            <div class="brandMark">2</div>
+            <div>
+              <h1>Real Life English Listening Practice</h1>
+              <div class="subtitle">添付のリスニングテスト形式に合わせた、同レベルの5セット練習用HTML教材</div>
+            </div>
+          </div>
+          <div class="scoreBox">
+            <div class="scoreLine">全${totalQuestionCount()}問 / 5セット</div>
+            <div class="subtitle">再生・採点・復習・結果保存つき</div>
+          </div>
+        </div>
+        <div class="pillRow">
+          <span class="pill">絵を選ぶ問題</span>
+          <span class="pill">空所補充</span>
+          <span class="pill">メモ完成</span>
+          <span class="pill">間違いだけ復習</span>
+          <span class="pill">結果をJSON保存</span>
+        </div>
+      </header>
+    `;
+  }
+
+  function renderTabs() {
+    const setButtons = SETS.map(set => `
+      <button class="${state.view === 'set' && state.currentSetId === set.id ? 'active' : ''}" data-action="open-set" data-set="${set.id}">${escapeHtml(set.title.replace(/^Set /, 'Set '))}</button>
+    `).join('');
+    const mistakes = getActiveMistakeItems().length;
+    return `
+      <nav class="tabs" aria-label="学習メニュー">
+        ${setButtons}
+        <button class="${state.view === 'review' ? 'active' : ''}" data-action="open-review">間違い復習${mistakes ? `（${mistakes}問）` : ''}</button>
+        <button class="${state.view === 'history' ? 'active' : ''}" data-action="open-history">採点結果</button>
+        <button class="${state.view === 'settings' ? 'active' : ''}" data-action="open-settings">音声・保存設定</button>
+      </nav>
+    `;
+  }
+
+  function totalQuestionCount() {
+    return SETS.reduce((sum, set) => sum + flattenSet(set).length, 0);
+  }
+
+  function renderSetView() {
+    const set = getSet();
+    const latest = getLatestAttemptForSet(set.id);
+    return `
+      <main class="layout">
+        <section class="panel" id="resultTop">
+          <div class="setHeader">
+            <div>
+              <h2>${escapeHtml(set.title)}</h2>
+              <div class="subtitle">${escapeHtml(set.unit)}</div>
+            </div>
+            <div class="scoreBox">
+              ${latest ? `<div class="scoreLine">前回: ${latest.correct}/${latest.total}点</div><div class="subtitle">${formatDate(latest.date)}</div>` : '<div class="scoreLine">未採点</div><div class="subtitle">解答後に「このセットを採点」を押してください。</div>'}
+            </div>
+          </div>
+          <div class="notice warn">音声はブラウザの英語音声で再生されます。より自然な抑揚にするため、句読点・間・話者ごとの声を設定しています。声の種類は「音声・保存設定」で変更できます。</div>
+          ${set.sections.map(section => renderSection(set, section)).join('')}
+          <div class="toolbar">
+            <button class="primary" data-action="grade-set" data-set="${set.id}">このセットを採点</button>
+            <button data-action="save-now">現在の解答と結果を保存</button>
+            <button data-action="export-json">結果をファイル保存</button>
+            <button class="danger" data-action="reset-set" data-set="${set.id}">このセットの解答を消す</button>
+          </div>
+          <div class="status">${latest ? `直近の採点結果: ${latest.correct}/${latest.total}点。間違えた問題は「間違い復習」に追加されます。` : '解答は入力のたびに自動保存されます。'}</div>
+        </section>
+      </main>
+    `;
+  }
+
+  function renderSection(set, section) {
+    const scriptKey = `${set.id}__${section.id}`;
+    return `
+      <section class="section">
+        <div class="sectionHead">
+          <div class="sectionTitle">
+            <span class="numBadge">${escapeHtml(section.no)}</span>
+            <div>
+              <div>${escapeHtml(section.title)}</div>
+              <div class="note">${escapeHtml(section.note || '')}</div>
+            </div>
+          </div>
+          <div class="sectionControls">
+            <span class="cdBadge">${escapeHtml(section.cd)}</span>
+            <button class="primary" data-action="play" data-set="${set.id}" data-section="${section.id}">▶ 再生</button>
+            <button class="small" data-action="stop-audio">停止</button>
+            <button class="small" data-action="toggle-script" data-key="${scriptKey}">${state.openScripts[scriptKey] ? 'スクリプトを隠す' : 'スクリプト表示'}</button>
+          </div>
+        </div>
+        <div class="sectionBody">
+          ${section.kind === 'picture' ? renderPictureSection(set, section) : ''}
+          ${section.kind === 'fill' ? renderFillSection(set, section) : ''}
+          ${section.kind === 'dialog' ? renderDialogSection(set, section) : ''}
+          ${state.openScripts[scriptKey] ? renderScript(section) : ''}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderPictureSection(set, section, reviewMode = false, onlyQuestion = null) {
+    const questions = onlyQuestion ? [onlyQuestion] : section.questions;
+    return questions.map(q => {
+      const qid = makeQid(set.id, section.id, q.id);
+      const answerStore = reviewMode ? state.reviewAnswers : state.answers;
+      const chosen = answerStore[qid] || '';
+      return `
+        <div class="qBlock">
+          <div class="qLabel">${escapeHtml(q.no)}</div>
+          <div class="choices">
+            ${q.choices.map(choice => `
+              <label class="choice">
+                <div class="choiceTop"><span class="choiceKey">${escapeHtml(choice.key)}</span><input type="radio" name="${reviewMode ? `review_${qid}` : qid}" value="${escapeHtml(choice.key)}" data-${reviewMode ? 'review-' : ''}qid="${qid}" ${chosen === choice.key ? 'checked' : ''}></div>
+                ${svgChoice(choice.kind, choice.label)}
+              </label>
+            `).join('')}
+          </div>
+          ${reviewMode ? '' : renderFeedback(qid)}
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderFillSection(set, section, reviewMode = false, onlyQuestion = null) {
+    const questions = onlyQuestion ? [onlyQuestion] : section.questions;
+    return `<div class="sentenceList">
+      ${questions.map(q => renderTextQuestion(set, section, q, reviewMode)).join('')}
+    </div>`;
+  }
+
+  function renderTextQuestion(set, section, q, reviewMode = false) {
+    const qid = makeQid(set.id, section.id, q.id);
+    const answerStore = reviewMode ? state.reviewAnswers : state.answers;
+    return `
+      <div class="sentence">
+        <span class="blankNo">${escapeHtml(q.no)}</span>
+        ${escapeHtml(q.before)}
+        ${renderBlankInput(qid, answerStore[qid] || '', reviewMode, q.no)}
+        ${escapeHtml(q.after)}
+        ${reviewMode ? '' : renderFeedback(qid)}
+      </div>
+    `;
+  }
+
+  function renderDialogSection(set, section, reviewMode = false, onlyQuestion = null) {
+    if (reviewMode && onlyQuestion) {
+      return `<div class="sentence">${escapeHtml(onlyQuestion.prompt)} ${renderBlankInput(makeQid(set.id, section.id, onlyQuestion.id), '', true, onlyQuestion.no)}</div>`;
+    }
+    return `
+      <div class="memo">
+        <div class="memoTitle">${escapeHtml(section.memoTitle)}</div>
+        <ul>
+          ${section.memo.map(line => `<li>${renderMemoLine(set, section, line, reviewMode)}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  }
+
+  function renderMemoLine(set, section, line, reviewMode = false) {
+    return escapeHtml(line).replace(/\{\{(.*?)\}\}/g, (_m, qidShort) => {
+      const q = section.questions.find(item => item.id === qidShort);
+      if (!q) return '(　)';
+      const qid = makeQid(set.id, section.id, q.id);
+      const answerStore = reviewMode ? state.reviewAnswers : state.answers;
+      return `${renderBlankInput(qid, answerStore[qid] || '', reviewMode, q.no)} ${reviewMode ? '' : renderFeedback(qid)}`;
+    });
+  }
+
+  function renderBlankInput(qid, value, reviewMode = false, label = '') {
+    return `<label><span class="srOnly">${escapeHtml(label)} answer</span><input type="text" autocomplete="off" spellcheck="false" value="${escapeHtml(value)}" data-${reviewMode ? 'review-' : ''}qid="${qid}" placeholder="${escapeHtml(label)}"></label>`;
+  }
+
+  function renderFeedback(qid) {
+    const detail = getLatestDetail(qid);
+    if (!detail) return '';
+    const cls = detail.correct ? 'ok' : 'ng';
+    const icon = detail.correct ? '○' : '×';
+    const user = detail.userAnswer ? ` / あなた: ${escapeHtml(detail.userAnswer)}` : ' / 未入力';
+    const correct = detail.correct ? '正解' : `正解: ${escapeHtml(detail.correctAnswer)}`;
+    return `<span class="feedback ${cls}">${icon} ${correct}${user}</span>`;
+  }
+
+  function renderScript(section) {
+    const lines = (section.audio || []).filter(seg => !seg.pause).map(seg => {
+      const speaker = seg.speaker ? `<span class="speaker">${escapeHtml(seg.speaker)}:</span> ` : '';
+      return `<div class="scriptLine">${speaker}${escapeHtml(seg.text)}</div>`;
+    }).join('');
+    return `<div class="scriptBox"><strong>放送文</strong>${section.repeat > 1 ? `<div class="note">このパートは再生時に${section.repeat}回読まれます。</div>` : ''}${lines}</div>`;
+  }
+
+  function renderReviewView() {
+    const items = getActiveMistakeItems();
+    if (!items.length) {
+      return `
+        <main class="panel">
+          <h2>間違い復習</h2>
+          <div class="empty">現在、復習対象の問題はありません。各セットを採点すると、間違えた問題だけがここに集まります。復習で正解すると、この一覧から外れます。</div>
+          <div class="toolbar"><button data-action="open-history">採点結果を見る</button></div>
+        </main>
+      `;
+    }
+    return `
+      <main class="panel">
+        <h2>間違い復習</h2>
+        <p class="note">最後に間違いとして残っている問題だけを表示しています。必要な音声を再生し、もう一度解いてください。</p>
+        <div class="reviewGrid">
+          ${items.map(item => renderReviewCard(item)).join('')}
+        </div>
+        <div class="toolbar">
+          <button class="primary" data-action="grade-review">復習を採点</button>
+          <button data-action="save-now">保存</button>
+          <button data-action="export-json">結果をファイル保存</button>
+        </div>
+      </main>
+    `;
+  }
+
+  function renderReviewCard(item) {
+    const { set, section, q, qid, latestDetail } = item;
+    return `
+      <article class="reviewCard">
+        <div class="reviewMeta">${escapeHtml(set.title)} / 大問${escapeHtml(section.no)} ${escapeHtml(q.no)}　前回の答え: ${escapeHtml(latestDetail.userAnswer || '未入力')}　正解: ${escapeHtml(displayAnswer(q))}</div>
+        <div class="sectionControls" style="margin-bottom:10px">
+          <span class="cdBadge">${escapeHtml(section.cd)}</span>
+          <button class="small primary" data-action="play" data-set="${set.id}" data-section="${section.id}">▶ 音声を再生</button>
+          <button class="small" data-action="stop-audio">停止</button>
+        </div>
+        ${section.kind === 'picture' ? renderPictureSection(set, section, true, q) : ''}
+        ${section.kind === 'fill' ? renderFillSection(set, section, true, q) : ''}
+        ${section.kind === 'dialog' ? renderDialogSection(set, section, true, q) : ''}
+      </article>
+    `;
+  }
+
+  function renderHistoryView() {
+    const sorted = [...state.history].reverse();
+    return `
+      <main class="panel">
+        <div class="setHeader">
+          <div>
+            <h2>採点結果</h2>
+            <div class="subtitle">これまでの採点履歴をいつでも確認できます。</div>
+          </div>
+          <div class="toolbar" style="margin-top:0">
+            <button data-action="export-json">結果をファイル保存</button>
+            <button data-action="trigger-import">保存ファイルを読み込む</button>
+            <button class="danger" data-action="clear-history">履歴を消す</button>
+          </div>
+        </div>
+        ${!sorted.length ? '<div class="empty">まだ採点履歴がありません。</div>' : `
+          <table class="historyTable">
+            <thead><tr><th>日時</th><th>セット</th><th>点数</th><th>間違い</th></tr></thead>
+            <tbody>
+              ${sorted.map(attempt => renderHistoryRow(attempt)).join('')}
+            </tbody>
+          </table>
+        `}
+      </main>
+    `;
+  }
+
+  function renderHistoryRow(attempt) {
+    const wrong = (attempt.details || []).filter(d => !d.correct);
+    return `
+      <tr>
+        <td>${escapeHtml(formatDate(attempt.date))}</td>
+        <td>${escapeHtml(attempt.title)}</td>
+        <td><strong>${attempt.correct}/${attempt.total}</strong></td>
+        <td>${wrong.length ? `<details><summary>${wrong.length}問</summary><ul class="wrongList">${wrong.map(d => `<li>${escapeHtml(d.sourceSetTitle || attempt.title)} / 大問${escapeHtml(d.sectionNo)} ${escapeHtml(d.questionNo)}：あなた「${escapeHtml(d.userAnswer || '未入力')}」→ 正解「${escapeHtml(d.correctAnswer)}」</li>`).join('')}</ul></details>` : '<span class="feedback ok">全問正解</span>'}</td>
+      </tr>
+    `;
+  }
+
+  function renderSettingsView() {
+    const voices = getVoices();
+    const unsupported = !('speechSynthesis' in window);
+    return `
+      <main class="panel">
+        <h2>音声・保存設定</h2>
+        ${unsupported ? '<div class="notice warn">このブラウザは音声読み上げに対応していません。Chrome、Edge、Safariなどで開くと再生できます。</div>' : ''}
+        <div class="notice">音程を大きく変える処理をやめ、英語音声の中から自然に聞こえやすい声を優先して自動選択します。標準設定は「自然な1音声」です。2話者に分けたい場合だけ、会話音声モードを変更してください。</div>
+        <div class="settingsGrid">
+          <div class="settingCard">
+            <label for="voiceMode">会話音声モード</label>
+            <select id="voiceMode" data-setting="voiceMode">
+              <option value="single" ${state.settings.voiceMode === 'single' ? 'selected' : ''}>おすすめ：自然な1音声</option>
+              <option value="two" ${state.settings.voiceMode === 'two' ? 'selected' : ''}>2話者音声：選んだ声を使う</option>
+            </select>
+          </div>
+          <div class="settingCard">
+            <label for="voiceA">英語音声</label>
+            <select id="voiceA" data-setting="voiceA">${renderVoiceOptions(voices, state.settings.voiceA)}</select>
+          </div>
+          <div class="settingCard">
+            <label for="voiceB">2話者モード用の相手の声</label>
+            <select id="voiceB" data-setting="voiceB">${renderVoiceOptions(voices, state.settings.voiceB)}</select>
+          </div>
+          <div class="settingCard">
+            <label for="rate">読み上げ速度: ${Number(state.settings.rate).toFixed(2)}</label>
+            <input id="rate" type="range" min="0.86" max="1.04" step="0.01" value="${escapeHtml(state.settings.rate)}" data-setting="rate">
+          </div>
+          <div class="settingCard">
+            <label for="pitch">声の高さ: ${Number(state.settings.pitch).toFixed(2)}</label>
+            <input id="pitch" type="range" min="0.95" max="1.05" step="0.01" value="${escapeHtml(state.settings.pitch)}" data-setting="pitch">
+          </div>
+        </div>
+        <div class="toolbar">
+          <button class="primary" data-action="test-voice">音声テスト</button>
+          <button data-action="reset-audio">自然な音声設定に戻す</button>
+          <button data-action="save-now">設定を保存</button>
+          <button data-action="export-json">結果をファイル保存</button>
+          <button data-action="trigger-import">保存ファイルを読み込む</button>
+          <button class="danger" data-action="clear-all">全データを初期化</button>
+        </div>
+        <div class="notice">保存ファイルはJSON形式です。別の端末で使う場合は、この画面からファイル保存し、読み込みボタンで復元してください。</div>
+      </main>
+    `;
+  }
+
+  function renderVoiceOptions(voices, selected) {
+    if (!voices.length) return '<option value="">ブラウザの標準音声</option>';
+    return `<option value="">自動選択（おすすめ）</option>${voices.map((v, index) => `<option value="${escapeHtml(v.name)}" ${v.name === selected ? 'selected' : ''}>${escapeHtml(v.name)} (${escapeHtml(v.lang)})${index === 0 ? ' ★おすすめ' : ''}</option>`).join('')}`;
+  }
+
+  function formatDate(iso) {
+    try {
+      return new Intl.DateTimeFormat('ja-JP', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(iso));
+    } catch {
+      return iso;
+    }
+  }
+
+  function exportJson() {
+    const payload = {
+      version: APP_VERSION,
+      exportedAt: new Date().toISOString(),
+      answers: state.answers,
+      history: state.history,
+      settings: state.settings
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const stamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    a.href = url;
+    a.download = `listening_practice_results_${stamp}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function importJson(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        if (!data || typeof data !== 'object') throw new Error('invalid');
+        if (!confirm('読み込んだ保存データで、現在の解答・履歴・設定を上書きします。よろしいですか？')) return;
+        state.answers = data.answers || {};
+        state.history = Array.isArray(data.history) ? data.history : [];
+        state.settings = normalizeSettings(data.settings || {});
+        saveState('保存ファイルを読み込みました。');
+        render();
+      } catch (err) {
+        alert('読み込みに失敗しました。JSONファイルを確認してください。');
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function resetSet(setId) {
+    if (!confirm('このセットの解答欄だけを消します。採点履歴は残ります。よろしいですか？')) return;
+    for (const item of flattenSet(getSet(setId))) delete state.answers[item.qid];
+    saveState('このセットの解答を消しました。');
+    render();
+  }
+
+  function clearHistory() {
+    if (!confirm('採点履歴をすべて消します。解答欄は残ります。よろしいですか？')) return;
+    state.history = [];
+    saveState('採点履歴を消しました。');
+    render();
+  }
+
+  function clearAll() {
+    if (!confirm('解答・採点履歴・音声設定をすべて初期化します。よろしいですか？')) return;
+    state.answers = {};
+    state.reviewAnswers = {};
+    state.history = [];
+    state.settings = { ...DEFAULT_SETTINGS };
+    localStorage.removeItem(STORAGE_KEY);
+    state.message = '全データを初期化しました。';
+    render();
+  }
+
+  function svgChoice(kind, label) {
+    const safe = escapeHtml(label);
+    const mark = iconMark(kind);
+    return `
+      <svg viewBox="0 0 220 150" role="img" aria-label="${safe}">
+        <rect x="8" y="8" width="204" height="134" rx="10" fill="#fffdf7" stroke="#333" stroke-width="2"/>
+        ${mark}
+        <text x="110" y="134" text-anchor="middle" class="svgLabel" fill="#222">${safe}</text>
+      </svg>
+    `;
+  }
+
+  function iconMark(kind) {
+    if (['bookstore','library','stationery','bakery','flower','fish'].includes(kind)) return drawShop(kind);
+    if (['busPark','busHospital','busStore'].includes(kind)) return drawBusScene(kind);
+    if (['bagOnDesk','bagUnderDesk','bagChair'].includes(kind)) return drawBagScene(kind);
+    if (['tennis','soccer','basketball','swimming','running'].includes(kind)) return drawSport(kind);
+    if (['trainMuseum','busMuseum','walkMuseum'].includes(kind)) return drawTransport(kind);
+    if (['carrot','tomato','potato'].includes(kind)) return drawFood(kind);
+    if (['pen','notebook','eraser','postcard','book','letter','umbrella','raincoat','cap'].includes(kind)) return drawObject(kind);
+    if (['piano','study','mathHelp','lunch','drawing','rabbitFeed','dogWalk','cat','bedCold','dentist','cleanRoom','game','readBook'].includes(kind)) return drawPeople(kind);
+    return '<circle cx="110" cy="70" r="28" fill="none" stroke="#222" stroke-width="4"/>';
+  }
+
+  function drawShop(kind) {
+    const signs = { bookstore:'BOOKS', library:'LIBRARY', stationery:'PENS', bakery:'BAKERY', flower:'FLOWERS', fish:'FISH' };
+    const sign = signs[kind] || 'SHOP';
+    const extra = {
+      bookstore: '<rect x="82" y="72" width="14" height="38" fill="#ddd" stroke="#222"/><rect x="100" y="72" width="14" height="38" fill="#eee" stroke="#222"/><rect x="118" y="72" width="14" height="38" fill="#ddd" stroke="#222"/>',
+      library: '<rect x="72" y="74" width="76" height="8" fill="#ddd" stroke="#222"/><rect x="78" y="86" width="10" height="22" fill="#eee" stroke="#222"/><rect x="92" y="86" width="10" height="22" fill="#ddd" stroke="#222"/><rect x="106" y="86" width="10" height="22" fill="#eee" stroke="#222"/><rect x="120" y="86" width="10" height="22" fill="#ddd" stroke="#222"/>',
+      stationery: '<line x1="82" y1="105" x2="134" y2="74" stroke="#222" stroke-width="7"/><polygon points="134,74 146,66 140,82" fill="#ddd" stroke="#222"/>',
+      bakery: '<ellipse cx="88" cy="93" rx="24" ry="15" fill="#eee" stroke="#222"/><ellipse cx="128" cy="93" rx="24" ry="15" fill="#ddd" stroke="#222"/>',
+      flower: '<circle cx="94" cy="80" r="10" fill="#eee" stroke="#222"/><circle cx="110" cy="70" r="10" fill="#ddd" stroke="#222"/><circle cx="126" cy="82" r="10" fill="#eee" stroke="#222"/><line x1="110" y1="82" x2="110" y2="112" stroke="#222" stroke-width="3"/>',
+      fish: '<ellipse cx="105" cy="92" rx="36" ry="18" fill="#eee" stroke="#222"/><polygon points="140,92 162,78 162,106" fill="#ddd" stroke="#222"/><circle cx="92" cy="88" r="3" fill="#222"/>'
+    }[kind] || '';
+    return `<polygon points="42,48 178,48 164,28 56,28" fill="#ddd" stroke="#222" stroke-width="2"/><rect x="52" y="48" width="116" height="74" fill="#f8f8f8" stroke="#222" stroke-width="2"/><rect x="70" y="54" width="80" height="18" fill="#fff" stroke="#222"/><text x="110" y="68" text-anchor="middle" class="svgSmall" fill="#222">${sign}</text>${extra}`;
+  }
+
+  function drawBusScene(kind) {
+    const place = kind === 'busHospital' ? 'H' : kind === 'busPark' ? 'PARK' : 'STORE';
+    const placeShape = kind === 'busPark'
+      ? '<circle cx="152" cy="62" r="21" fill="#eee" stroke="#222"/><rect x="149" y="80" width="6" height="32" fill="#ddd" stroke="#222"/>'
+      : '<rect x="132" y="42" width="52" height="70" fill="#f8f8f8" stroke="#222"/><text x="158" y="82" text-anchor="middle" font-size="24" font-weight="800">'+place+'</text>';
+    return `${placeShape}<rect x="38" y="78" width="70" height="34" rx="6" fill="#ddd" stroke="#222" stroke-width="2"/><rect x="46" y="84" width="18" height="12" fill="#fff" stroke="#222"/><rect x="68" y="84" width="18" height="12" fill="#fff" stroke="#222"/><circle cx="56" cy="114" r="7" fill="#fff" stroke="#222"/><circle cx="92" cy="114" r="7" fill="#fff" stroke="#222"/><text x="73" y="74" text-anchor="middle" class="svgSmall">BUS STOP</text>`;
+  }
+
+  function drawBagScene(kind) {
+    const desk = '<rect x="58" y="55" width="104" height="14" fill="#ddd" stroke="#222"/><line x1="70" y1="69" x2="60" y2="116" stroke="#222" stroke-width="4"/><line x1="150" y1="69" x2="160" y2="116" stroke="#222" stroke-width="4"/>';
+    const chair = '<rect x="124" y="72" width="46" height="10" fill="#ddd" stroke="#222"/><line x1="132" y1="82" x2="132" y2="116" stroke="#222" stroke-width="3"/><line x1="162" y1="82" x2="162" y2="116" stroke="#222" stroke-width="3"/><rect x="158" y="46" width="10" height="30" fill="#eee" stroke="#222"/>';
+    const bag = pos => `<path d="M${pos.x} ${pos.y} h34 v28 h-34z" fill="#eee" stroke="#222" stroke-width="2"/><path d="M${pos.x+8} ${pos.y} q9 -16 18 0" fill="none" stroke="#222" stroke-width="2"/>`;
+    if (kind === 'bagOnDesk') return `${desk}${bag({x:92,y:27})}`;
+    if (kind === 'bagChair') return `${chair}${bag({x:72,y:78})}`;
+    return `${desk}${bag({x:93,y:82})}`;
+  }
+
+  function drawSport(kind) {
+    const person = '<circle cx="85" cy="58" r="13" fill="#fff" stroke="#222" stroke-width="2"/><line x1="85" y1="71" x2="85" y2="105" stroke="#222" stroke-width="4"/><line x1="85" y1="80" x2="62" y2="96" stroke="#222" stroke-width="4"/><line x1="85" y1="80" x2="112" y2="70" stroke="#222" stroke-width="4"/><line x1="85" y1="105" x2="67" y2="122" stroke="#222" stroke-width="4"/><line x1="85" y1="105" x2="108" y2="122" stroke="#222" stroke-width="4"/>';
+    const extras = {
+      tennis: '<ellipse cx="137" cy="72" rx="14" ry="25" fill="none" stroke="#222" stroke-width="4"/><line x1="126" y1="90" x2="105" y2="108" stroke="#222" stroke-width="4"/><circle cx="158" cy="54" r="6" fill="#eee" stroke="#222"/>',
+      soccer: '<circle cx="142" cy="106" r="18" fill="#fff" stroke="#222" stroke-width="3"/><path d="M132 101 l10 -8 l11 8 l-4 12 h-13z" fill="#ddd" stroke="#222"/>',
+      basketball: '<circle cx="144" cy="65" r="19" fill="#eee" stroke="#222" stroke-width="3"/><line x1="125" y1="65" x2="163" y2="65" stroke="#222"/><line x1="144" y1="46" x2="144" y2="84" stroke="#222"/><rect x="154" y="86" width="34" height="5" fill="#ddd" stroke="#222"/><circle cx="171" cy="96" r="12" fill="none" stroke="#222" stroke-width="3"/>',
+      swimming: '<path d="M50 102 q20 -16 40 0 t40 0 t40 0" fill="none" stroke="#222" stroke-width="4"/><circle cx="104" cy="75" r="12" fill="#fff" stroke="#222"/><path d="M116 84 q20 6 34 -8" fill="none" stroke="#222" stroke-width="4"/>',
+      running: '<path d="M122 103 q30 0 55 15" fill="none" stroke="#222" stroke-width="3"/><line x1="104" y1="87" x2="135" y2="102" stroke="#222" stroke-width="4"/>'
+    }[kind] || '';
+    return `${person}${extras}`;
+  }
+
+  function drawTransport(kind) {
+    const museum = '<rect x="128" y="54" width="54" height="58" fill="#f8f8f8" stroke="#222"/><polygon points="122,54 188,54 155,34" fill="#ddd" stroke="#222"/><text x="155" y="88" text-anchor="middle" class="svgSmall">MUSEUM</text>';
+    if (kind === 'trainMuseum') return `${museum}<rect x="34" y="78" width="78" height="30" rx="6" fill="#ddd" stroke="#222"/><rect x="42" y="84" width="20" height="10" fill="#fff" stroke="#222"/><rect x="68" y="84" width="20" height="10" fill="#fff" stroke="#222"/><line x1="30" y1="114" x2="118" y2="114" stroke="#222" stroke-width="3"/>`;
+    if (kind === 'busMuseum') return `${museum}<rect x="34" y="78" width="78" height="32" rx="6" fill="#ddd" stroke="#222"/><circle cx="52" cy="112" r="6" fill="#fff" stroke="#222"/><circle cx="94" cy="112" r="6" fill="#fff" stroke="#222"/><text x="73" y="72" text-anchor="middle" class="svgSmall">BUS</text>`;
+    return `${museum}<circle cx="62" cy="64" r="12" fill="#fff" stroke="#222"/><line x1="62" y1="77" x2="62" y2="105" stroke="#222" stroke-width="4"/><line x1="62" y1="87" x2="44" y2="99" stroke="#222" stroke-width="4"/><line x1="62" y1="105" x2="48" y2="122" stroke="#222" stroke-width="4"/><line x1="62" y1="105" x2="82" y2="122" stroke="#222" stroke-width="4"/>`;
+  }
+
+  function drawFood(kind) {
+    if (kind === 'carrot') return '<polygon points="96,106 149,49 162,63 111,119" fill="#eee" stroke="#222" stroke-width="3"/><path d="M151 51 q-5 -20 13 -26 M151 51 q10 -19 30 -14 M151 51 q15 -7 25 5" fill="none" stroke="#222" stroke-width="3"/>';
+    if (kind === 'tomato') return '<circle cx="110" cy="82" r="38" fill="#eee" stroke="#222" stroke-width="3"/><path d="M96 48 l14 12 l16 -12 l-4 20 l-22 0z" fill="#ddd" stroke="#222"/>';
+    return '<ellipse cx="110" cy="84" rx="44" ry="32" fill="#eee" stroke="#222" stroke-width="3"/><circle cx="92" cy="78" r="4" fill="#ccc"/><circle cx="126" cy="92" r="5" fill="#ccc"/><circle cx="110" cy="66" r="3" fill="#ccc"/>';
+  }
+
+  function drawObject(kind) {
+    const map = {
+      pen: '<line x1="72" y1="106" x2="148" y2="54" stroke="#222" stroke-width="9"/><polygon points="148,54 164,43 155,62" fill="#ddd" stroke="#222"/>',
+      notebook: '<rect x="68" y="42" width="84" height="78" fill="#eee" stroke="#222" stroke-width="3"/><line x1="86" y1="42" x2="86" y2="120" stroke="#222"/><line x1="96" y1="62" x2="140" y2="62" stroke="#222"/><line x1="96" y1="82" x2="140" y2="82" stroke="#222"/>',
+      eraser: '<rect x="72" y="67" width="78" height="38" rx="6" fill="#eee" stroke="#222" stroke-width="3"/><rect x="98" y="67" width="26" height="38" fill="#ddd" stroke="#222"/><text x="111" y="91" text-anchor="middle" class="svgSmall">ERASER</text>',
+      postcard: '<rect x="64" y="48" width="92" height="64" fill="#fff" stroke="#222" stroke-width="3"/><rect x="78" y="62" width="30" height="22" fill="#eee" stroke="#222"/><line x1="116" y1="64" x2="146" y2="64" stroke="#222"/><line x1="116" y1="80" x2="146" y2="80" stroke="#222"/><rect x="132" y="92" width="14" height="14" fill="#ddd" stroke="#222"/>',
+      book: '<path d="M66 48 h48 q12 0 12 12 v58 q0 -10 -16 -10 H66z" fill="#eee" stroke="#222" stroke-width="3"/><path d="M126 60 q0 -12 12 -12 h36 v60 h-36 q-12 0 -12 10z" fill="#fff" stroke="#222" stroke-width="3"/>',
+      letter: '<rect x="62" y="54" width="96" height="62" fill="#fff" stroke="#222" stroke-width="3"/><path d="M62 54 l48 42 l48 -42" fill="none" stroke="#222" stroke-width="3"/>',
+      umbrella: '<path d="M60 78 q50 -54 100 0z" fill="#eee" stroke="#222" stroke-width="3"/><line x1="110" y1="78" x2="110" y2="118" stroke="#222" stroke-width="4"/><path d="M110 118 q0 14 16 8" fill="none" stroke="#222" stroke-width="4"/>',
+      raincoat: '<path d="M84 48 h52 l24 74 h-100z" fill="#eee" stroke="#222" stroke-width="3"/><path d="M92 48 q18 -22 36 0" fill="none" stroke="#222" stroke-width="3"/><line x1="110" y1="54" x2="110" y2="118" stroke="#222"/>',
+      cap: '<path d="M72 83 q38 -50 78 0 z" fill="#eee" stroke="#222" stroke-width="3"/><path d="M146 83 q34 2 44 15 q-35 4 -58 -4" fill="#ddd" stroke="#222" stroke-width="3"/>'
+    };
+    return map[kind] || '<rect x="75" y="55" width="70" height="55" fill="#eee" stroke="#222" stroke-width="3"/>';
+  }
+
+  function drawPeople(kind) {
+    const person1 = '<circle cx="78" cy="53" r="12" fill="#fff" stroke="#222" stroke-width="2"/><line x1="78" y1="66" x2="78" y2="102" stroke="#222" stroke-width="4"/><line x1="78" y1="78" x2="58" y2="92" stroke="#222" stroke-width="4"/><line x1="78" y1="78" x2="100" y2="92" stroke="#222" stroke-width="4"/><line x1="78" y1="102" x2="62" y2="122" stroke="#222" stroke-width="4"/><line x1="78" y1="102" x2="96" y2="122" stroke="#222" stroke-width="4"/>';
+    const person2 = '<circle cx="138" cy="57" r="12" fill="#fff" stroke="#222" stroke-width="2"/><line x1="138" y1="70" x2="138" y2="108" stroke="#222" stroke-width="4"/><line x1="138" y1="82" x2="118" y2="96" stroke="#222" stroke-width="4"/><line x1="138" y1="82" x2="158" y2="96" stroke="#222" stroke-width="4"/>';
+    if (kind === 'piano') return `${person1}<rect x="116" y="76" width="62" height="28" fill="#ddd" stroke="#222"/><line x1="122" y1="83" x2="172" y2="83" stroke="#222"/><line x1="130" y1="76" x2="130" y2="104" stroke="#222"/><line x1="142" y1="76" x2="142" y2="104" stroke="#222"/><text x="153" y="64" font-size="24">♪</text>`;
+    if (kind === 'study') return `${person1}${person2}<rect x="58" y="101" width="110" height="14" fill="#ddd" stroke="#222"/><rect x="93" y="82" width="36" height="20" fill="#fff" stroke="#222"/>`;
+    if (kind === 'mathHelp') return `${person1}${person2}<rect x="54" y="98" width="114" height="16" fill="#ddd" stroke="#222"/><text x="111" y="92" text-anchor="middle" font-size="20">3+5=?</text>`;
+    if (kind === 'lunch') return `${person1}${person2}<rect x="58" y="98" width="112" height="16" fill="#ddd" stroke="#222"/><circle cx="108" cy="88" r="13" fill="#eee" stroke="#222"/><line x1="102" y1="88" x2="114" y2="88" stroke="#222"/>`;
+    if (kind === 'drawing') return `${person1}<rect x="110" y="72" width="56" height="40" fill="#fff" stroke="#222"/><line x1="119" y1="103" x2="155" y2="80" stroke="#222"/><line x1="103" y1="93" x2="128" y2="70" stroke="#222" stroke-width="4"/>`;
+    if (kind === 'rabbitFeed') return `${person1}<ellipse cx="143" cy="96" rx="26" ry="18" fill="#eee" stroke="#222"/><circle cx="164" cy="83" r="11" fill="#eee" stroke="#222"/><path d="M160 74 q-5 -22 4 -22 M169 75 q7 -20 14 -11" fill="none" stroke="#222" stroke-width="3"/><path d="M101 91 q22 6 32 2" fill="none" stroke="#222" stroke-width="3"/>`;
+    if (kind === 'dogWalk') return `${person1}<ellipse cx="143" cy="97" rx="27" ry="16" fill="#eee" stroke="#222"/><circle cx="170" cy="88" r="10" fill="#eee" stroke="#222"/><line x1="122" y1="86" x2="147" y2="82" stroke="#222" stroke-width="2"/>`;
+    if (kind === 'cat') return `<ellipse cx="108" cy="94" rx="38" ry="22" fill="#eee" stroke="#222"/><circle cx="146" cy="78" r="17" fill="#eee" stroke="#222"/><polygon points="134,65 138,45 150,64" fill="#eee" stroke="#222"/><polygon points="151,64 166,48 164,70" fill="#eee" stroke="#222"/><path d="M70 91 q-25 -30 -8 -50" fill="none" stroke="#222" stroke-width="4"/>`;
+    if (kind === 'bedCold') return '<rect x="54" y="82" width="118" height="34" fill="#ddd" stroke="#222"/><rect x="62" y="62" width="38" height="24" fill="#fff" stroke="#222"/><circle cx="95" cy="68" r="12" fill="#fff" stroke="#222"/><path d="M108 66 h50 v24 h-62" fill="#eee" stroke="#222"/><text x="146" y="58" font-size="18">cold</text>';
+    if (kind === 'dentist') return `${person1}<rect x="118" y="58" width="52" height="58" fill="#f8f8f8" stroke="#222"/><text x="144" y="92" text-anchor="middle" font-size="24">歯</text>`;
+    if (kind === 'cleanRoom') return `${person1}<rect x="122" y="54" width="48" height="52" fill="#fff" stroke="#222"/><line x1="116" y1="106" x2="170" y2="106" stroke="#222"/><path d="M100 88 l32 26" stroke="#222" stroke-width="4"/><path d="M132 114 l18 -10" stroke="#222" stroke-width="4"/>`;
+    if (kind === 'game') return `${person1}<rect x="112" y="77" width="62" height="34" rx="10" fill="#eee" stroke="#222"/><circle cx="130" cy="94" r="4" fill="#222"/><circle cx="155" cy="94" r="4" fill="#222"/><path d="M72 79 q34 6 50 14" fill="none" stroke="#222" stroke-width="3"/>`;
+    if (kind === 'readBook') return `${person1}<path d="M103 78 h34 q8 0 8 8 v35 q0 -7 -12 -7 h-30z" fill="#eee" stroke="#222"/><path d="M145 86 q0 -8 8 -8 h30 v36 h-30 q-8 0 -8 7z" fill="#fff" stroke="#222"/>`;
+    return `${person1}${person2}`;
+  }
+
+  document.addEventListener('click', event => {
+    const el = event.target.closest('[data-action]');
+    if (!el) return;
+    const action = el.dataset.action;
+    if (action === 'open-set') { state.view = 'set'; state.currentSetId = el.dataset.set; state.message = ''; render(); }
+    if (action === 'open-review') { state.view = 'review'; state.message = ''; render(); }
+    if (action === 'open-history') { state.view = 'history'; state.message = ''; render(); }
+    if (action === 'open-settings') { state.view = 'settings'; state.message = ''; render(); }
+    if (action === 'play') playSection(el.dataset.set, el.dataset.section);
+    if (action === 'stop-audio') stopAudio();
+    if (action === 'toggle-script') { state.openScripts[el.dataset.key] = !state.openScripts[el.dataset.key]; render(); }
+    if (action === 'grade-set') gradeSet(getSet(el.dataset.set));
+    if (action === 'grade-review') gradeReview();
+    if (action === 'save-now') { saveState(); render(); }
+    if (action === 'reset-audio') { state.settings = { ...DEFAULT_SETTINGS }; saveState('音声設定を自然な標準設定に戻しました。'); render(); }
+    if (action === 'reset-set') resetSet(el.dataset.set);
+    if (action === 'export-json') exportJson();
+    if (action === 'trigger-import') document.getElementById('importFile')?.click();
+    if (action === 'clear-history') clearHistory();
+    if (action === 'clear-all') clearAll();
+    if (action === 'test-voice') {
+      playTestVoice();
+    }
+  });
+
+  document.addEventListener('change', event => {
+    const el = event.target;
+    if (el.id === 'importFile' && el.files && el.files[0]) {
+      importJson(el.files[0]);
+      el.value = '';
+      return;
+    }
+    if (el.dataset.setting) {
+      const key = el.dataset.setting;
+      state.settings[key] = key === 'rate' || key === 'pitch' ? Number(el.value) : el.value;
+      state.settings = normalizeSettings(state.settings);
+      saveState('音声設定を保存しました。');
+      render();
+      return;
+    }
+    if (el.dataset.reviewQid) {
+      state.reviewAnswers[el.dataset.reviewQid] = el.value;
+      return;
+    }
+    if (el.dataset.qid) {
+      state.answers[el.dataset.qid] = el.value;
+      saveState('解答を自動保存しました。');
+      return;
+    }
+  });
+
+  document.addEventListener('input', event => {
+    const el = event.target;
+    if (el.dataset.setting) {
+      const key = el.dataset.setting;
+      state.settings[key] = key === 'rate' || key === 'pitch' ? Number(el.value) : el.value;
+      state.settings = normalizeSettings(state.settings);
+      render();
+      return;
+    }
+    if (el.dataset.reviewQid) {
+      state.reviewAnswers[el.dataset.reviewQid] = el.value;
+      return;
+    }
+    if (el.dataset.qid) {
+      state.answers[el.dataset.qid] = el.value;
+      saveState('解答を自動保存しました。');
+    }
+  });
+
+  function playTestVoice() {
+    if (!('speechSynthesis' in window)) return;
+    stopAudio();
+    const section = { repeat: 1, audio: [
+      { speaker: 'A', text: 'Hello. This is a listening practice test.' },
+      { speaker: 'B', text: 'Great. The voice should sound calm, clear, and easy to follow.' },
+      { speaker: 'A', text: "Let's meet at the library at two fifteen." },
+      { speaker: 'B', text: "Okay. I'll bring my English notebook." }
+    ]};
+    const fakeSet = { id: 'test', sections: [ { id: 'voice', ...section } ] };
+    SETS.push(fakeSet);
+    playSection('test', 'voice');
+    SETS.pop();
+  }
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = () => {
+      if (!state.voicesLoaded) {
+        state.voicesLoaded = true;
+        render();
+      }
+    };
+    window.speechSynthesis.getVoices();
+  }
+
+  loadState();
+  render();
+})();
+</script>
+</body>
+</html>
