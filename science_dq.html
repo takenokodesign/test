@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英語クエスト - 究極の期末テスト防衛戦</title>
+    <style>
+        /* ドラクエ風のUIスタイル */
+        @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+        
+        :root {
+            --bg-color: #000000;
+            --window-bg: #000000;
+            --border-color: #ffffff;
+            --text-color: #ffffff;
+            --accent-color: #f39c12;
+            --damage-color: #e74c3c;
+            --heal-color: #2ecc71;
+            --font-family: 'DotGothic16', 'ヒラギノ角ゴ ProN', sans-serif;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #game-container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .window {
+            background-color: var(--window-bg);
+            border: 4px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
+            position: relative;
+        }
+
+        h1, h2, h3 { margin-top: 0; text-align: center; color: var(--accent-color); }
+        
+        /* ボタン */
+        .btn {
+            font-family: var(--font-family);
+            background: #222;
+            color: white;
+            border: 2px solid white;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        .btn:hover:not(:disabled) { background: #444; border-color: var(--accent-color); }
+        .btn:disabled { color: #888; border-color: #555; cursor: not-allowed; }
+        
+        /* 画面レイアウト */
+        .hidden { display: none !important; }
+        .flex-between { display: flex; justify-content: space-between; }
+        
+        /* 戦闘画面 */
+        #battle-scene {
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #111;
+            border-bottom: 2px solid white;
+            position: relative;
+        }
+        #enemy-sprite {
+            font-size: 80px;
+            animation: bounce 1.5s infinite;
+        }
+        #enemy-hp-bar { width: 100%; height: 10px; background: #333; margin-top: 10px; border: 1px solid white;}
+        #enemy-hp-fill { height: 100%; background: var(--damage-color); width: 100%; transition: width 0.3s;}
+
+        #timer-bar { height: 10px; background: var(--accent-color); width: 100%; transition: width 0.1s linear; margin-bottom: 10px;}
+
+        /* 入力エリア */
+        .input-box { width: 100%; padding: 10px; font-size: 16px; font-family: var(--font-family); box-sizing: border-box; margin-bottom: 10px;}
+
+        /* レビュー・記録画面 */
+        .log-list { list-style: none; padding: 0; max-height: 200px; overflow-y: auto;}
+        .log-list li { border-bottom: 1px dashed #555; padding: 5px 0; font-size: 14px;}
+        .review-box { display: flex; gap: 10px; margin-top: 15px;}
+        .review-item { flex: 1; border: 2px solid #555; padding: 10px; border-radius: 5px;}
+        .review-item h3 { font-size: 16px; margin-bottom: 5px;}
+
+        /* アニメーション */
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        @keyframes flash { 0%, 100% { background: #000; } 50% { background: #fff; } }
+
+        /* 派手なレベルアップ演出用 */
+        .flashy-text {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            animation: rainbow 2s linear infinite, popIn 0.5s ease-out;
+            margin: 10px 0;
+            text-shadow: 2px 2px 0 #000;
+        }
+        @keyframes rainbow {
+            0% { color: #ff0000; }
+            20% { color: #ffff00; }
+            40% { color: #00ff00; }
+            60% { color: #00ffff; }
+            80% { color: #0000ff; }
+            100% { color: #ff00ff; }
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div class="window flex-between">
+        <div>勇者HP: <span id="player-hp">100</span>/100</div>
+        <div>ステージ: <span id="stage-display">1</span>/5</div>
+    </div>
+
+    <div id="home-screen" class="window">
+        <h1>⚔️ 英語クエスト</h1>
+        <p>期末テストの魔物たちが現れた！<br>文法の力を武器に、大魔王ゾーマを討伐せよ！</p>
+        <button class="btn" onclick="startStage()" id="start-btn">▶ 次のステージへ出発する</button>
+        <button class="btn" onclick="showLogs()">📜 冒険の記録を見る</button>
+        
+        <div id="adventure-log" class="hidden" style="margin-top: 15px; border-top: 1px solid white; padding-top: 10px;">
+            <h3>冒険の記録</h3>
+            <ul class="log-list" id="log-list-ul"></ul>
+        </div>
+    </div>
+
+    <div id="battle-screen" class="window hidden">
+        <div id="battle-scene">
+            <div id="enemy-name" style="font-size: 20px; color: var(--accent-color);">スライム</div>
+            <div id="enemy-sprite">💧</div>
+            <div style="width: 60%;">
+                <div id="enemy-hp-bar"><div id="enemy-hp-fill"></div></div>
+            </div>
+        </div>
+        <div id="message-box" style="padding: 10px 0; min-height: 40px; color: var(--accent-color);">
+            スライムがあらわれた！
+        </div>
+        <div id="question-area" class="hidden">
+            <div id="timer-bar"></div>
+            <div id="q-text" style="margin-bottom: 15px; font-size: 18px; line-height: 1.4;">ここに問題が出ます</div>
+            <div id="input-container"></div>
+            <button class="btn hidden" id="submit-btn" style="text-align: center;" onclick="checkAnswer()">攻撃する！</button>
+        </div>
+    </div>
+
+    <div id="review-screen" class="window hidden">
+        <div id="level-up-effect" class="hidden flashy-text">✨ 討伐成功！レベルアップ！ ✨</div>
+        <h2 id="result-title" style="margin-top: 10px;">リザルト</h2>
+        <p id="result-score" style="text-align: center; font-size: 20px;"></p>
+        
+        <div class="review-box">
+            <div class="review-item">
+                <h3>🗡️ 武器 (強み)</h3>
+                <ul id="strong-points" style="padding-left: 15px; font-size: 14px; margin: 0;"></ul>
+            </div>
+            <div class="review-item">
+                <h3>🛡️ 防具 (弱み)</h3>
+                <ul id="weak-points" style="padding-left: 15px; font-size: 14px; margin: 0;"></ul>
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <p style="font-size: 14px;">【間違えた問題の復習】</p>
+            <ul id="mistake-list" style="font-size: 12px; color: var(--damage-color); padding-left: 15px;"></ul>
+        </div>
+
+        <button class="btn" style="margin-top: 15px; text-align: center;" onclick="returnToHome()">拠点に戻る</button>
+    </div>
+</div>
+
+<script>
+    // === サウンドシステム (Web Audio API) ===
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx;
+    let bgmInterval;
+    let isPlayingBgm = false;
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new AudioContext();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    function playTone(freq, type, duration, vol = 0.1) {
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    }
+
+    // 攻撃音（シュバッ！）
+    function playAttackSound() {
+        playTone(800, 'triangle', 0.1, 0.2);
+        setTimeout(() => playTone(600, 'square', 0.1, 0.2), 50);
+    }
+
+    // ダメージ音（ドスッ！）
+    function playDamageSound() {
+        playTone(150, 'sawtooth', 0.3, 0.3);
+    }
+
+    // 勝利ファンファーレ
+    function playFanfare() {
+        const notes = [
+            { f: 523.25, d: 0.15 }, { f: 523.25, d: 0.15 }, { f: 523.25, d: 0.15 },
+            { f: 659.25, d: 0.4 },  { f: 0,      d: 0.1 },  { f: 587.33, d: 0.2 },
+            { f: 659.25, d: 0.6 }
+        ];
+        let timeOffset = 0;
+        notes.forEach(note => {
+            if(note.f > 0) {
+                setTimeout(() => playTone(note.f, 'square', note.d, 0.15), timeOffset);
+            }
+            timeOffset += note.d * 1000;
+        });
+    }
+
+    // ★バトル中BGMの再生（8ビット風ベースライン）
+    const bgmNotes = [
+        { f: 110.00, d: 0.15 }, { f: 0,      d: 0.05 }, { f: 110.00, d: 0.15 },
+        { f: 130.81, d: 0.20 }, { f: 146.83, d: 0.20 }, { f: 164.81, d: 0.15 },
+        { f: 0,      d: 0.05 }, { f: 130.81, d: 0.15 }
+    ];
+    let bgmStep = 0;
+
+    function playBattleBGM() {
+        if (isPlayingBgm) return;
+        isPlayingBgm = true;
+        bgmStep = 0;
+        bgmInterval = setInterval(() => {
+            if(!isPlayingBgm) {
+                clearInterval(bgmInterval);
+                return;
+            }
+            const note = bgmNotes[bgmStep];
+            if(note.f > 0) playTone(note.f, 'sawtooth', note.d, 0.03); // 音量は小さめ(0.03)
+            bgmStep = (bgmStep + 1) % bgmNotes.length;
+        }, 200);
+    }
+
+    function stopBattleBGM() {
+        isPlayingBgm = false;
+        clearInterval(bgmInterval);
+    }
+
+    // === データ定義 ===
+    const ENEMIES = [
+        { stage: 1, name: "スライム", sprite: "💧", qCount: 3, baseTime: 15 },
+        { stage: 2, name: "メタルスライム", sprite: "🛡️💧", qCount: 5, baseTime: 15 },
+        { stage: 3, name: "はぐれメタル", sprite: "💨💧", qCount: 5, baseTime: 15 },
+        { stage: 4, name: "キングスライム", sprite: "👑💧", qCount: 10, baseTime: 15 },
+        { stage: 5, name: "大魔王ゾーマ", sprite: "👿❄️", qCount: 10, baseTime: 20 }
+    ];
+
+    // a (正解) は配列形式で複数パターンを許容する設計に変更
+    const Q_DATABASE = [
+        // Stage 1: Unit 1 基礎 (1〜2語の穴埋め)
+        { stage: 1, type: "choice", cat: "未来形(be going to)", q: "I (  ) going to visit Kyoto.", options: ["am", "are", "will"], a: ["am"] },
+        { stage: 1, type: "choice", cat: "未来形(will)", q: "We (  ) arrive in Tokyo soon.", options: ["are going", "will", "do"], a: ["will"] },
+        { stage: 1, type: "input", cat: "未来形(be going to)", q: "【英訳/穴埋め】私は明日、京都を訪れるつもりです。\nI am [ ] [ ] visit Kyoto tomorrow.", a: ["going to", "goingto"], hint: "2語で入力" },
+        { stage: 1, type: "input", cat: "未来形(will)", q: "【英訳/穴埋め】私たちはもうすぐ東京に到着します。\nWe [ ] arrive in Tokyo soon.", a: ["will"], hint: "1語で入力" },
+        
+        // Stage 2: Unit 1 応用 (2〜3語の穴埋め・短和訳)
+        { stage: 2, type: "choice", cat: "第4文型(show/buy)", q: "I will show (  ) some pictures.", options: ["you", "your", "yours"], a: ["you"] },
+        { stage: 2, type: "choice", cat: "第5文型(call)", q: "People call this area Little (  ).", options: ["India", "Singapore", "America"], a: ["India"] },
+        { stage: 2, type: "input", cat: "第4文型(show/buy)", q: "【英訳/穴埋め】私はあなたに何枚か写真を見せます。\nI will [ ] [ ] some pictures.", a: ["show you"], hint: "見せる＋あなたに" },
+        { stage: 2, type: "input", cat: "第5文型(call)", q: "【和訳/部分】We call this shrine Oinari-san.\n私たちはこの神社をお稲荷さんと[  ].", a: ["呼びます", "呼ぶ", "よぶ", "よびます"], hint: "日本語で入力" },
+        { stage: 2, type: "input", cat: "第4文型(show/buy)", q: "【和訳/部分】My father bought me a new bike.\n私の父は私に新しい自転車を[  ].", a: ["買ってくれた", "買ってくれました", "買った", "買いました"], hint: "日本語で入力" },
+
+        // Stage 3: Unit 2 基礎 (3〜4語の穴埋め)
+        { stage: 3, type: "choice", cat: "接続詞(when)", q: "I play the piano (  ) I am free.", options: ["when", "if", "because"], a: ["when"] },
+        { stage: 3, type: "choice", cat: "接続詞(if)", q: "(  ) it is sunny, let's go to the zoo.", options: ["When", "If", "Because"], a: ["If", "if"] },
+        { stage: 3, type: "input", cat: "接続詞(if)", q: "【英訳/穴埋め】もしあなたが空腹なら、夕食を作ります。\n[ ] you [ ] [ ], I'll make dinner.", a: ["If you are hungry", "If you're hungry", "if you are hungry"], hint: "4語で入力" },
+        { stage: 3, type: "input", cat: "接続詞(when)", q: "【英訳/穴埋め】私が子どものとき、この本が好きでした。\n[ ] I [ ] a [ ], I loved this book.", a: ["When I was a child", "when i was a child"], hint: "5語で入力" },
+        { stage: 3, type: "input", cat: "接続詞(when)", q: "【和訳/部分】I watch videos when I am free.\n私は[  ]動画を見ます。", a: ["ひまなとき", "暇な時", "ひまなときに", "暇なときに"], hint: "ひまな...？" },
+
+        // Stage 4: Unit 2 応用 (少し長めの入力)
+        { stage: 4, type: "choice", cat: "接続詞(because)", q: "I like summer (  ) I can swim.", options: ["because", "when", "if"], a: ["because"] },
+        { stage: 4, type: "input", cat: "接続詞(because)", q: "【英訳/穴埋め】スープが濃厚なので、私は札幌ラーメンが好きです。\nI like Sapporo ramen [ ] the soup is [ ].", a: ["because thick"], hint: "2語で入力（スペースは無視されます）" },
+        { stage: 4, type: "input", cat: "接続詞(think)", q: "【英訳/全文】私は彼が正しいと思います。(5語)", a: ["I think that he is right", "I think he is right"], hint: "全文入力" },
+        { stage: 4, type: "choice", cat: "長文読解", q: "Sapporo ramen uses a (  )-based soup.", options: ["miso", "soy sauce", "salt"], a: ["miso"] },
+        { stage: 4, type: "input", cat: "接続詞(because)", q: "【和訳/全文】I was at home because I had a fever.", a: ["私は熱があったので家にいました", "熱があったので家にいました", "私は熱があったから家にいました"], hint: "全文入力" },
+
+        // Stage 5: 総合・大魔王ゾーマ (全文入力)
+        { stage: 5, type: "input", cat: "未来形(be going to)", q: "【英訳/全文】私たちは明日、公園に行くつもりです。(We / ...)", a: ["We are going to go to the park tomorrow", "We're going to go to the park tomorrow"], hint: "全文入力" },
+        { stage: 5, type: "input", cat: "第4文型(show/buy)", q: "【英訳/全文】父が私に新しい自転車を買ってくれました。(My father ...)", a: ["My father bought me a new bike"], hint: "全文入力" },
+        { stage: 5, type: "input", cat: "第5文型(call)", q: "【和訳/全文】Everyone calls this cat Shiro.", a: ["みんなこの猫をシロと呼びます", "誰もがこの猫をシロと呼びます"], hint: "全文入力" },
+        { stage: 5, type: "input", cat: "接続詞(when)", q: "【英訳/全文】ひまなとき、音楽を聞きます。(I / ...)", a: ["I listen to music when I am free", "I listen to music when I'm free"], hint: "全文入力" },
+        { stage: 5, type: "input", cat: "接続詞(because)", q: "【和訳/全文】I like math because it is interesting.", a: ["私は数学が好きですなぜなら面白いからです", "私は数学が好きです。なぜなら面白いからです。", "面白いので数学が好きです"], hint: "全文入力" },
+        { stage: 5, type: "input", cat: "接続詞(think)", q: "【英訳/全文】彼女は北海道出身だと思います。(I think ...)", a: ["I think that she is from Hokkaido", "I think she is from Hokkaido"], hint: "全文入力" },
+        { stage: 5, type: "choice", cat: "長文読解", q: "【読解】マーライオンの高さと重さは？", options: ["8.6m, 70 tons", "10m, 50 tons", "5m, 20 tons"], a: ["8.6m, 70 tons"] }
+    ];
+
+    // === ゲーム状態変数 ===
+    let playerHp = 100;
+    let currentStage = 1;
+    let currentEnemy = null;
+    let enemyMaxHp = 0;
+    let enemyHp = 0;
+    let currentQuestionIndex = 0;
+    let stageQuestions = [];
+    let stageResults = [];
+    let timerInterval;
+    let timeLeft = 0;
+    let totalTimeLimit = 0;
+    let currentQ = null;
+
+    // === 初期ロード ===
+    window.onload = () => {
+        const savedStage = localStorage.getItem('dq_quest_stage');
+        if(savedStage) {
+            currentStage = parseInt(savedStage);
+            document.getElementById('stage-display').innerText = currentStage;
+            if(currentStage > 5) {
+                document.getElementById('start-btn').innerText = "★ 全クリ達成済！リセットして遊ぶ";
+            }
+        }
+    };
+
+    function msg(text) {
+        document.getElementById('message-box').innerText = text;
+    }
+
+    // === ステージ開始 ===
+    function startStage() {
+        initAudio(); // 音声再生許可
+        playBattleBGM(); // ★戦闘BGM開始
+        
+        if(currentStage > 5) {
+            currentStage = 1; // リセット
+            localStorage.setItem('dq_quest_stage', 1);
+            document.getElementById('stage-display').innerText = currentStage;
+        }
+
+        playerHp = 100;
+        document.getElementById('player-hp').innerText = playerHp;
+        
+        currentEnemy = ENEMIES[currentStage - 1];
+        enemyMaxHp = currentEnemy.qCount;
+        enemyHp = enemyMaxHp;
+        
+        // 問題のピックアップとシャッフル
+        stageQuestions = Q_DATABASE.filter(q => q.stage === currentStage);
+        stageQuestions.sort(() => Math.random() - 0.5);
+        // 足りない場合は他のステージから補充するなど調整できますが今回は固定
+        stageQuestions = stageQuestions.slice(0, currentEnemy.qCount);
+        
+        currentQuestionIndex = 0;
+        stageResults = [];
+
+        // UI切り替え
+        document.getElementById('home-screen').classList.add('hidden');
+        document.getElementById('review-screen').classList.add('hidden');
+        document.getElementById('battle-screen').classList.remove('hidden');
+        
+        document.getElementById('enemy-name').innerText = currentEnemy.name;
+        document.getElementById('enemy-sprite').innerText = currentEnemy.sprite;
+        updateEnemyHpUI();
+        
+        msg(`${currentEnemy.name} があらわれた！`);
+        setTimeout(showNextQuestion, 1500);
+    }
+
+    function updateEnemyHpUI() {
+        const pct = (enemyHp / enemyMaxHp) * 100;
+        document.getElementById('enemy-hp-fill').style.width = `${pct}%`;
+    }
+
+    // === 問題表示 ===
+    function showNextQuestion() {
+        if (currentQuestionIndex >= stageQuestions.length || enemyHp <= 0) {
+            winStage();
+            return;
+        }
+
+        currentQ = stageQuestions[currentQuestionIndex];
+        document.getElementById('question-area').classList.remove('hidden');
+        document.getElementById('submit-btn').classList.add('hidden');
+        
+        document.getElementById('q-text').innerText = `Q${currentQuestionIndex + 1}. ${currentQ.q}`;
+        const container = document.getElementById('input-container');
+        container.innerHTML = "";
+
+        // ★制限時間の動的計算（入力問題なら時間を延長する）
+        let timeForQuestion = currentEnemy.baseTime;
+
+        if (currentQ.type === "choice") {
+            currentQ.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.innerText = opt;
+                btn.onclick = () => submitAnswer(opt);
+                container.appendChild(btn);
+            });
+        } else if (currentQ.type === "input") {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'input-box';
+            input.id = 'typing-input';
+            if(currentQ.hint) input.placeholder = `ヒント: ${currentQ.hint}`;
+            container.appendChild(input);
+            document.getElementById('submit-btn').classList.remove('hidden');
+            
+            // 入力文字数が多いほど制限時間を長くする（最低+10秒）
+            let sampleAns = currentQ.a[0];
+            let charCount = sampleAns.length;
+            let extraTime = Math.max(10, Math.floor(charCount * 1.5));
+            timeForQuestion += extraTime;
+        }
+
+        startTimer(timeForQuestion);
+    }
+
+    function startTimer(seconds) {
+        clearInterval(timerInterval);
+        timeLeft = seconds;
+        totalTimeLimit = seconds; // バーの割合計算用
+        const bar = document.getElementById('timer-bar');
+        bar.style.width = "100%";
+
+        timerInterval = setInterval(() => {
+            timeLeft -= 0.1; // 滑らかに動かすため0.1秒単位
+            bar.style.width = `${(timeLeft / totalTimeLimit) * 100}%`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                submitAnswer(null); // 時間切れは不正解
+            }
+        }, 100);
+    }
+
+    // === 解答判定 ===
+    function checkAnswer() {
+        initAudio(); // 音声再生許可を担保
+        const inputVal = document.getElementById('typing-input').value.trim();
+        submitAnswer(inputVal);
+    }
+
+    function submitAnswer(userAns) {
+        clearInterval(timerInterval);
+        document.getElementById('question-area').classList.add('hidden');
+        
+        let isCorrect = false;
+        // 文字列の空白、ピリオド、カンマを消去・小文字化して判定（揺れを吸収）
+        const normalize = str => str.toLowerCase().replace(/[\.\,\s。、]/g, "");
+
+        if (userAns) {
+            const normalizedUserAns = normalize(userAns);
+            // 複数ある正解パターンのどれか1つでも一致すればOK
+            isCorrect = currentQ.a.some(ans => normalize(ans) === normalizedUserAns);
+        }
+
+        stageResults.push({
+            cat: currentQ.cat,
+            qText: currentQ.q,
+            correctAns: currentQ.a[0], // 最初の答えを正解例として表示
+            isCorrect: isCorrect
+        });
+
+        const bs = document.getElementById('battle-screen');
+
+        if (isCorrect) {
+            playAttackSound(); // ★効果音：攻撃
+            msg(`正解！ ${currentEnemy.name} にダメージ！`);
+            enemyHp--;
+            updateEnemyHpUI();
+            bs.style.animation = 'flash 0.3s';
+            setTimeout(() => bs.style.animation = '', 300);
+        } else {
+            playDamageSound(); // ★効果音：ダメージ
+            const dmg = 20;
+            playerHp -= dmg;
+            document.getElementById('player-hp').innerText = playerHp;
+            msg(`痛恨のミス！ 正解例は「${currentQ.a[0]}」だ。\n勇者は ${dmg} のダメージを受けた！`);
+            bs.style.animation = 'shake 0.4s';
+            setTimeout(() => bs.style.animation = '', 400);
+        }
+
+        if (playerHp <= 0) {
+            setTimeout(loseGame, 2500);
+        } else {
+            currentQuestionIndex++;
+            setTimeout(showNextQuestion, 2500);
+        }
+    }
+
+    // === 勝敗処理 ===
+    function winStage() {
+        stopBattleBGM(); // ★BGM停止
+        msg(`${currentEnemy.name} をやっつけた！`);
+        
+        setTimeout(() => {
+            playFanfare(); // ★効果音：ファンファーレ
+            document.getElementById('battle-screen').classList.add('hidden');
+            showReview();
+            
+            currentStage++;
+            localStorage.setItem('dq_quest_stage', currentStage);
+            saveLog(`${currentEnemy.name}討伐クリア (残りHP: ${playerHp})`);
+
+        }, 2000);
+    }
+
+    function loseGame() {
+        stopBattleBGM(); // ★BGM停止
+        msg("勇者は倒れてしまった...\n目の前が真っ暗になった。");
+        setTimeout(() => {
+            document.getElementById('battle-screen').classList.add('hidden');
+            document.getElementById('home-screen').classList.remove('hidden');
+            saveLog(`${currentEnemy.name}戦で敗北...`);
+        }, 3000);
+    }
+
+    // === レビュー（強み・弱み分析）画面 ===
+    function showReview() {
+        document.getElementById('review-screen').classList.remove('hidden');
+        document.getElementById('stage-display').innerText = currentStage;
+        
+        // ★派手なレベルアップ演出を表示
+        const effectEl = document.getElementById('level-up-effect');
+        effectEl.classList.remove('hidden');
+        if(currentStage > 5) {
+            effectEl.innerText = "👑 大魔王討伐！世界に平和が戻った！ 👑";
+        } else {
+            effectEl.innerText = "✨ 討伐成功！レベルアップ！ ✨";
+        }
+        
+        const correctCount = stageResults.filter(r => r.isCorrect).length;
+        document.getElementById('result-score').innerText = `正答数: ${correctCount} / ${stageQuestions.length}`;
+
+        const catStats = {};
+        stageResults.forEach(r => {
+            if(!catStats[r.cat]) catStats[r.cat] = { total: 0, ok: 0 };
+            catStats[r.cat].total++;
+            if(r.isCorrect) catStats[r.cat].ok++;
+        });
+
+        const strongUl = document.getElementById('strong-points');
+        const weakUl = document.getElementById('weak-points');
+        const mistakeUl = document.getElementById('mistake-list');
+        strongUl.innerHTML = ""; weakUl.innerHTML = ""; mistakeUl.innerHTML = "";
+
+        for (const [cat, stat] of Object.entries(catStats)) {
+            const rate = stat.ok / stat.total;
+            const li = document.createElement('li');
+            li.innerText = `${cat} (${stat.ok}/${stat.total})`;
+            
+            if (rate >= 0.5) {
+                strongUl.appendChild(li);
+            } else {
+                weakUl.appendChild(li);
+            }
+        }
+
+        if(strongUl.children.length === 0) strongUl.innerHTML = "<li>今はまだない。修行あるのみ！</li>";
+        if(weakUl.children.length === 0) weakUl.innerHTML = "<li>完璧だ！鉄壁の守り！</li>";
+
+        const mistakes = stageResults.filter(r => !r.isCorrect);
+        if(mistakes.length === 0) {
+            mistakeUl.innerHTML = "<li>全問正解！素晴らしい！</li>";
+        } else {
+            mistakes.forEach(m => {
+                const li = document.createElement('li');
+                li.innerText = `Q: ${m.qText.replace(/【.*?】/, '').replace(/\n/g, ' ')} ➡ 正解: ${m.correctAns}`;
+                mistakeUl.appendChild(li);
+            });
+        }
+    }
+
+    function returnToHome() {
+        document.getElementById('review-screen').classList.add('hidden');
+        document.getElementById('level-up-effect').classList.add('hidden');
+        document.getElementById('home-screen').classList.remove('hidden');
+        document.getElementById('stage-display').innerText = currentStage > 5 ? 5 : currentStage;
+        if(currentStage > 5) document.getElementById('start-btn').innerText = "★ 全クリ達成済！リセットして遊ぶ";
+    }
+
+    // === 冒険の記録機能 ===
+    function saveLog(text) {
+        let logs = JSON.parse(localStorage.getItem('dq_logs') || '[]');
+        const date = new Date();
+        const dateStr = `${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2,'0')}`;
+        logs.unshift(`[${dateStr}] ${text}`);
+        if(logs.length > 10) logs.pop();
+        localStorage.setItem('dq_logs', JSON.stringify(logs));
+    }
+
+    function showLogs() {
+        const logContainer = document.getElementById('adventure-log');
+        const ul = document.getElementById('log-list-ul');
+        logContainer.classList.toggle('hidden');
+        
+        let logs = JSON.parse(localStorage.getItem('dq_logs') || '[]');
+        ul.innerHTML = "";
+        if(logs.length === 0) {
+            ul.innerHTML = "<li>まだ記録はありません。</li>";
+        } else {
+            logs.forEach(log => {
+                const li = document.createElement('li');
+                li.innerText = log;
+                ul.appendChild(li);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
