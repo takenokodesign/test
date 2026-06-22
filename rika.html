@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>理科 模擬テスト</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d1117;color:#e6edf3;font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;min-height:100vh}
+/* ── STICKY HEADER ── */
+.stickybar{position:sticky;top:0;z-index:200;background:#0d1117;border-bottom:2px solid #21262d;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.stickybar-left{display:flex;align-items:center;gap:10px}
+.timer{font-size:1.2em;font-weight:bold;color:#f0883e;min-width:56px}
+.timer.warn{color:#ffa657}
+.timer.danger{color:#f85149;animation:blink .6s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.answered-count{font-size:.82em;color:#8b949e;white-space:nowrap}
+.btn-submit-top{background:#238636;color:#fff;border:none;border-radius:7px;padding:8px 16px;font-size:.88em;font-weight:bold;cursor:pointer;white-space:nowrap}
+.btn-submit-top:hover{background:#2ea043}
+.progress-chips{display:flex;flex-wrap:wrap;gap:3px;padding:6px 16px;background:#0d1117;border-bottom:1px solid #21262d}
+.chip{width:22px;height:22px;border-radius:4px;background:#21262d;border:1px solid #30363d;font-size:.65em;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8b949e;transition:all .15s}
+.chip.answered{background:#1f6feb44;border-color:#388bfd;color:#79c0ff}
+.chip.unanswered-flash{animation:chipflash .4s 3}
+@keyframes chipflash{0%,100%{background:#21262d}50%{background:#f8514966;border-color:#f85149}}
+/* ── SCREENS ── */
+.screen{display:none;max-width:760px;margin:0 auto;padding:16px}
+/* ── HOME ── */
+.home-title{font-size:1.6em;font-weight:bold;color:#58a6ff;text-align:center;padding:24px 0 8px}
+.home-sub{text-align:center;color:#8b949e;font-size:.9em;margin-bottom:20px}
+.range-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:14px;margin-bottom:16px;font-size:.88em;line-height:1.8;color:#8b949e}
+.exam-btn{display:block;width:100%;background:#1f6feb;color:#fff;border:none;border-radius:9px;padding:15px 18px;font-size:1em;cursor:pointer;margin-bottom:10px;text-align:left;transition:background .2s;position:relative}
+.exam-btn:hover{background:#388bfd}
+.exam-btn.done{background:#1a3a1a;border:1px solid #2ea043}
+.exam-btn.in-progress{background:#2a1a00;border:1px solid #d29922}
+.exam-btn .badge{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:.8em;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:10px}
+.btn-danger{background:#21262d;color:#8b949e;border:1px solid #30363d;border-radius:8px;padding:10px 20px;font-size:.88em;cursor:pointer;display:block;width:100%;margin-top:8px}
+.btn-danger:hover{background:#da363322;color:#f85149;border-color:#f85149}
+/* ── EXAM ── */
+.exam-wrap{padding-bottom:60px}
+.q-card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:18px;margin-bottom:16px;scroll-margin-top:100px}
+.q-card.unanswered-hl{border-color:#f85149;box-shadow:0 0 0 2px #f8514944}
+.q-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.q-num{font-size:.85em;font-weight:bold;color:#58a6ff}
+.q-tag{font-size:.72em;padding:2px 8px;border-radius:10px;font-weight:bold}
+.tag-c{background:#1f6feb22;color:#79c0ff;border:1px solid #1f6feb44}
+.tag-j{background:#23863622;color:#3fb950;border:1px solid #23863644}
+.q-text{font-size:.95em;line-height:1.7;color:#e6edf3;margin-bottom:12px}
+.vbox{background:#0d1117;border:1px solid #21262d;border-radius:9px;padding:13px;margin-bottom:12px;overflow-x:auto}
+.vbox svg{display:block;margin:0 auto}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:500px){.choices{grid-template-columns:1fr}}
+.cho{background:#21262d;border:1.5px solid #30363d;color:#e6edf3;border-radius:8px;padding:10px 13px;text-align:left;cursor:pointer;font-size:.9em;line-height:1.4;transition:all .15s}
+.cho:hover{border-color:#388bfd;background:#1f6feb18}
+.cho.sel{border-color:#388bfd;background:#1f6feb28;color:#79c0ff}
+.cho.ok{border-color:#2ea043;background:#23863622;color:#3fb950}
+.cho.ng{border-color:#f85149;background:#f8514922;color:#f85149}
+.cho:disabled{cursor:default}
+.explanation{background:#0d1117;border-left:3px solid #388bfd;padding:10px 12px;margin-top:10px;font-size:.85em;line-height:1.6;color:#c9d1d9;border-radius:0 6px 6px 0}
+/* ── TABLES ── */
+.vis-tbl{border-collapse:collapse;width:100%;font-size:.84em}
+.vis-tbl th{background:#1c2835;color:#79c0ff;border:1px solid #30363d;padding:6px 10px;text-align:center}
+.vis-tbl td{border:1px solid #30363d;padding:6px 10px;text-align:center;color:#e6edf3}
+.mask{background:#3a2a00;color:#ffd700;font-weight:800;text-align:center}
+.mbox{display:inline-block;background:#3a2a00;border:1px solid #ffd700;color:#ffd700;font-weight:800;padding:1px 8px;border-radius:3px;font-size:.9em}
+/* reaction equation */
+.rxn{display:flex;align-items:center;justify-content:center;gap:8px;font-size:1em;padding:8px 0;flex-wrap:wrap}
+.rxnarrow{color:#58a6ff;font-size:1.1em}
+.rxnplus{color:#8b949e}
+/* ── RESULT ── */
+.result-hero{text-align:center;padding:24px;background:#161b22;border-radius:14px;margin-bottom:16px}
+.score-big{font-size:3.2em;font-weight:bold;color:#f0883e}
+.score-lbl{color:#8b949e;font-size:.9em;margin-top:4px}
+.score-msg{margin-top:12px;font-size:1em;font-weight:bold}
+.cat-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.cat-bar-lbl{width:80px;font-size:.82em;color:#8b949e}
+.cat-bar-bg{flex:1;background:#21262d;border-radius:4px;height:16px;overflow:hidden}
+.cat-bar-fill{height:100%;border-radius:4px;transition:width .7s}
+.cat-bar-pct{width:36px;font-size:.82em;text-align:right}
+.btn{background:#238636;color:#fff;border:none;border-radius:8px;padding:12px 20px;font-size:1em;cursor:pointer;display:block;width:100%;margin-top:10px}
+.btn:hover{background:#2ea043}
+.btn-sec{background:#21262d;color:#e6edf3;border:1px solid #30363d}
+.btn-sec:hover{background:#30363d}
+.sec-title{color:#f0883e;font-size:.95em;font-weight:bold;margin:20px 0 10px;border-bottom:1px solid #30363d;padding-bottom:6px}
+.review-card{background:#161b22;border:1px solid #f8514944;border-radius:10px;padding:14px;margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="homeScreen" class="screen" style="display:block">
+  <div class="home-title">🔬 理科 模擬テスト</div>
+  <p class="home-sub">1学期第1回テスト対策 ／ 30分 × 5回</p>
+  <div class="range-card">
+    <b style="color:#e6edf3">出題範囲</b><br>
+    🧪 <b style="color:#79c0ff">2年生</b>：化学変化と原子・分子（p.138〜181）<br>
+    　　物質の成り立ち・元素記号・化学式・化学反応式・酸化と燃焼<br>
+    🌍 <b style="color:#3fb950">1年生</b>：地震（プレート・P波S波・震度・マグニチュード）
+  </div>
+  <div id="examList"></div>
+  <button class="btn-danger" id="btnClearAll">🗑 全データをリセット</button>
+</div>
+
+<!-- EXAM -->
+<div id="examScreen" style="display:none">
+  <div class="stickybar">
+    <div class="stickybar-left">
+      <div class="timer" id="timerDisp">30:00</div>
+      <div class="answered-count" id="answeredCount">0/25 回答</div>
+    </div>
+    <button class="btn-submit-top" id="btnSubmitTop">採点する ✓</button>
+  </div>
+  <div class="progress-chips" id="progressChips"></div>
+  <div class="screen exam-wrap" id="examWrap" style="display:block;padding-top:8px">
+    <div id="allQArea"></div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="resultScreen" class="screen">
+  <div class="result-hero">
+    <div class="score-big" id="rScore">0</div>
+    <div class="score-lbl">点（25問中 <span id="rCorrect">0</span>問正解）</div>
+    <div class="score-msg" id="rMsg"></div>
+  </div>
+  <div id="catBars"></div>
+  <button class="btn" id="btnGoReview">📖 間違えた問題を復習する</button>
+  <button class="btn btn-sec" id="btnGoHome">🏠 ホームに戻る</button>
+  <div id="reviewArea" style="display:none;margin-top:8px">
+    <div class="sec-title">復習モード（不正解のみ）</div>
+    <div id="reviewList"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// VISUALS
+// ============================================================
+var V = {};
+
+// 炭酸水素ナトリウム分解
+V['nahco3'] = '<div class="vbox"><p style="font-size:.8em;color:#8b949e;margin-bottom:8px">炭酸水素ナトリウムの熱分解</p><div class="rxn"><span>2NaHCO<sub>3</sub></span><span class="rxnarrow">→</span><span>Na<sub>2</sub>CO<sub>3</sub></span><span class="rxnplus">+</span><span class="mbox">【Ａ】</span><span class="rxnplus">+</span><span>H<sub>2</sub>O</span></div><p style="font-size:.78em;color:#8b949e;text-align:center;margin-top:6px">【Ａ】に当てはまる気体は何か</p></div>';
+
+// 塩化コバルト紙
+V['cobalt'] = '<div class="vbox"><table class="vis-tbl"><tr><th>試薬</th><th>乾燥時の色</th><th>水にふれると</th></tr><tr><td>塩化コバルト紙</td><td>青色</td><td class="mask">【Ａ】色</td></tr><tr><td>フェノールフタレイン</td><td>無色</td><td>アルカリ性→<span class="mbox">【Ｂ】</span>色</td></tr></table></div>';
+
+// 水の電気分解
+V['water_elec'] = '<div class="vbox"><p style="font-size:.8em;color:#8b949e;margin-bottom:8px">水の電気分解</p><div class="rxn"><span>2H<sub>2</sub>O</span><span class="rxnarrow">→</span><span>2H<sub>2</sub></span><span class="rxnplus">+</span><span>O<sub>2</sub></span></div><table class="vis-tbl" style="margin-top:8px"><tr><th>極</th><th>発生気体</th><th>体積比</th></tr><tr><td>陰極（-）</td><td class="mask">【Ａ】</td><td>2</td></tr><tr><td>陽極（+）</td><td>酸素 O<sub>2</sub></td><td>1</td></tr></table></div>';
+
+// 酸化銀の分解
+V['ag2o'] = '<div class="vbox"><p style="font-size:.8em;color:#8b949e;margin-bottom:8px">酸化銀の熱分解（係数を入れよ）</p><div class="rxn"><span class="mbox">【Ａ】</span><span>Ag<sub>2</sub>O</span><span class="rxnarrow">→</span><span>4Ag</span><span class="rxnplus">+</span><span>O<sub>2</sub></span></div></div>';
+
+// 分子モデル（水分子）
+V['water_model'] = '<div class="vbox"><p style="font-size:.8em;color:#8b949e;margin-bottom:6px">次の分子モデルは何を表すか</p><svg viewBox="0 0 160 80" width="160" height="80" xmlns="http://www.w3.org/2000/svg"><circle cx="80" cy="40" r="22" fill="#e05252" stroke="#fff" stroke-width="1.5"/><text x="80" y="46" fill="#fff" font-size="13" text-anchor="middle" font-weight="bold">O</text><circle cx="35" cy="55" r="14" fill="#4a90d9" stroke="#fff" stroke-width="1.5"/><text x="35" y="60" fill="#fff" font-size="11" text-anchor="middle" font-weight="bold">H</text><circle cx="125" cy="55" r="14" fill="#4a90d9" stroke="#fff" stroke-width="1.5"/><text x="125" y="60" fill="#fff" font-size="11" text-anchor="middle" font-weight="bold">H</text><line x1="58" y1="50" x2="46" y2="52" stroke="#ccc" stroke-width="2"/><line x1="102" y1="50" x2="114" y2="52" stroke="#ccc" stroke-width="2"/></svg></div>';
+
+// 物質の分類図
+V['bunrui'] = '<div class="vbox"><table class="vis-tbl"><tr><th>物質</th><th>分類</th></tr><tr><td>空気</td><td class="mask">【Ａ】</td></tr><tr><td>ダイヤモンド (C)</td><td>単体</td></tr><tr><td>食塩水</td><td class="mask">【Ｂ】</td></tr><tr><td>酸素 O<sub>2</sub></td><td>単体</td></tr><tr><td>水 H<sub>2</sub>O</td><td>化合物</td></tr></table></div>';
+
+// 元素記号表
+V['gensokigo'] = '<div class="vbox"><table class="vis-tbl"><tr><th>元素記号</th><th>元素名</th></tr><tr><td>H</td><td class="mask">【Ａ】</td></tr><tr><td>O</td><td>酸素</td></tr><tr><td class="mask">【Ｂ】</td><td>炭素</td></tr><tr><td>N</td><td>窒素</td></tr><tr><td>Na</td><td class="mask">【Ｃ】</td></tr><tr><td>Fe</td><td>鉄</td></tr><tr><td>Cu</td><td>銅</td></tr><tr><td>Ag</td><td class="mask">【Ｄ】</td></tr></table></div>';
+
+// 化学式一覧
+V['chemform'] = '<div class="vbox"><table class="vis-tbl"><tr><th>物質名</th><th>化学式</th></tr><tr><td>水</td><td class="mask">【Ａ】</td></tr><tr><td>水素</td><td>H<sub>2</sub></td></tr><tr><td>酸素</td><td class="mask">【Ｂ】</td></tr><tr><td>二酸化炭素</td><td>CO<sub>2</sub></td></tr><tr><td>アンモニア</td><td class="mask">【Ｃ】</td></tr><tr><td>塩化ナトリウム</td><td>NaCl</td></tr></table></div>';
+
+// 鉄と硫黄の反応
+V['fes'] = '<div class="vbox"><p style="font-size:.8em;color:#8b949e;margin-bottom:8px">鉄と硫黄の加熱実験</p><div class="rxn"><span>Fe</span><span class="rxnplus">+</span><span>S</span><span class="rxnarrow">→</span><span class="mbox">【Ａ】</span></div><table class="vis-tbl" style="margin-top:8px"><tr><th>試験管</th><th>磁石</th><th>塩酸を加えると</th></tr><tr><td>加熱前（混合物）</td><td>つく</td><td class="mask">【Ｂ】</td></tr><tr><td>加熱後（硫化鉄）</td><td>つかない</td><td>硫化水素 (卵のにおい)</td></tr></table></div>';
+
+// 銅の酸化
+V['cu_oxide'] = '<div class="vbox"><p style="font-size:.8em;color:#8b949e;margin-bottom:8px">銅の酸化</p><div class="rxn"><span>2Cu</span><span class="rxnplus">+</span><span>O<sub>2</sub></span><span class="rxnarrow">→</span><span class="mbox">【Ａ】</span></div><table class="vis-tbl" style="margin-top:8px"><tr><th>変化</th><th>加熱前</th><th>加熱後</th></tr><tr><td>色</td><td>赤褐色</td><td class="mask">【Ｂ】</td></tr><tr><td>質量</td><td>基準</td><td class="mask">【Ｃ】</td></tr></table></div>';
+
+// 塩化銅の電気分解
+V['cucl2'] = '<div class="vbox"><p style="font-size:.8em;color:#8b949e;margin-bottom:8px">塩化銅水溶液の電気分解</p><div class="rxn"><span>CuCl<sub>2</sub></span><span class="rxnarrow">→</span><span class="mbox">【Ａ】</span><span class="rxnplus">+</span><span>Cl<sub>2</sub></span></div><table class="vis-tbl" style="margin-top:8px"><tr><th>極</th><th>生成物</th><th>色・性質</th></tr><tr><td>陰極</td><td class="mask">【Ａ】</td><td>赤色の金属</td></tr><tr><td>陽極</td><td>塩素</td><td class="mask">【Ｂ】</td></tr></table></div>';
+
+// P波S波グラフ
+V['pswave'] = '<div class="vbox"><p style="font-size:.8em;color:#8b949e;margin-bottom:6px">地震波の到達時間グラフ</p><svg viewBox="0 0 260 140" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-width:300px"><rect width="260" height="140" fill="#0d1117"/><line x1="30" y1="10" x2="30" y2="120" stroke="#30363d" stroke-width="1.5"/><line x1="30" y1="120" x2="250" y2="120" stroke="#30363d" stroke-width="1.5"/><text x="140" y="136" fill="#8b949e" font-size="9" text-anchor="middle">震源からの距離 (km)</text><text x="10" y="65" fill="#8b949e" font-size="9" text-anchor="middle" transform="rotate(-90,10,65)">時間(秒)</text><line x1="30" y1="110" x2="220" y2="35" stroke="#58a6ff" stroke-width="2.5"/><text x="225" y="33" fill="#58a6ff" font-size="11" font-weight="bold">P波</text><line x1="30" y1="110" x2="220" y2="55" stroke="#f85149" stroke-width="2.5"/><text x="225" y="53" fill="#f85149" font-size="11" font-weight="bold">S波</text><line x1="140" y1="70" x2="140" y2="90" stroke="#ffd700" stroke-width="1" stroke-dasharray="3,2"/><line x1="30" y1="70" x2="140" y2="70" stroke="#ffd700" stroke-width="1" stroke-dasharray="3,2"/><line x1="30" y1="90" x2="140" y2="90" stroke="#ffd700" stroke-width="1" stroke-dasharray="3,2"/><text x="32" y="80" fill="#ffd700" font-size="9">初期微動</text><text x="32" y="89" fill="#ffd700" font-size="9">継続時間</text></svg></div>';
+
+// 震度・マグニチュード比較
+V['scale'] = '<div class="vbox"><table class="vis-tbl"><tr><th>用語</th><th>何を表す</th><th>値の数</th></tr><tr><td class="mask">【Ａ】</td><td>地震のエネルギー(規模)</td><td>1地震→1つの値</td></tr><tr><td>震度</td><td class="mask">【Ｂ】</td><td>観測地点ごとに異なる</td></tr></table><p style="font-size:.78em;color:#8b949e;margin-top:6px">震度は0〜7の10段階（5弱・5強・6弱・6強を含む）</p></div>';
+
+// プレート模式図
+V['plate'] = '<div class="vbox"><p style="font-size:.8em;color:#8b949e;margin-bottom:6px">日本付近のプレート</p><svg viewBox="0 0 260 120" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-width:300px"><rect width="260" height="120" fill="#0d1117"/><rect x="10" y="20" width="120" height="30" fill="#3a5a8a" rx="4"/><text x="70" y="40" fill="#79c0ff" font-size="10" text-anchor="middle">大陸プレート</text><rect x="10" y="60" width="100" height="25" fill="#1a3a1a" rx="4"/><text x="60" y="77" fill="#3fb950" font-size="9" text-anchor="middle">海洋プレート</text><polygon points="110,60 150,85 110,85" fill="#f85149" opacity=".7"/><text x="155" y="80" fill="#f85149" font-size="9">沈み込み</text><path d="M100,85 Q120,100 145,90" fill="none" stroke="#ffd700" stroke-width="1.5" stroke-dasharray="3,2"/><text x="148" y="100" fill="#ffd700" font-size="8">海溝</text><rect x="150" y="55" width="90" height="20" fill="#1a3a1a" rx="4"/><text x="195" y="68" fill="#3fb950" font-size="9" text-anchor="middle" class="mask">【沈み込む】</text><text x="195" y="105" fill="#8b949e" font-size="8" text-anchor="middle">海洋Pが大陸Pの下へ沈む→地震発生</text></svg></div>';
+
+// 化学反応式 2H2+O2→2H2O
+V['h2burn'] = '<div class="vbox"><p style="font-size:.8em;color:#8b949e;margin-bottom:8px">水素の燃焼（化学反応式）</p><div class="rxn"><span>2H<sub>2</sub></span><span class="rxnplus">+</span><span>O<sub>2</sub></span><span class="rxnarrow">→</span><span class="mbox">【Ａ】</span></div><p style="font-size:.78em;color:#8b949e;text-align:center;margin-top:6px">【Ａ】に入る物質と係数は何か</p></div>';
+
+// マグネシウム燃焼
+V['mg_burn'] = '<div class="vbox"><p style="font-size:.8em;color:#8b949e;margin-bottom:8px">マグネシウムの燃焼</p><div class="rxn"><span class="mbox">【Ａ】</span><span>Mg</span><span class="rxnplus">+</span><span>O<sub>2</sub></span><span class="rxnarrow">→</span><span class="mbox">【Ｂ】</span><span>MgO</span></div></div>';
+
+// 炭酸水素ナトリウム実験装置
+V['nahco3_exp'] = '<div class="vbox"><p style="font-size:.8em;color:#8b949e;margin-bottom:6px">炭酸水素ナトリウム加熱実験</p><svg viewBox="0 0 260 130" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-width:300px"><rect width="260" height="130" fill="#0d1117"/><rect x="20" y="40" width="60" height="30" rx="3" fill="none" stroke="#58a6ff" stroke-width="2"/><text x="50" y="59" fill="#79c0ff" font-size="9" text-anchor="middle">試験管A</text><text x="50" y="70" fill="#ffd700" font-size="8" text-anchor="middle">NaHCO₃</text><line x1="80" y1="50" x2="130" y2="50" stroke="#ccc" stroke-width="1.5"/><rect x="130" y="30" width="50" height="50" rx="20" fill="none" stroke="#30363d" stroke-width="2"/><text x="155" y="58" fill="#8b949e" font-size="8" text-anchor="middle">石灰水</text><text x="155" y="92" fill="#8b949e" font-size="8" text-anchor="middle">（確認用）</text><text x="50" y="105" fill="#f85149" font-size="8" text-anchor="middle">※口を少し下げる</text><rect x="20" y="35" width="20" height="10" rx="2" fill="#f0883e" opacity=".7"/><text x="30" y="44" fill="#fff" font-size="7" text-anchor="middle">熱</text><text x="180" y="50" fill="#3fb950" font-size="8">CO₂↑</text><text x="180" y="62" fill="#3fb950" font-size="8">白くにごる</text></svg></div>';
+
+// 周期表 (一部)
+V['periodic'] = '<div class="vbox"><p style="font-size:.8em;color:#8b949e;margin-bottom:6px">元素の周期表（一部）</p><table class="vis-tbl"><tr><th>周期＼族</th><th>1族</th><th>2族</th><th>…</th><th>16族</th><th>17族</th><th>18族</th></tr><tr><td>1</td><td>H<br><span style="font-size:.75em;color:#8b949e">水素</span></td><td></td><td>…</td><td></td><td></td><td>He<br><span style="font-size:.75em;color:#8b949e">ヘリウム</span></td></tr><tr><td>2</td><td>Li</td><td>Be</td><td>…</td><td>O<br><span style="font-size:.75em;color:#8b949e">酸素</span></td><td>F</td><td class="mask">【Ａ】<br><span style="font-size:.75em">ネオン</span></td></tr><tr><td>3</td><td class="mask">【Ｂ】<br><span style="font-size:.75em">ナトリウム</span></td><td>Mg</td><td>…</td><td>S</td><td>Cl</td><td>Ar</td></tr></table></div>';
+
+// 状態変化と化学変化
+V['state_chem'] = '<div class="vbox"><table class="vis-tbl"><tr><th>変化の種類</th><th>物質の種類</th><th>分子の変化</th><th>例</th></tr><tr><td>状態変化</td><td class="mask">【Ａ】</td><td>変わらない</td><td>水→水蒸気</td></tr><tr><td>化学変化</td><td>変わる</td><td class="mask">【Ｂ】</td><td>水の電気分解</td></tr></table></div>';
+
+// ============================================================
+// QUESTION DATA  D1〜D5 (25問 × 5回)
+// ============================================================
+var D1 = [
+  {no:1,t:'c',q:'炭酸水素ナトリウムを加熱したとき、発生する気体は何か。図の【Ａ】に入るものを選べ。',v:'nahco3',c:['水素','酸素','二酸化炭素','窒素'],a:2,e:'2NaHCO₃→Na₂CO₃+CO₂+H₂O。発生する気体は二酸化炭素（CO₂）。石灰水を白くにごらせることで確認できる。'},
+  {no:2,t:'c',q:'塩化コバルト紙に水がふれると何色に変化するか。図の【Ａ】を選べ。',v:'cobalt',c:['黄色','青色','赤色（桃色）','白色'],a:2,e:'塩化コバルト紙は乾燥時は青色、水にふれると赤色（桃色）に変化する。試験管口の液体が水であることを確認するために使う。'},
+  {no:3,t:'c',q:'水の電気分解で陰極（−極）に発生する気体は何か。図の【Ａ】に入るものを選べ。',v:'water_elec',c:['酸素','水素','二酸化炭素','窒素'],a:1,e:'水の電気分解：2H₂O→2H₂+O₂。陰極に水素、陽極に酸素が発生する。体積比は水素：酸素＝2：1。'},
+  {no:4,t:'c',q:'水を電気分解したとき、陰極：陽極の気体の体積比として正しいのはどれか。',c:['1：1','1：2','2：1','3：1'],a:2,e:'水の電気分解では水素（陰極）：酸素（陽極）＝2：1の体積比。化学反応式2H₂O→2H₂+O₂より係数から判断できる。'},
+  {no:5,t:'c',q:'酸化銀Ag₂Oを加熱したとき、図の化学反応式の【Ａ】（係数）に入る数字はどれか。',v:'ag2o',c:['1','2','3','4'],a:1,e:'2Ag₂O→4Ag+O₂。左辺Ag4個・O2個、右辺Ag4個・O2個で一致。【Ａ】は係数2。'},
+  {no:6,t:'c',q:'図の分子モデルが表す物質はどれか。',v:'water_model',c:['酸素分子 O₂','水分子 H₂O','水素分子 H₂','アンモニア NH₃'],a:1,e:'大きい丸が酸素原子（O）、小さい丸2個が水素原子（H）×2個。H₂Oが水分子を表す。'},
+  {no:7,t:'c',q:'物質をそれ以上分けることができない最小の粒子を何というか。',c:['分子','原子','元素','イオン'],a:1,e:'原子は化学変化でそれ以上分けることができない粒子。ドルトンが1803年に原子説を発表した。'},
+  {no:8,t:'c',q:'1種類の元素だけからできている純物質を何というか。',c:['混合物','化合物','単体','分子'],a:2,e:'単体は1種類の元素からなる純物質（例：O₂、Fe、Cu）。化合物は2種類以上の元素からなる（例：H₂O、NaCl）。'},
+  {no:9,t:'c',q:'図の物質の分類で【Ａ】（空気）と【Ｂ】（食塩水）に入る正しい組み合わせはどれか。',v:'bunrui',c:['単体・単体','混合物・化合物','混合物・混合物','化合物・混合物'],a:2,e:'空気は窒素・酸素などの混合物。食塩水はNaClと水の混合物。どちらも「混合物」に分類される。'},
+  {no:10,t:'c',q:'化学式 H₂O が表す物質はどれか。',c:['水素','酸素','水','アンモニア'],a:2,e:'H₂Oは水分子。水素原子（H）2個と酸素原子（O）1個が結びついている。'},
+  {no:11,t:'c',q:'化学式 NaCl が表す物質はどれか。',c:['炭酸水素ナトリウム','炭酸ナトリウム','塩化ナトリウム（食塩）','水酸化ナトリウム'],a:2,e:'NaClは塩化ナトリウム（食塩）。ナトリウム原子（Na）と塩素原子（Cl）が交互に並んだ結晶構造。'},
+  {no:12,t:'c',q:'元素記号の書き方として正しいのはどれか。',c:['全て大文字','1文字目大文字・2文字目小文字','全て小文字','1文字目小文字・2文字目大文字'],a:1,e:'元素記号：1文字は大文字（H, O, C）、2文字は最初大文字・次小文字（Na, Fe, Cu）。NaをNAやnaとは書かない。'},
+  {no:13,t:'c',q:'化学変化（化学反応）とはどのような変化か。',c:['物質の形が変わること','温度が変わること','もとの物質とは別の物質ができること','固体が液体になること'],a:2,e:'化学変化は別の物質ができる変化。状態変化（固体→液体→気体）は物質の種類は変わらないので化学変化ではない。'},
+  {no:14,t:'c',q:'水の電気分解の化学反応式として正しいのはどれか。',c:['H₂O → H₂ + O','2H₂O → 2H₂ + O₂','H₂O → H + O₂','2H₂O → H₂ + 2O₂'],a:1,e:'2H₂O→2H₂+O₂。左辺H4・O2、右辺H4・O2で原子数一致。係数を正しく合わせることが重要。'},
+  {no:15,t:'c',q:'フェノールフタレイン溶液を加えると赤色になる水溶液の性質はどれか。',c:['酸性','中性','アルカリ性','関係ない'],a:2,e:'フェノールフタレインはアルカリ性の水溶液で赤色になる。酸性・中性では無色のまま。炭酸ナトリウム水溶液は強いアルカリ性。'},
+  {no:16,t:'j',q:'地震が発生したとき、最初に岩石が破壊された場所を何というか。',c:['震央','震源','断層','プレート'],a:1,e:'震源は地下で最初に岩石が破壊された場所。震央は震源の真上の地表の点。'},
+  {no:17,t:'j',q:'地震の規模（エネルギーの大きさ）を表す値を何というか。',c:['震度','マグニチュード','震源距離','初期微動'],a:1,e:'マグニチュードは地震1つに1つの値が決まる（エネルギーの大きさ）。1大きくなるとエネルギーは約32倍。'},
+  {no:18,t:'j',q:'地震のゆれのうち先に伝わる小さなゆれを何というか。',c:['主要動','初期微動','S波による揺れ','余震'],a:1,e:'P波（縦波・速い）が先に到着して初期微動（小さなゆれ）を起こす。続いてS波が到着して主要動（大きなゆれ）が起こる。'},
+  {no:19,t:'j',q:'図のP波とS波のグラフについて、初期微動継続時間が長いほど震源距離はどうなるか。',v:'pswave',c:['近くなる','変わらない','遠くなる','関係ない'],a:2,e:'初期微動継続時間（P波到達〜S波到達）は震源距離に比例する。距離が遠いほどP波とS波の到達時刻の差が大きくなる。'},
+  {no:20,t:'j',q:'P波とS波の速さの関係として正しいのはどれか。',c:['S波の方が速い','同じ速さ','P波の方が速い','場所による'],a:2,e:'P波（縦波）はS波（横波）より速い。地殻中でP波約6km/s、S波約3.5km/s程度。P波が先に到達するため初期微動が起きる。'},
+  {no:21,t:'j',q:'図のマグニチュードと震度の説明で、【Ａ】に入る用語はどれか。',v:'scale',c:['震度','マグニチュード','震源距離','P波強度'],a:1,e:'マグニチュードは地震のエネルギーの大きさを示し、1つの地震につき1つの値。【Ｂ】の震度は観測地点ごとに異なる0〜7の10段階。'},
+  {no:22,t:'j',q:'震度階級として正しいのはどれか。',c:['0〜7の8段階','0〜7（5弱・5強・6弱・6強含む）10段階','1〜10の10段階','1〜7の7段階'],a:1,e:'震度は0・1・2・3・4・5弱・5強・6弱・6強・7の10段階。マグニチュードとは全く別の指標。'},
+  {no:23,t:'j',q:'日本付近では海洋プレートが大陸プレートの下に沈み込んでいる。この沈み込む場所にできる地形はどれか。',c:['山脈','海嶺','海溝','大陸棚'],a:2,e:'海洋プレートが沈み込む場所には深い海溝が形成される。日本海溝・南海トラフなど。'},
+  {no:24,t:'c',q:'炭酸水素ナトリウムを加熱する実験で試験管の口を少し下げる理由はどれか。',v:'nahco3_exp',c:['熱が逃げやすくするため','気体を集めやすくするため','口の液体が加熱部に流れ込み試験管が割れるのを防ぐため','試験管が落ちないようにするため'],a:2,e:'口を少し下げることで、口付近についた水（液体）が加熱された試験管下部に流れ込み、試験管が急冷されて割れる事故を防げる。'},
+  {no:25,t:'c',q:'状態変化と化学変化の違いとして正しいものはどれか。図の【Ａ】【Ｂ】から判断せよ。',v:'state_chem',c:['どちらも物質の種類が変わる','状態変化は物質の種類が変わらない・化学変化は変わる','どちらも物質の種類が変わらない','状態変化は変わる・化学変化は変わらない'],a:1,e:'状態変化（固体↔液体↔気体）は分子の集まり方が変わるだけで物質の種類は変わらない。化学変化は分子の組み合わせが変わり別の物質が生まれる。'}
+];
+
+var D2 = [
+  {no:1,t:'c',q:'鉄と硫黄の加熱実験で生成した黒い物質は何か。図の【Ａ】に入るものを選べ。',v:'fes',c:['酸化鉄','硫化鉄 (FeS)','炭化鉄','塩化鉄'],a:1,e:'Fe+S→FeS（硫化鉄）。黒色で磁石につかず、塩酸を加えると硫化水素（腐卵臭）が発生する。'},
+  {no:2,t:'c',q:'鉄と硫黄の混合物（加熱前）に磁石を近づけると【Ｂ】はどうなるか。',v:'fes',c:['磁石につかない','磁石につく','色が変わる','溶ける'],a:1,e:'加熱前の混合物には鉄（Fe）が含まれているので磁石につく。加熱後の硫化鉄（FeS）は別の物質なので磁石につかない。'},
+  {no:3,t:'c',q:'銅を空気中で加熱したとき生成する黒色の物質は何か。図の【Ａ】を選べ。',v:'cu_oxide',c:['硫化銅 CuS','酸化銅 CuO','炭化銅','塩化銅 CuCl₂'],a:1,e:'2Cu+O₂→2CuO（酸化銅）。銅が空気中の酸素と結びついて黒色の酸化銅になる。質量は増加する。'},
+  {no:4,t:'c',q:'銅を加熱したとき質量はどうなるか。図の【Ｃ】に入るものを選べ。',v:'cu_oxide',c:['減少する','変化しない','増加する','最初増加後に減少'],a:2,e:'銅が酸素と結びつくため質量は増加する。2Cu+O₂→2CuOより結びついた酸素の質量分だけ増える。'},
+  {no:5,t:'c',q:'塩化銅水溶液に電流を流したとき、陰極に付着する物質は何か。図の【Ａ】を選べ。',v:'cucl2',c:['塩素','銅（赤色金属）','酸素','水素'],a:1,e:'CuCl₂水溶液の電気分解で陰極に銅（赤色）が付着、陽極から塩素（黄緑色・刺激臭）が発生する。'},
+  {no:6,t:'c',q:'塩化銅水溶液電気分解で陽極から発生する気体【Ｂ】の色と性質はどれか。',v:'cucl2',c:['無色・無臭','黄緑色・刺激臭','赤褐色・腐卵臭','無色・可燃性'],a:1,e:'陽極から発生する塩素（Cl₂）は黄緑色で刺激臭のある有毒な気体。'},
+  {no:7,t:'c',q:'物質が酸素と結びつく化学変化を何というか。',c:['分解','電気分解','酸化','還元'],a:2,e:'酸化は物質が酸素と結びつく変化（→酸化物ができる）。激しく熱と光を出すものを燃焼という。'},
+  {no:8,t:'c',q:'マグネシウムが燃焼する化学反応式の【Ａ】【Ｂ】の係数の組み合わせはどれか。',v:'mg_burn',c:['A=1, B=1','A=2, B=2','A=2, B=1','A=1, B=2'],a:1,e:'2Mg+O₂→2MgO。係数A=2（Mgの前）、B=2（MgOの前）。原子の数：左Mg2・O2、右Mg2・O2で一致。'},
+  {no:9,t:'c',q:'元素記号 Fe が表す元素はどれか。',c:['フッ素','リン','鉄','銅'],a:2,e:'Feは鉄（iron）。ラテン語のferrum由来。フッ素はF、リンはP、銅はCu。'},
+  {no:10,t:'c',q:'元素記号 Ca が表す元素はどれか。',c:['炭素','塩素','カルシウム','コバルト'],a:2,e:'CaはCalcium（カルシウム）。CはCarbon（炭素）、ClはChlorine（塩素）、CoはCobalt（コバルト）。'},
+  {no:11,t:'c',q:'2種類以上の元素からできている純物質を何というか。',c:['単体','混合物','化合物','分子'],a:2,e:'化合物は2種類以上の元素からなる純物質。水H₂O（H・O）、塩化ナトリウムNaCl（Na・Cl）など。'},
+  {no:12,t:'c',q:'炭素が燃焼するときの化学反応式として正しいのはどれか。',c:['C + O → CO₂','2C + O₂ → 2CO','C + O₂ → CO₂','C + 2O₂ → CO₂'],a:2,e:'C+O₂→CO₂。炭素1個と酸素分子1個が反応して二酸化炭素1個ができる。左右でC1・O2が一致。'},
+  {no:13,t:'c',q:'周期表の縦の列を「族」、横の行を何というか。',c:['族','周期','列','行'],a:1,e:'周期表の横の行を「周期」、縦の列を「族」という。同族の元素は化学的性質が似ている。'},
+  {no:14,t:'c',q:'図の周期表で【Ａ】（ネオン）の元素記号はどれか。',v:'periodic',c:['N','Ne','Na','Ni'],a:1,e:'ネオンの元素記号はNe（Neon）。18族（貴ガス）に属し、化学的に非常に安定している。'},
+  {no:15,t:'c',q:'同じ元素からできているが性質の異なる物質を何というか。',c:['同位体','同素体','化合物','純物質'],a:1,e:'同素体は同じ元素からできているが性質が異なる物質。例：ダイヤモンドと黒鉛（どちらも炭素C）。'},
+  {no:16,t:'j',q:'図のP波・S波グラフで、ある地点のP波・S波の速さが分かれば何を求められるか。',v:'pswave',c:['震度','マグニチュード','震源からの距離','プレートの速さ'],a:2,e:'初期微動継続時間＝d/Vs−d/Vp（d:震源距離）。P波・S波の速さと継続時間から震源距離dを求められる。'},
+  {no:17,t:'j',q:'P波の速さが6 km/s のとき、震源から180 km 離れた地点にP波が届くまでの時間はどれか。',c:['20秒','30秒','36秒','60秒'],a:1,e:'時間＝距離÷速さ＝180÷6＝30秒。'},
+  {no:18,t:'j',q:'マグニチュードが2大きくなると地震のエネルギーは約何倍になるか。',c:['2倍','32倍','100倍','約1000倍'],a:3,e:'Mが1増えるとエネルギーは約32倍、Mが2増えると32×32≒1000倍になる。'},
+  {no:19,t:'j',q:'海洋プレートが大陸プレートの下に沈み込む場所にできる地形はどれか。',v:'plate',c:['山脈','海嶺','海溝','大陸棚'],a:2,e:'海洋プレートが沈み込む場所に海溝が形成される。日本海溝・南海トラフなどがその例。'},
+  {no:20,t:'j',q:'大きな地震の後に起こる小さな地震を何というか。',c:['前震','本震','余震','誘発地震'],a:2,e:'余震は本震の後に時間とともに少なく・小さくなっていく地震。本震前に起こる地震を前震という。'},
+  {no:21,t:'c',q:'原子の性質として正しいのはどれか。',c:['化学変化で別の種類になれる','化学変化でなくなることがある','化学変化でそれ以上分けられない','種類が違っても質量は同じ'],a:2,e:'原子の3つの性質：①化学変化でそれ以上分けられない ②新たに生まれたり消えたりしない ③種類によって質量・大きさが決まっている。'},
+  {no:22,t:'c',q:'化学変化の前後で原子の種類と数はどうなるか。',c:['種類も数も変わる','種類は変わるが数は変わらない','どちらも変わらない','数だけ変わる'],a:2,e:'化学変化の前後で原子の種類と数は変わらない（質量保存の法則）。化学反応式の左辺と右辺で原子数を一致させるのはこのため。'},
+  {no:23,t:'c',q:'水素と酸素から水ができる化学反応式で正しいのはどれか。',v:'h2burn',c:['H₂+O₂→H₂O','2H₂+O₂→2H₂O','H₂+O→H₂O','2H+O₂→H₂O'],a:1,e:'2H₂+O₂→2H₂O。左辺H4・O2、右辺H4・O2で一致。【Ａ】＝2H₂O（係数つき）。'},
+  {no:24,t:'c',q:'状態変化と化学変化を正しく区別しているのはどれか。',v:'state_chem',c:['水の沸騰は化学変化','鉄のさびは状態変化','水の蒸発は状態変化・炭酸水素Naの加熱は化学変化','氷の融解は化学変化'],a:2,e:'水の蒸発（液体→気体）は状態変化で物質の種類は変わらない。炭酸水素Naの加熱は別の物質が生成する化学変化。'},
+  {no:25,t:'j',q:'P波は固体・液体・気体のどれを伝わるか。S波と比べて正しいのはどれか。',c:['P波：固体のみ・S波：固体のみ','P波：固体・液体・気体すべて・S波：固体のみ','P波：液体のみ・S波：固体のみ','P波もS波も液体を伝わらない'],a:1,e:'P波（縦波）は固体・液体・気体すべてを伝わる。S波（横波）は固体のみを伝わる。地球内部の液体（外核）をP波は通過するが、S波は通過できない。'}
+];
+
+var D3 = [
+  {no:1,t:'c',q:'図の元素記号表で【Ａ】（水素の元素名）はどれか。',v:'gensokigo',c:['炭素','水素','酸素','窒素'],a:1,e:'H（エイチ）は水素（Hydrogen）。【Ｂ】は炭素C、【Ｃ】はナトリウムNa、【Ｄ】は銀Ag。'},
+  {no:2,t:'c',q:'図の元素記号表で【Ｂ】（炭素の元素記号）はどれか。',v:'gensokigo',c:['Ca','Co','C','Cr'],a:2,e:'炭素の元素記号はC（Carbon）。CaはCalcium（カルシウム）、CoはCobalt（コバルト）。'},
+  {no:3,t:'c',q:'図の化学式一覧で【Ａ】（水の化学式）はどれか。',v:'chemform',c:['H₂','OH','H₂O','HO₂'],a:2,e:'水の化学式はH₂O。水素原子2個と酸素原子1個が結びついた分子。'},
+  {no:4,t:'c',q:'図の化学式一覧で【Ｂ】（酸素の化学式）はどれか。',v:'chemform',c:['O','O₂','O₃','2O'],a:1,e:'酸素分子の化学式はO₂。2個の酸素原子が結びついた2原子分子。O₃はオゾン（同素体）。'},
+  {no:5,t:'c',q:'図の化学式一覧で【Ｃ】（アンモニアの化学式）はどれか。',v:'chemform',c:['NO','N₂H','NH₃','NH₄'],a:2,e:'アンモニアの化学式はNH₃。窒素原子1個と水素原子3個からなる分子。刺激臭の気体。'},
+  {no:6,t:'c',q:'化学式 NH₃（アンモニア）に含まれる窒素原子と水素原子の数はどれか。',c:['N:2個・H:3個','N:1個・H:2個','N:1個・H:3個','N:3個・H:1個'],a:2,e:'NH₃はN（窒素）1個、H（水素）3個。化学式の右下の小さな数字は原子の個数（1のときは省略）。'},
+  {no:7,t:'c',q:'「2H₂O」の意味として正しいのはどれか。',c:['水素原子2個と酸素原子1個','水分子が2個','水素分子が2個','水素原子が2個'],a:1,e:'化学式前の係数（2H₂O）は分子の個数を示す。H₂Oが2個＝水分子が2個。H原子4個・O原子2個を含む。'},
+  {no:8,t:'c',q:'次のうち分子をつくらない物質はどれか。',c:['水 H₂O','アンモニア NH₃','鉄 Fe','二酸化炭素 CO₂'],a:2,e:'鉄（Fe）は分子をつくらず、鉄原子がたくさん集まってできている。金属・食塩NaClなどは分子をつくらない。'},
+  {no:9,t:'c',q:'酸化銀Ag₂Oの熱分解の化学反応式として正しいのはどれか。',c:['Ag₂O → Ag + O','2Ag₂O → 4Ag + O₂','Ag₂O → 2Ag + O₂','Ag₂O → 2Ag + O'],a:1,e:'2Ag₂O→4Ag+O₂。左Ag4・O2、右Ag4・O2で一致。酸化銀を加熱すると銀と酸素に分解される（熱分解）。'},
+  {no:10,t:'c',q:'炭酸水素ナトリウムと炭酸ナトリウムで水にとけやすいのはどちらか。',c:['炭酸水素ナトリウム','同じ','炭酸ナトリウム','温度による'],a:2,e:'炭酸ナトリウムの方が水にとけやすく、水溶液はより強いアルカリ性を示す。フェノールフタレインで濃い赤色になる。'},
+  {no:11,t:'c',q:'物質が酸素を失う化学変化を何というか。',c:['酸化','中和','還元','電気分解'],a:2,e:'還元は物質が酸素を失う変化。酸化と還元は同時に起こることが多い（酸化還元反応）。'},
+  {no:12,t:'c',q:'スチールウール（鉄）を酸素中で燃やしたとき生成する物質はどれか。',c:['硫化鉄','酸化鉄','炭化鉄','何も生成しない'],a:1,e:'スチールウールを燃焼させると酸化鉄が生成する。黒色でもろく、磁石への引きつけ方が変わる。'},
+  {no:13,t:'c',q:'有機物が燃えると必ず発生する物質の組み合わせはどれか。',c:['水素と酸素','水素と炭素','二酸化炭素と水','酸素と窒素'],a:2,e:'有機物（炭素を含む物質）が燃えると必ず二酸化炭素（CO₂）と水（H₂O）が発生する。木・砂糖・メタンなどが有機物の例。'},
+  {no:14,t:'c',q:'炭酸水素ナトリウムの用途として正しいのはどれか。',c:['漂白剤','菓子の膨らし粉（ベーキングパウダー主成分）','歯磨き粉の研磨剤','防腐剤'],a:1,e:'重そう（炭酸水素ナトリウム）は加熱でCO₂を発生するため、パンや菓子の膨らし粉として利用される。'},
+  {no:15,t:'c',q:'電気を使って物質を分解することを何というか。',c:['熱分解','光分解','電気分解','化学分解'],a:2,e:'電気分解は電流を使って物質を分解する操作。水の電気分解（H₂・O₂）、塩化銅の電気分解（Cu・Cl₂）が典型例。'},
+  {no:16,t:'j',q:'プレートの移動速度として最も適切なのはどれか。',c:['毎秒数cm','毎日数cm','毎年数cm〜十数cm','毎年数km'],a:2,e:'プレートの移動速度は毎年数cm〜十数cm程度（人の爪が伸びる速さと同程度）。'},
+  {no:17,t:'j',q:'日本付近に存在するプレートの組み合わせとして正しいのはどれか。',v:'plate',c:['太平洋・大西洋・インド・南極','太平洋・フィリピン海・ユーラシア・北アメリカ','太平洋のみ','ユーラシアと北アメリカのみ'],a:1,e:'日本付近には4つのプレートが集まっている：太平洋・フィリピン海（海洋）・ユーラシア・北アメリカ（大陸）。'},
+  {no:18,t:'j',q:'地震の揺れの強さを観測地点ごとに表す指標はどれか。',c:['マグニチュード','震源距離','震度','初期微動継続時間'],a:2,e:'震度は各観測地点の揺れの強さを表す0〜7の10段階。マグニチュードは地震のエネルギーの大きさで1つの値。'},
+  {no:19,t:'j',q:'緊急地震速報はどちらの波を検知して発信するか。',c:['S波（主要動）','P波（初期微動）','両方同時に','表面波'],a:1,e:'緊急地震速報はP波（速くて小さな揺れ）を検知し、大きな揺れをもたらすS波が到達する前に警報を出す。'},
+  {no:20,t:'j',q:'震源距離が2倍になると初期微動継続時間はどうなるか。',c:['半分になる','変わらない','2倍になる','4倍になる'],a:2,e:'初期微動継続時間は震源距離に比例するため、距離が2倍になると継続時間も約2倍になる。'},
+  {no:21,t:'c',q:'化学反応式 2Cu + O₂ → 2CuO の左辺の銅原子の数はいくつか。',c:['1個','2個','3個','4個'],a:1,e:'2Cuは銅原子が2個であることを示す。係数（化学式の前の数字）が原子・分子の個数を表す。'},
+  {no:22,t:'c',q:'酸化銀の熱分解後に試験管に残る白っぽい固体は何か。',c:['酸化銀（変化なし）','銀（Ag）','銅（Cu）','アルミニウム（Al）'],a:1,e:'酸化銀を加熱すると銀と酸素に分解される。残った固体の銀は光沢があり、電気を通す金属。'},
+  {no:23,t:'c',q:'元素の周期表で縦の列の元素が共通してもつ特徴はどれか。',c:['原子番号が連続','化学的性質が似ている','同じ状態','電子の数が等しい'],a:1,e:'周期表の縦の列（族）の元素は化学的性質が似ている。例えば1族（アルカリ金属）は皆水と激しく反応する。'},
+  {no:24,t:'c',q:'日本生まれの元素「ニホニウム」の原子番号はどれか。',c:['92','113','118','119'],a:1,e:'ニホニウム（Nh）は原子番号113番。2016年に理化学研究所の森田浩介博士らが合成成功、アジア初の命名。'},
+  {no:25,t:'j',q:'津波が発生しやすい地震の種類はどれか。',c:['内陸直下型地震','海底の大地震（プレート境界型）','深発地震（深さ500km以上）','火山性微動'],a:1,e:'津波は海底で起きる大地震（プレート境界型）でプレートが跳ね上がり海水が大きく変動して発生する。'}
+];
+
+var D4 = [
+  {no:1,t:'c',q:'図の化学式一覧で【Ｃ】（アンモニア）の化学式NH₃に含まれる窒素：水素の原子数比はどれか。',v:'chemform',c:['1：1','1：2','1：3','2：3'],a:2,e:'NH₃はN1個・H3個。原子数比はN:H＝1:3。'},
+  {no:2,t:'c',q:'鉄と硫黄の反応（Fe+S→FeS）後に塩酸を加えると何が発生するか。',v:'fes',c:['水素','酸素','硫化水素（腐卵臭）','二酸化炭素'],a:2,e:'硫化鉄（FeS）に塩酸を加えると硫化水素（H₂S、腐った卵のような臭い）が発生する。'},
+  {no:3,t:'c',q:'銅の酸化（2Cu+O₂→2CuO）で加熱後に銅の色は何色に変化するか。図の【Ｂ】に入るものを選べ。',v:'cu_oxide',c:['赤褐色（変化なし）','黒色','白色','青色'],a:1,e:'銅（赤褐色）を加熱すると酸化銅（CuO）という黒色の物質に変化する。'},
+  {no:4,t:'c',q:'塩化銅水溶液に電流を流す実験で、陽極から発生する物質【Ｂ】はどれか。',v:'cucl2',c:['銅（赤色）','水素','塩素（黄緑色・刺激臭）','酸素'],a:2,e:'CuCl₂の電気分解：陰極に銅（Cu）、陽極から塩素（Cl₂、黄緑色・刺激臭）が発生。'},
+  {no:5,t:'c',q:'化学反応式の係数について正しいのはどれか。',c:['係数は分数でもよい','係数1のときは「1」と書く','係数は整数で係数1のときは省略する','係数はどんな数でもよい'],a:2,e:'化学反応式の係数は整数で、1のときは書かずに省略する。例：H₂O（係数1は書かない）、2H₂O（2は書く）。'},
+  {no:6,t:'c',q:'ダイヤモンドと黒鉛はどちらも炭素（C）からできているが性質が異なる。このような物質を何というか。',c:['同位体','同素体','化合物','混合物'],a:1,e:'同素体は同じ元素からできているが原子の結びつき方が異なり性質が違う物質。ダイヤモンド（硬・不導体）・黒鉛（軟・電気導体）が代表例。'},
+  {no:7,t:'c',q:'元素記号 Na の読み方と意味はどれか。',c:['ナ、窒素','ナトリウム（ナ）、ナトリウム','エヌ、ニッケル','アールゴン、アルゴン'],a:1,e:'Naはナトリウム（sodium）。ラテン語のnatriumに由来。読みは「ナ」。NはNitrogen（窒素）。'},
+  {no:8,t:'c',q:'「化合」の説明として正しいのはどれか。',c:['1種類の物質が2種類以上に分かれる','2種類以上の物質が1種類の別の物質になる','物質の状態が変わる','電流で物質を分解する'],a:1,e:'化合は2種類以上の物質が結びついて1種類の別の物質ができる変化。例：Fe+S→FeS、2Mg+O₂→2MgO。'},
+  {no:9,t:'c',q:'質量保存の法則とはどれか。',c:['化学変化で温度は保たれる','化学変化の前後で質量の合計は変化しない','化学変化で体積は保たれる','化学変化でエネルギーは保たれる'],a:1,e:'質量保存の法則：化学変化の前後で原子の種類・数が変わらないため、全体の質量は変化しない。'},
+  {no:10,t:'c',q:'水素H₂が燃焼する反応式2H₂+O₂→2H₂Oで右辺の【Ａ】に入るものを選べ。',v:'h2burn',c:['H₂O','2H₂O','H₂O₂','2H₂O₂'],a:1,e:'2H₂+O₂→2H₂O。水素の燃焼で水ができる。係数を入れると2H₂Oが正解。火をつけた線香が燃え続けることで酸素、塩化コバルト紙で水を確認できる。'},
+  {no:11,t:'j',q:'図のP波・S波グラフで震源距離100kmのとき、P波とS波の到達時刻の差を「初期微動継続時間」という。これが長いほど何を意味するか。',v:'pswave',c:['地震が大きい','震源が遠い','震度が大きい','P波が遅い'],a:1,e:'初期微動継続時間は震源距離に比例する。継続時間が長いほど震源が遠いことを意味する。'},
+  {no:12,t:'j',q:'図のマグニチュードと震度の表で【Ｂ】（震度が表すもの）に入るものを選べ。',v:'scale',c:['地震のエネルギーの大きさ','各地点での揺れの強さ','P波の速さ','断層の長さ'],a:1,e:'震度は各観測地点での地面の揺れの強さを示す0〜7の10段階。同じ地震でも観測地点によって異なる。'},
+  {no:13,t:'j',q:'内陸直下型地震が発生する主な原因はどれか。',c:['海洋プレートの沈み込み','活断層が動く','火山の噴火','マグマの上昇'],a:1,e:'内陸直下型地震は活断層（長期間にわたって繰り返し活動する断層）が動くことで発生する。被害が大きくなりやすい。'},
+  {no:14,t:'j',q:'日本で地震が多い主な理由はどれか。',v:'plate',c:['火山が多いから','複数のプレートが集まる場所にあるから','湿気が多いから','平野が少ないから'],a:1,e:'日本付近では太平洋・フィリピン海・ユーラシア・北アメリカの4プレートが集まっており、プレート境界での地震が多い。'},
+  {no:15,t:'j',q:'震度7について正しいのはどれか。',c:['必ずM7の地震','震度階級の最大値','海でしか起きない','マグニチュードと同じ値'],a:1,e:'震度7は現在の震度階級の最大値。マグニチュードとは別の概念で、震度7の地震でも震源が遠ければ被害が小さい場合もある。'},
+  {no:16,t:'c',q:'炭酸水素ナトリウムの熱分解【Ａ】で発生する気体に石灰水を通すと何が起きるか。',v:'nahco3',c:['石灰水が透明になる','石灰水が白くにごる','石灰水が黄色になる','変化しない'],a:1,e:'二酸化炭素（CO₂）は石灰水（水酸化カルシウム水溶液）を白くにごらせる。これがCO₂の確認方法。'},
+  {no:17,t:'c',q:'炭酸水素ナトリウムと加熱後の炭酸ナトリウム水溶液をフェノールフタレイン溶液に加えたとき、色の違いはどれか。',v:'cobalt',c:['どちらも赤色','炭酸水素Na→薄い赤・炭酸Na→濃い赤','どちらも無色','炭酸水素Na→濃い赤・炭酸Na→薄い赤'],a:1,e:'炭酸水素ナトリウムは弱いアルカリ性（薄い赤）、炭酸ナトリウムはより強いアルカリ性（濃い赤）になる。'},
+  {no:18,t:'c',q:'鉄が空気中で徐々にさびる変化は、化学変化か状態変化か。',c:['状態変化','化学変化（酸化）','物理変化','どちらでもない'],a:1,e:'鉄のさびは鉄が空気中の酸素と結びつく酸化（化学変化）。酸化鉄という別の物質が生成されるため化学変化。'},
+  {no:19,t:'c',q:'銅を加熱するとき質量が増加する理由はどれか。',v:'cu_oxide',c:['銅原子が増える','空気中の酸素と結びつくため','熱によって質量が増える','銅原子が大きくなる'],a:1,e:'2Cu+O₂→2CuOより、銅が空気中の酸素と結びつくため質量が増加する。酸素の質量分だけ増える。'},
+  {no:20,t:'c',q:'アボガドロが提唱した内容として正しいのはどれか。',c:['物質は原子からできている','気体は分子からできている','原子の中心に核がある','原子は電子をもつ'],a:1,e:'アボガドロ（1811年）は、気体では複数の原子が結びついた分子を単位とするという分子説を提唱した。'},
+  {no:21,t:'c',q:'メタン（CH₄）の燃焼：CH₄+2O₂→CO₂+2H₂Oで、右辺の水分子の数は何個か。',c:['1個','2個','3個','4個'],a:1,e:'2H₂Oは水分子が2個。係数の2がH₂Oの前についているので2個の水分子が生成する。'},
+  {no:22,t:'c',q:'ニホニウム（Nh、原子番号113）を合成したのはどこか。',c:['東京大学','大阪大学','理化学研究所','東北大学'],a:2,e:'ニホニウム（Nh、原子番号113）は理化学研究所の森田浩介博士らが2016年に国際的に認定された。アジア初の元素命名。'},
+  {no:23,t:'c',q:'化学反応式で左辺と右辺の原子の種類・数を等しくするために調整するものはどれか。',c:['元素記号','物質名','化学式の前の係数','原子の種類'],a:2,e:'化学反応式では係数（化学式の前の整数）を調整して、左辺と右辺で原子の種類と数が等しくなるようにする。'},
+  {no:24,t:'j',q:'P波とS波について図から読み取れることとして正しいのはどれか。',v:'pswave',c:['S波の方がP波より先に到達する','P波とS波は同時に到達する','P波の方が先に到達し初期微動を起こす','グラフの傾きはP波もS波も同じ'],a:2,e:'P波（速い）が先に到達して初期微動（小さなゆれ）を起こし、後からS波（遅い）が到達して主要動（大きなゆれ）を起こす。'},
+  {no:25,t:'j',q:'図の震度・マグニチュードの表で【Ａ】（地震のエネルギーを表す値）に入るものを選べ。',v:'scale',c:['震度','マグニチュード','震源深度','初期微動継続時間'],a:1,e:'マグニチュードは地震のエネルギーの大きさを表す値で、1つの地震に1つの値が決まる。'}
+];
+
+var D5 = [
+  {no:1,t:'c',q:'図の炭酸水素ナトリウムの分解で【Ａ】（発生気体）は何か。この気体を確認する方法はどれか。',v:'nahco3',c:['石灰水を黄色くにごらせる','塩化コバルト紙を赤くする','石灰水を白くにごらせる','BTB液を青くする'],a:2,e:'CO₂は石灰水（Ca(OH)₂水溶液）を白くにごらせる（炭酸カルシウムCaCO₃の沈殿）。これがCO₂の確認方法。'},
+  {no:2,t:'c',q:'水の電気分解で図の【Ａ】（陰極の気体）を確認するには何をするか。',v:'water_elec',c:['石灰水を通す','マッチの火を近づける（燃える）','火のついた線香を入れる','BTB溶液を加える'],a:1,e:'水素（H₂）はマッチの火を近づけると音を立てて燃える（ポンという音）。陰極の気体が水素であることを確認できる。'},
+  {no:3,t:'c',q:'図の元素記号表で【Ｃ】（ナトリウムの元素記号）はどれか。',v:'gensokigo',c:['N','Ni','Na','Nb'],a:2,e:'ナトリウムの元素記号はNa（natrium）。NはNitrogen（窒素）、NiはNickel（ニッケル）。'},
+  {no:4,t:'c',q:'図の元素記号表で【Ｄ】（銀の元素記号）はどれか。',v:'gensokigo',c:['Al','Au','Ag','Ar'],a:2,e:'銀の元素記号はAg（argentum）。AlはAluminium（アルミニウム）、AuはAurum（金）、ArはArgon（アルゴン）。'},
+  {no:5,t:'c',q:'図の物質の分類表で【Ｂ】（食塩水）の分類はどれか。',v:'bunrui',c:['単体','化合物','混合物','純物質'],a:2,e:'食塩水は塩化ナトリウム（NaCl）と水（H₂O）の混合物。2種類以上の純物質が混ざった混合物。'},
+  {no:6,t:'c',q:'銅の酸化実験（図）で、銅を完全に酸化させた後さらに加熱しても質量が変化しなくなる。この理由はどれか。',v:'cu_oxide',c:['温度が上がりすぎたから','すべての銅が酸化銅になりきったから','酸素が増えたから','銅が蒸発したから'],a:1,e:'全ての銅（Cu）が酸化銅（CuO）に変化しきると、結びつく銅がなくなるため質量の増加が止まる。'},
+  {no:7,t:'c',q:'鉄と硫黄の実験（図）で一度反応が始まると加熱をやめても反応が続く。この理由はどれか。',v:'fes',c:['外から熱が供給されるから','反応自体が熱を発生し続けるから（発熱反応）','硫黄が燃えるから','鉄が溶けるから'],a:1,e:'鉄と硫黄の反応は発熱反応。反応で発生した熱がさらに反応を促進するため、加熱をやめても反応が続く。'},
+  {no:8,t:'c',q:'炭酸水素ナトリウム加熱実験（図）で、試験管の口を下に向けて加熱する理由はどれか。',v:'nahco3_exp',c:['気体が出やすくするため','口の液体が試験管の加熱部に流れ込み割れるのを防ぐため','試験管を固定しやすくするため','炎が試験管に当たりやすくするため'],a:1,e:'口を少し下げることで、試験管口についた水が加熱された部分に流れ込むのを防ぎ、試験管が急冷されて割れる事故を防げる。'},
+  {no:9,t:'c',q:'マグネシウムの燃焼式（図の【Ａ】【Ｂ】）：2Mg+O₂→2MgOで正しい係数の組み合わせはどれか。',v:'mg_burn',c:['A=1, B=1','A=2, B=2','A=1, B=2','A=2, B=1'],a:1,e:'2Mg+O₂→2MgO。Mgの前の係数A=2、MgOの前の係数B=2。左右でMg2・O2の原子数が一致する。'},
+  {no:10,t:'c',q:'水素の燃焼式2H₂+O₂→【Ａ】で、【Ａ】に入るものはどれか。',v:'h2burn',c:['H₂O','2H₂O','H₂O₂','2H₂O₂'],a:1,e:'水素と酸素から水ができる：2H₂+O₂→2H₂O。左辺H4・O2、右辺H4・O2で一致。生成物は水（H₂O）、係数は2。'},
+  {no:11,t:'j',q:'P波速度5km/s・S波速度3km/sのとき、震源距離60kmの地点の初期微動継続時間はどれか。',v:'pswave',c:['4秒','6秒','8秒','10秒'],a:2,e:'初期微動継続時間＝60/3－60/5＝20－12＝8秒。公式：時間差＝距離/S波速度－距離/P波速度。'},
+  {no:12,t:'j',q:'プレートの境界（図）で海洋プレートが沈み込む際に大陸プレートが引きずられてひずみが蓄積し、跳ね上がることで発生する地震を何というか。',v:'plate',c:['内陸直下型地震','海溝型地震（プレート境界型地震）','火山性地震','誘発地震'],a:1,e:'海溝型地震（プレート境界型地震）は海洋プレートの沈み込みで大陸プレートが引きずられ、限界で跳ね上がることで発生。津波を起こしやすい。'},
+  {no:13,t:'j',q:'マグニチュード（M）と震度について、正しい組み合わせはどれか。',v:'scale',c:['Mは観測地点ごとに変わる','震度は1地震に1つの値','Mは1地震に1つの値・震度は地点ごとに異なる','どちらも1地震に1つの値'],a:2,e:'マグニチュードは1地震に1つの値（エネルギーの大きさ）。震度は各観測地点での揺れの強さで地点ごとに異なる。'},
+  {no:14,t:'j',q:'震源距離と初期微動継続時間のグラフの形はどれか。',c:['曲線（放物線）','原点を通る直線','原点を通らない直線','ばらばらの点'],a:1,e:'初期微動継続時間は震源距離に比例するため、グラフは原点を通る直線になる。この関係から震源距離を求められる。'},
+  {no:15,t:'j',q:'プレートの移動によって起きる現象として正しくないものはどれか。',c:['地震','火山活動','津波','オーロラ'],a:3,e:'オーロラは太陽風と地球の磁場が関係する現象でプレート運動とは無関係。地震・火山・津波はプレート運動に関連する。'},
+  {no:16,t:'c',q:'塩化銅CuCl₂の電気分解（図）で陰極と陽極のそれぞれに生成する物質の正しい組み合わせはどれか。',v:'cucl2',c:['陰極：塩素・陽極：銅','陰極：銅・陽極：塩素','陰極：水素・陽極：酸素','陰極：酸素・陽極：水素'],a:1,e:'CuCl₂の電気分解：陰極に銅（Cu、赤色の金属）、陽極から塩素（Cl₂、黄緑色・刺激臭）が発生する。'},
+  {no:17,t:'c',q:'図の状態変化と化学変化の比較で【Ａ】（状態変化では物質の種類が？）に入るものはどれか。',v:'state_chem',c:['変わる','変わらない','なくなる','増える'],a:1,e:'状態変化（固体↔液体↔気体）では分子の集まり方が変わるだけで物質の種類は変わらない。化学変化では物質の種類が変わる。'},
+  {no:18,t:'c',q:'ダイヤモンドは炭素Cからできている単体である。ダイヤモンドの性質として正しいのはどれか。',c:['電気を通す','やわらかい','非常に硬い','黒色'],a:2,e:'ダイヤモンドは非常に硬く（モース硬度10、最高）、電気を通さない。黒鉛（同素体）は電気を通す・やわらかい。'},
+  {no:19,t:'c',q:'酸化とは何か。最も正確な説明はどれか。',c:['熱が発生すること','物質が酸素と結びつくこと','状態が変化すること','電子を失うこと'],a:1,e:'酸化は物質が酸素と結びつく化学変化。燃焼は急激な酸化（熱と光を伴う）、さびは緩やかな酸化の例。'},
+  {no:20,t:'c',q:'元素の周期表（図）で同じ族（縦の列）の元素が共通してもつのはどれか。',v:'periodic',c:['原子番号が連続','化学的性質が似ている','同じ状態で存在','原子の大きさが同じ'],a:1,e:'同族元素は化学的性質が似ている。例：1族（H, Li, Na, K…）はすべて水と反応しやすい、18族は化学的に安定など。'},
+  {no:21,t:'c',q:'図の周期表で【Ｂ】（ナトリウム、第3周期1族）の元素記号はどれか。',v:'periodic',c:['K','N','Na','Mg'],a:2,e:'第3周期1族はナトリウムNa。KはPotassium（カリウム、第4周期1族）、MgはMagnesium（マグネシウム、第3周期2族）。'},
+  {no:22,t:'c',q:'炭酸水素ナトリウムの加熱で発生する3つの物質の組み合わせはどれか。',c:['炭酸ナトリウム・水素・酸素','炭酸ナトリウム・二酸化炭素・水','塩化ナトリウム・二酸化炭素・水','水酸化ナトリウム・二酸化炭素'],a:1,e:'2NaHCO₃→Na₂CO₃+CO₂+H₂O。炭酸ナトリウム（白い固体）・二酸化炭素（石灰水白濁）・水（塩化コバルト紙赤変）の3つが生成。'},
+  {no:23,t:'c',q:'重そう（炭酸水素ナトリウム）が食品に使われる理由はどれか。',c:['甘みを加えるため','防腐効果があるため','加熱するとCO₂を発生し生地が膨らむため','着色料として使われるため'],a:2,e:'重そうは加熱でCO₂を発生するため膨らし粉（ベーキングパウダーの主成分）として使われる。どら焼きの皮・カルメ焼きなどに利用。'},
+  {no:24,t:'j',q:'P波速度8km/s・S波速度4km/sのとき、初期微動継続時間が32秒ならば震源距離はどれか。',c:['128km','256km','512km','64km'],a:1,e:'公式：震源距離d=継続時間÷(1/S波速度-1/P波速度)=32÷(1/4-1/8)=32÷(1/8)=32×8=256km。'},
+  {no:25,t:'j',q:'図の地震波グラフで「初期微動継続時間」に対応する部分として正しいのはどれか。',v:'pswave',c:['P波が到達してから揺れが収まるまでの時間','P波到達からS波到達までの時間','地震発生からP波到達までの時間','S波到達から揺れが収まるまでの時間'],a:1,e:'初期微動継続時間はP波到達からS波到達までの時間。グラフではP波とS波の到達時刻の差として読み取れる。'}
+];
+
+var EXAMS = [
+  {id:1,title:'第1回',sub:'炭酸水素Na分解・水の電気分解・原子・地震の基礎',data:D1},
+  {id:2,title:'第2回',sub:'鉄と硫黄・銅の酸化・塩化銅電気分解・地震波計算',data:D2},
+  {id:3,title:'第3回',sub:'元素記号・化学式・化学反応式・プレート',data:D3},
+  {id:4,title:'第4回',sub:'化合・酸化還元・質量保存・震度とマグニチュード',data:D4},
+  {id:5,title:'第5回',sub:'総まとめ・図表総合・地震計算（震源距離）',data:D5}
+];
+
+// ============================================================
+// STATE & STORAGE
+// ============================================================
+var state = {exam:null,answers:[],timerLeft:1800,timerIv:null,submitted:false,lastReview:null};
+var SK = 'rikaExam2026v3';
+function svSave(d){try{localStorage.setItem(SK,JSON.stringify(d));}catch(e){}}
+function svLoad(){try{var s=localStorage.getItem(SK);return s?JSON.parse(s):{}}catch(e){return {};}}
+
+// ============================================================
+// HOME
+// ============================================================
+function initHome(){
+  var stored=svLoad();
+  var html='';
+  for(var i=0;i<EXAMS.length;i++){
+    var ex=EXAMS[i];
+    var sd=stored['e'+ex.id]||{};
+    var badge='',cls='';
+    if(sd.submitted){badge='<span class="badge">✓ '+sd.score+'点</span>';cls='done';}
+    else if(sd.answers&&sd.answers.some(function(a){return a!==null;})){
+      var done=sd.answers.filter(function(a){return a!==null;}).length;
+      badge='<span class="badge">途中 '+done+'/25</span>';cls='in-progress';
+    }
+    html+='<button class="exam-btn '+cls+'" data-id="'+ex.id+'"><b>'+ex.title+'</b><br><span style="font-size:.82em;opacity:.75">'+ex.sub+'</span>'+badge+'</button>';
+  }
+  document.getElementById('examList').innerHTML=html;
+  var btns=document.getElementById('examList').querySelectorAll('button');
+  for(var b=0;b<btns.length;b++){
+    (function(btn){
+      btn.addEventListener('click',function(){startExam(parseInt(btn.getAttribute('data-id'),10));});
+    })(btns[b]);
+  }
+}
+document.getElementById('btnClearAll').addEventListener('click',function(){
+  if(!confirm('全保存データを消去しますか？')){return;}
+  try{localStorage.removeItem(SK);}catch(e){}
+  initHome();
+});
+
+// ============================================================
+// START EXAM
+// ============================================================
+function startExam(id){
+  var ex=null;
+  for(var i=0;i<EXAMS.length;i++){if(EXAMS[i].id===id){ex=EXAMS[i];break;}}
+  if(!ex)return;
+  var stored=svLoad();
+  var sd=stored['e'+id]||{};
+  if(sd.submitted){
+    if(!confirm('この回はすでに採点済みです。もう一度やり直しますか？')){
+      restoreResult(id);return;
+    }
+    delete stored['e'+id];svSave(stored);sd={};
+  }
+  state.exam=ex;state.submitted=false;
+  if(sd.answers&&sd.answers.length===ex.data.length){
+    state.answers=sd.answers.slice();
+    state.timerLeft=sd.tl!==undefined?sd.tl:1800;
+  }else{
+    state.answers=[];
+    for(var j=0;j<ex.data.length;j++)state.answers.push(null);
+    state.timerLeft=1800;
+  }
+  showScreen('examScreen');
+  renderAllQ();
+  startTimer();
+}
+
+// ============================================================
+// RENDER ALL QUESTIONS
+// ============================================================
+function renderAllQ(){
+  var ex=state.exam;
+  var html='<h2 style="font-size:1em;color:#58a6ff;margin-bottom:14px;padding-top:4px">'+ex.title+' — '+ex.sub+'</h2>';
+  for(var i=0;i<ex.data.length;i++){
+    html+=buildQCard(i);
+  }
+  document.getElementById('allQArea').innerHTML=html;
+  bindChoices();
+  updateCountDisplay();
+  updateChips();
+}
+
+function buildQCard(idx){
+  var ex=state.exam;
+  var q=ex.data[idx];
+  var tag=q.t==='j'?'<span class="q-tag tag-j">🌍 地震</span>':'<span class="q-tag tag-c">🧪 化学</span>';
+  var visHtml=q.v&&V[q.v]?V[q.v]:'';
+  var cho='';
+  var labels=['\u30A2','\u30A4','\u30A6','\u30A8'];
+  for(var i=0;i<q.c.length;i++){
+    var cls='cho';
+    if(state.submitted){
+      if(i===q.a)cls+=' ok';
+      else if(state.answers[idx]===i)cls+=' ng';
+    }else{
+      if(state.answers[idx]===i)cls+=' sel';
+    }
+    var dis=state.submitted?' disabled':'';
+    cho+='<button class="'+cls+'"'+dis+' data-qi="'+idx+'" data-ci="'+i+'">'+labels[i]+'　'+q.c[i]+'</button>';
+  }
+  var exp=state.submitted?'<div class="explanation">📝 <b>解説：</b>'+q.e+'</div>':'';
+  var hlCls=(state.answers[idx]===null&&!state.submitted)?' unanswered-hl':'';
+  return '<div class="q-card'+hlCls+'" id="qcard'+idx+'">'+
+    '<div class="q-head"><span class="q-num">Q'+(idx+1)+'</span>'+tag+'</div>'+
+    '<div class="q-text">'+q.q+'</div>'+
+    visHtml+
+    '<div class="choices" id="choicesBox'+idx+'">'+cho+'</div>'+
+    exp+'</div>';
+}
+
+function bindChoices(){
+  var ex=state.exam;
+  for(var i=0;i<ex.data.length;i++){
+    var box=document.getElementById('choicesBox'+i);
+    if(!box)continue;
+    var btns=box.querySelectorAll('button');
+    for(var b=0;b<btns.length;b++){
+      (function(btn){
+        btn.addEventListener('click',function(){
+          if(state.submitted)return;
+          var qi=parseInt(btn.getAttribute('data-qi'),10);
+          var ci=parseInt(btn.getAttribute('data-ci'),10);
+          state.answers[qi]=ci;
+          refreshQCard(qi);
+          updateCountDisplay();
+          updateChips();
+          autoSave();
+        });
+      })(btns[b]);
+    }
+  }
+}
+
+function refreshQCard(idx){
+  var el=document.getElementById('qcard'+idx);
+  if(!el)return;
+  var newHtml=buildQCard(idx);
+  var tmp=document.createElement('div');
+  tmp.innerHTML=newHtml;
+  var newCard=tmp.firstChild;
+  el.parentNode.replaceChild(newCard,el);
+  var box=document.getElementById('choicesBox'+idx);
+  if(box){
+    var btns=box.querySelectorAll('button');
+    for(var b=0;b<btns.length;b++){
+      (function(btn){
+        btn.addEventListener('click',function(){
+          if(state.submitted)return;
+          var qi=parseInt(btn.getAttribute('data-qi'),10);
+          var ci=parseInt(btn.getAttribute('data-ci'),10);
+          state.answers[qi]=ci;
+          refreshQCard(qi);
+          updateCountDisplay();
+          updateChips();
+          autoSave();
+        });
+      })(btns[b]);
+    }
+  }
+}
+
+function updateCountDisplay(){
+  var answered=state.answers.filter(function(a){return a!==null;}).length;
+  document.getElementById('answeredCount').textContent=answered+'/'+state.exam.data.length+' 回答';
+}
+
+function updateChips(){
+  var ex=state.exam;
+  var html='';
+  for(var i=0;i<ex.data.length;i++){
+    var cls='chip'+(state.answers[i]!==null?' answered':'');
+    html+='<div class="'+cls+'" data-qi="'+i+'">'+(i+1)+'</div>';
+  }
+  document.getElementById('progressChips').innerHTML=html;
+  var chips=document.getElementById('progressChips').querySelectorAll('.chip');
+  for(var c=0;c<chips.length;c++){
+    (function(chip){
+      chip.addEventListener('click',function(){
+        var qi=parseInt(chip.getAttribute('data-qi'),10);
+        var el=document.getElementById('qcard'+qi);
+        if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}
+      });
+    })(chips[c]);
+  }
+}
+
+// ============================================================
+// SUBMIT
+// ============================================================
+document.getElementById('btnSubmitTop').addEventListener('click',function(){submitExam();});
+
+function submitExam(){
+  var ua=state.answers.filter(function(a){return a===null;}).length;
+  if(ua>0){
+    // 未回答問題へスクロール
+    var firstUna=-1;
+    for(var i=0;i<state.answers.length;i++){if(state.answers[i]===null){firstUna=i;break;}}
+    if(!confirm('未回答が'+ua+'問あります。\nQ'+(firstUna+1)+'などに回答していません。\nこのまま採点しますか？\n（「OK」で採点、「キャンセル」で未回答問題へ移動）')){
+      if(firstUna>=0){
+        var el=document.getElementById('qcard'+firstUna);
+        if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}
+        flashChip(firstUna);
+      }
+      return;
+    }
+  }
+  stopTimer();
+  state.submitted=true;
+  // 全カード再描画（採点結果表示）
+  var ex=state.exam;
+  for(var i=0;i<ex.data.length;i++){refreshQCard(i);}
+  // 結果計算
+  var cor=0,cc=0,ct=0,jc=0,jt=0;
+  for(var i=0;i<ex.data.length;i++){
+    var q=ex.data[i];
+    var ok=(state.answers[i]===q.a)?1:0;
+    if(q.t==='j'){jt++;jc+=ok;}else{ct++;cc+=ok;}
+    cor+=ok;
+  }
+  var score=Math.round(cor/ex.data.length*100);
+  var stored=svLoad();
+  stored['e'+ex.id]={answers:state.answers.slice(),tl:state.timerLeft,submitted:true,score:score,cor:cor,cc:cc,ct:ct,jc:jc,jt:jt};
+  svSave(stored);
+  state.lastReview={ex:ex,answers:state.answers.slice()};
+  renderResult(score,cor,cc,ct,jc,jt);
+  showScreen('resultScreen');
+}
+
+function flashChip(idx){
+  var chips=document.getElementById('progressChips').querySelectorAll('.chip');
+  for(var c=0;c<chips.length;c++){
+    if(parseInt(chips[c].getAttribute('data-qi'),10)===idx){
+      chips[c].classList.add('unanswered-flash');
+      (function(el){setTimeout(function(){el.classList.remove('unanswered-flash');},1500);})(chips[c]);
+      break;
+    }
+  }
+}
+
+// ============================================================
+// TIMER
+// ============================================================
+function startTimer(){
+  stopTimer();
+  updateTimerDisp();
+  state.timerIv=setInterval(function(){
+    state.timerLeft--;
+    updateTimerDisp();
+    if(state.timerLeft%30===0)autoSave();
+    if(state.timerLeft<=0){stopTimer();alert('時間終了！採点します。');submitExam();}
+  },1000);
+}
+function stopTimer(){if(state.timerIv){clearInterval(state.timerIv);state.timerIv=null;}}
+function updateTimerDisp(){
+  var m=Math.floor(state.timerLeft/60);
+  var s=state.timerLeft%60;
+  var el=document.getElementById('timerDisp');
+  if(!el)return;
+  el.textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  el.className='timer'+(state.timerLeft<=180?' danger':state.timerLeft<=600?' warn':'');
+}
+
+function autoSave(){
+  if(!state.exam)return;
+  var stored=svLoad();
+  stored['e'+state.exam.id]={answers:state.answers.slice(),tl:state.timerLeft,submitted:false};
+  svSave(stored);
+}
+
+// ============================================================
+// RESULT
+// ============================================================
+function renderResult(score,cor,cc,ct,jc,jt){
+  document.getElementById('rScore').textContent=score;
+  document.getElementById('rCorrect').textContent=cor;
+  var msg=score>=90?'🎉 すばらしい！ほぼ完璧です':score>=70?'👍 よくできました！もう少し':score>=50?'📖 半分以上正解！復習で差をつけよう':'💪 復習してもう一度挑戦しよう';
+  var msgEl=document.getElementById('rMsg');
+  msgEl.textContent=msg;
+  msgEl.style.color=score>=70?'#3fb950':score>=50?'#ffa657':'#f85149';
+  var cp=ct>0?Math.round(cc/ct*100):0;
+  var jp=jt>0?Math.round(jc/jt*100):0;
+  document.getElementById('catBars').innerHTML=
+    '<div class="cat-bar-row"><div class="cat-bar-lbl">🧪 化学</div><div class="cat-bar-bg"><div class="cat-bar-fill" style="width:'+cp+'%;background:#1f6feb"></div></div><div class="cat-bar-pct">'+cp+'%</div></div>'+
+    '<div class="cat-bar-row"><div class="cat-bar-lbl">🌍 地震</div><div class="cat-bar-bg"><div class="cat-bar-fill" style="width:'+jp+'%;background:#238636"></div></div><div class="cat-bar-pct">'+jp+'%</div></div>';
+  document.getElementById('reviewArea').style.display='none';
+}
+
+function restoreResult(id){
+  var stored=svLoad();
+  var sd=stored['e'+id];
+  if(!sd||!sd.submitted)return;
+  var ex=null;
+  for(var i=0;i<EXAMS.length;i++){if(EXAMS[i].id===id){ex=EXAMS[i];break;}}
+  if(!ex)return;
+  state.lastReview={ex:ex,answers:sd.answers};
+  renderResult(sd.score,sd.cor,sd.cc,sd.ct,sd.jc,sd.jt);
+  showScreen('resultScreen');
+}
+
+document.getElementById('btnGoReview').addEventListener('click',function(){
+  var r=state.lastReview;if(!r)return;
+  var ex=r.ex;var answers=r.answers;
+  var html='';var wc=0;
+  var labels=['\u30A2','\u30A4','\u30A6','\u30A8'];
+  for(var i=0;i<ex.data.length;i++){
+    var q=ex.data[i];
+    if(answers[i]===q.a)continue;
+    wc++;
+    var visH=q.v&&V[q.v]?V[q.v]:'';
+    var cho='';
+    for(var j=0;j<q.c.length;j++){
+      var col=j===q.a?'#3fb950':(j===answers[i]?'#f85149':'#8b949e');
+      var mk=j===q.a?' ✅':(j===answers[i]?' ❌':'');
+      cho+='<div style="font-size:.85em;padding:3px 0;color:'+col+'">'+labels[j]+'　'+q.c[j]+mk+'</div>';
+    }
+    var cat=q.t==='j'?'🌍 地震':'🧪 化学';
+    html+='<div class="review-card">'+
+      '<div style="font-size:.78em;color:#8b949e">Q'+(i+1)+' '+cat+'</div>'+
+      '<div class="q-text" style="margin:6px 0;font-size:.92em">'+q.q+'</div>'+
+      visH+cho+
+      '<div class="explanation">📝 '+q.e+'</div></div>';
+  }
+  if(wc===0)html='<div style="text-align:center;padding:20px;color:#3fb950;font-size:1.1em">🎊 全問正解！すばらしい！</div>';
+  document.getElementById('reviewList').innerHTML=html;
+  var ra=document.getElementById('reviewArea');
+  ra.style.display='block';
+  ra.scrollIntoView({behavior:'smooth'});
+});
+
+document.getElementById('btnGoHome').addEventListener('click',function(){
+  stopTimer();state.exam=null;state.submitted=false;
+  showScreen('homeScreen');initHome();
+});
+
+// ============================================================
+// SCREEN SWITCH
+// ============================================================
+function showScreen(id){
+  var ss=['homeScreen','examScreen','resultScreen'];
+  for(var i=0;i<ss.length;i++){
+    var el=document.getElementById(ss[i]);
+    if(el){el.style.display=(ss[i]===id?'block':'none');}
+  }
+  window.scrollTo(0,0);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+initHome();
+</script>
+</body>
+</html>
