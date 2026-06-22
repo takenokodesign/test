@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英語期末テスト対策 (Unit 1 & 2)</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --primary-hover: #2980b9;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --bg-color: #fdfbf7;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+        }
+        body {
+            font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .top-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        select, button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        select {
+            border: 1px solid #ddd;
+            background: white;
+        }
+        button.btn-primary { background: var(--primary); color: white; }
+        button.btn-primary:hover { background: var(--primary-hover); }
+        button.btn-success { background: var(--success); color: white; }
+        button.btn-success:hover { background: #27ae60; }
+        button.btn-secondary { background: #95a5a6; color: white; }
+        button.btn-secondary:hover { background: #7f8c8d; }
+        
+        .file-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        input[type="file"] { display: none; }
+        .file-upload-label {
+            background: #34495e;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .file-upload-label:hover { background: #2c3e50; }
+        
+        .question-card {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options-list li {
+            margin-bottom: 10px;
+        }
+        .options-list label {
+            display: block;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #ecf0f1;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .options-list label:hover { border-color: var(--primary); }
+        .options-list input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .explanation-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+            font-size: 15px;
+        }
+        .correct-box {
+            background-color: #e8f8f5;
+            border-left: 5px solid var(--success);
+        }
+        .wrong-box {
+            background-color: #fdedec;
+            border-left: 5px solid var(--danger);
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .badge-correct { background-color: var(--success); }
+        .badge-wrong { background-color: var(--danger); }
+        
+        .score-board {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #d35400;
+            margin: 30px 0;
+            display: none;
+            padding: 20px;
+            background: #fdf2e9;
+            border-radius: 8px;
+        }
+        
+        #action-buttons {
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📝 英語期末テスト (Unit 1 & 2)</h1>
+    
+    <div class="top-controls">
+        <div>
+            <select id="set-selector">
+                <option value="set1">Set 1 (基本問題・読解1)</option>
+                <option value="set2">Set 2 (標準問題・読解2)</option>
+                <option value="set3">Set 3 (応用問題・読解3)</option>
+                <option value="set4">Set 4 (総合問題A・読解4)</option>
+                <option value="set5">Set 5 (総合問題B・読解5)</option>
+            </select>
+            <button class="btn-primary" onclick="loadTest()">テスト開始</button>
+            <button class="btn-secondary" onclick="loadWrongReview()" id="btn-review" style="display:none;">間違えた問題を復習</button>
+        </div>
+        <div class="file-controls">
+            <button class="btn-success" onclick="exportData()">データ保存</button>
+            <label class="file-upload-label">
+                データ読込
+                <input type="file" id="import-file" accept=".json" onchange="importData(event)">
+            </label>
+        </div>
+    </div>
+
+    <div id="score-board" class="score-board"></div>
+
+    <div id="test-container"></div>
+
+    <div id="action-buttons" style="display:none;">
+        <button class="btn-primary" style="font-size: 18px; padding: 15px 40px;" onclick="gradeTest()">採点する</button>
+    </div>
+</div>
+
+<script>
+    const questionsDB = {"set1": [{"id": "1-1", "q": "【空所補充】私は明日、京都を訪れるつもりです。<br>I (　　) (　　) to visit Kyoto tomorrow.", "options": ["am going", "will go", "am will", "going to"], "correct": 0, "exp": "「～するつもりです」は be going to を使います。主語が I なので am going になります。"}, {"id": "1-2", "q": "【英訳】彼女は来週、カナダに滞在するつもりです。最も適切な英文を選びなさい。", "options": ["She will going to stay in Canada next week.", "She is going to stay in Canada next week.", "She going to stay in Canada next week.", "She is going stay to in Canada next week."], "correct": 1, "exp": "「～するつもり」は be going to。主語が She なので be動詞は is を使います。"}, {"id": "1-3", "q": "【単語並べ替え】「あなたは今日の午後、ピアノを練習するつもりですか。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ practice / going / this afternoon / the piano / to / are / you / ? ]", "options": ["Are you going to practice the piano this afternoon?", "Are going to you practice the piano this afternoon?", "You are going to practice the piano this afternoon?", "Are you practice going to the piano this afternoon?"], "correct": 0, "exp": "疑問文なので Are you going to + 動詞の原形 (practice) の語順になります。"}, {"id": "1-4", "q": "【和訳】We are not going to play baseball this weekend. の意味として正しいものを選びなさい。", "options": ["私たちは今週末、野球をする予定です。", "私たちは今週末、野球をしませんでした。", "私たちは今週末、野球をするつもりはありません。", "私たちは今週末、野球をすべきではありません。"], "correct": 2, "exp": "be not going to ~ で「～するつもりはない（予定はない）」という意味になります。"}, {"id": "1-5", "q": "【空所補充】私がそのドアを開けましょう。<br>I (　　) open the door.", "options": ["am", "going to", "will", "do"], "correct": 2, "exp": "「（これから）～しましょう」というその場で決めた意志は will を使います。"}, {"id": "1-6", "q": "【単語並べ替え】「明日は晴れるでしょうか。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ sunny / tomorrow / it / will / be / ? ]", "options": ["Will be it sunny tomorrow?", "Will it be sunny tomorrow?", "It will sunny be tomorrow?", "Will it sunny be tomorrow?"], "correct": 1, "exp": "天気を表す it を主語にし、Will + 主語 + 動詞の原形(be) の語順にします。"}, {"id": "1-7", "q": "【英訳】私はあなたに何枚か写真を見せましょう。最も適切な英文を選びなさい。", "options": ["I will show some pictures you.", "I will show to you some pictures.", "I will show you some pictures.", "I will show your some pictures."], "correct": 2, "exp": "show + 人 + 物 で「人に物を見せる」となります。"}, {"id": "1-8", "q": "【空所補充】私の父は先週、私に新しい自転車を買ってくれました。<br>My father (　　) me a new bike last week.", "options": ["buy", "buys", "bought", "buying"], "correct": 2, "exp": "buy + 人 + 物 で「人に物を買う」。last week（先週）があるので過去形 bought になります。"}, {"id": "1-9", "q": "【和訳】We call the dog Pochi. の意味として正しいものを選びなさい。", "options": ["私たちは犬のポチを呼びます。", "私たちはその犬をポチと呼びます。", "ポチはその犬を呼びます。", "その犬は私たちをポチと呼びます。"], "correct": 1, "exp": "call A B で「AをBと呼ぶ」となります。A=the dog, B=Pochi です。"}, {"id": "1-10", "q": "【単語並べ替え】「みんなはこの猫をシロと呼びます。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ Shiro / calls / this cat / everyone / . ]", "options": ["Everyone calls this cat Shiro.", "This cat calls everyone Shiro.", "Everyone this cat calls Shiro.", "Everyone calls Shiro this cat."], "correct": 0, "exp": "主語(Everyone) + 動詞(calls) + A(this cat) + B(Shiro) の語順です。"}, {"id": "1-11", "q": "【空所補充】私がひまなとき、私はギターを弾きます。<br>(　　) I am free, I play the guitar.", "options": ["If", "When", "Because", "That"], "correct": 1, "exp": "「～するとき」は接続詞の When を使います。"}, {"id": "1-12", "q": "【和訳】I was very happy when he looked at me. の意味として正しいものを選びなさい。", "options": ["もし彼が私を見たなら、私はとても幸せです。", "なぜなら彼が私を見たので、私はとても幸せでした。", "彼が私を見たとき、私はとても幸せでした。", "私が彼を見たとき、彼はとても幸せそうでした。"], "correct": 2, "exp": "when ~ は「～のとき」。主節が「私はとても幸せだった」、when節が「彼が私を見たとき」です。"}, {"id": "1-13", "q": "【空所補充】もし明日晴れなら、私たちは海で泳ぐことができます。<br>(　　) it is sunny tomorrow, we can swim in the sea.", "options": ["When", "Because", "If", "Think"], "correct": 2, "exp": "「もし～なら」という条件を表すときは If を使います。"}, {"id": "1-14", "q": "【英訳】私は数学が好きです。なぜなら面白いからです。最も適切な英文を選びなさい。", "options": ["I like math if it is interesting.", "I like math when it is interesting.", "I like math because it is interesting.", "I like math that it is interesting."], "correct": 2, "exp": "「なぜなら～だから」と理由を表すときは because を使います。"}, {"id": "1-15", "q": "【和訳】I got up early today because I have a test. の意味として正しいものを選びなさい。", "options": ["テストがあったとき、今日は早く起きました。", "テストがあるので、私は今日早く起きました。", "もしテストがあるなら、今日早く起きます。", "私はテストがあることを今日早く知りました。"], "correct": 1, "exp": "because ~ で「～なので（理由）」を表します。"}, {"id": "1-16", "q": "【空所補充】私は秋はよい季節だと思います。<br>I (　　) (　　) fall is a good season.", "options": ["know that", "think that", "call that", "show that"], "correct": 1, "exp": "「～だと思います」は I think that ~ を使います。"}, {"id": "1-17", "q": "【単語並べ替え】「彼はお姉さんがいることを知っています。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ he / knows / has / he / that / a sister / . ]", "options": ["He knows that he has a sister.", "He knows he that has a sister.", "He has a sister that he knows.", "That he knows he has a sister."], "correct": 0, "exp": "主語(He) + 動詞(knows) + that + 節(he has a sister) の語順です。"}, {"id": "1-18", "q": "【読解】本文 \"It has the body of a fish and the head of a lion.\" に基づいて、マーライオン(Merlion)の姿として正しいものはどれですか？", "options": ["ライオンの体と魚の頭", "ライオンの頭と魚の体", "人間の頭と魚の体", "鳥の頭とライオンの体"], "correct": 1, "exp": "「the body of a fish(魚の体)」「the head of a lion(ライオンの頭)」と本文に記載されています。"}, {"id": "1-19", "q": "【読解】本文 \"I found four different languages on Singapore dollars: Malay, Chinese, Tamil, and English.\" に基づいて、シンガポールの紙幣にはいくつの言語が書かれていますか？", "options": ["2つ", "3つ", "4つ", "5つ"], "correct": 2, "exp": "本文に \"four different languages\" (4つの異なる言語) と明確に書かれています。"}, {"id": "1-20", "q": "【読解】本文 \"It's 8.6 meters tall, and it weighs 70 tons.\" に基づいて、マーライオンの重さはどれくらいですか？", "options": ["8.6トン", "70トン", "86トン", "700トン"], "correct": 1, "exp": "本文の \"it weighs 70 tons\" (重さは70トン) から読み取れます。tall は高さです。"}], "set2": [{"id": "2-1", "q": "【空所補充】彼らは来月、その試験を受けるつもりです。<br>They (　　) going to take the exam next month.", "options": ["is", "are", "am", "will"], "correct": 1, "exp": "主語が They なので be動詞は are を使います。"}, {"id": "2-2", "q": "【英訳】あなたは今日の夕食に何を食べるつもりですか。最も適切な英文を選びなさい。", "options": ["When are you going to eat for dinner today?", "Where are you going to eat for dinner today?", "What are you going to eat for dinner today?", "Who are you going to eat for dinner today?"], "correct": 2, "exp": "「何を～ですか」は疑問詞 What を文頭に置き、その後ろを疑問文の形にします。"}, {"id": "2-3", "q": "【単語並べ替え】「私にあなたのチケットを見せてくれませんか。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ me / show / please / can / you / your ticket / , / ? ]", "options": ["Can you show me your ticket, please?", "Can show you me your ticket, please?", "Can you your ticket show me, please?", "Can you me show your ticket, please?"], "correct": 0, "exp": "「～してくれませんか」は Can you ~?。「人に物を見せる」は show + 人 + 物 の順です。"}, {"id": "2-4", "q": "【和訳】I will buy him a towel. の意味として正しいものを選びなさい。", "options": ["彼は私にタオルを買うでしょう。", "私は彼にタオルを買うつもりです。", "私が彼からタオルを買う予定です。", "彼は私のタオルを買うつもりです。"], "correct": 1, "exp": "buy + 人(him) + 物(a towel) で「彼にタオルを買う」という意味になります。"}, {"id": "2-5", "q": "【空所補充】私たちは彼をケンと呼びます。<br>We call (　　) Ken.", "options": ["he", "his", "him", "he's"], "correct": 2, "exp": "call A B の A には代名詞の目的格（～を／に）が入るため、him になります。"}, {"id": "2-6", "q": "【英訳】彼女が5歳のとき、名古屋に住んでいました。最も適切な英文を選びなさい。", "options": ["If she was five, she lived in Nagoya.", "When she was five, she lived in Nagoya.", "Because she was five, she lived in Nagoya.", "When she is five, she lived in Nagoya."], "correct": 1, "exp": "「～のとき」は When。過去の話なので be動詞は was を使います。"}, {"id": "2-7", "q": "【単語並べ替え】「もし疲れているなら、寝てもいいですよ。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ to bed / you / tired / go / can / if / , / are / you / . ]", "options": ["If you can go to bed, you are tired.", "If you are tired, you can go to bed.", "You are tired, if you can go to bed.", "If tired you are, you can go to bed."], "correct": 1, "exp": "If + 主語 + 動詞 ~, 主語 + 動詞 ... の形。「もし疲れているなら」が If you are tired になります。"}, {"id": "2-8", "q": "【和訳】If it rains, let's play a board game at my house. の意味として正しいものを選びなさい。", "options": ["雨が降ったとき、家でボードゲームをした。", "雨が降っているので、家でボードゲームをしよう。", "もし雨が降るなら、私の家でボードゲームをしよう。", "雨が降る前に、家でボードゲームをしよう。"], "correct": 2, "exp": "If は「もし～なら」。let's ~ で「～しよう」という意味です。"}, {"id": "2-9", "q": "【空所補充】暑かったので、私たちはサッカーをしませんでした。<br>We didn't play soccer (　　) it was hot.", "options": ["when", "if", "because", "but"], "correct": 2, "exp": "「暑かったから」という理由を表すため、接続詞 because が適切です。"}, {"id": "2-10", "q": "【英訳】彼女は私が好きだと私は思います。最も適切な英文を選びなさい。", "options": ["I think what she likes me.", "I think that she likes me.", "I think if she likes me.", "I think when she likes me."], "correct": 1, "exp": "「～と思う」は I think that ~ で表します。"}, {"id": "2-11", "q": "【単語並べ替え】「あなたは彼が正しいと思いますか。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ right / do / think / he / you / is / ? ]", "options": ["Do you think he is right?", "Do think you he is right?", "Do you he is right think?", "Do he is right you think?"], "correct": 0, "exp": "think の疑問文なので Do you think で始め、その後に(that) he is right を続けます。"}, {"id": "2-12", "q": "【和訳】I helped my father because he looked busy. の意味として正しいものを選びなさい。", "options": ["父が忙しそうだったとき、私は手伝った。", "もし父が忙しそうなら、私は手伝う。", "父が忙しそうだったので、私は手伝った。", "私が手伝ったので、父は忙しそうだった。"], "correct": 2, "exp": "because は「～なので（理由）」。looked busy は「忙しそうに見えた」です。"}, {"id": "2-13", "q": "【空所補充】あなたは今日の夕食に何を食べるつもりですか。<br>(　　) are you going to eat for dinner today?", "options": ["When", "Where", "What", "Who"], "correct": 2, "exp": "「何を」と尋ねているので疑問詞 What を使います。"}, {"id": "2-14", "q": "【空所補充】アンは明日、学校に来ないでしょう。<br>Ann (　　) (　　) come to school tomorrow.", "options": ["will not", "is not", "does not", "do not"], "correct": 0, "exp": "未来の否定は will not (短縮形は won't) を使います。"}, {"id": "2-15", "q": "【英訳】あなたのお母さんはあなたを何と呼びますか。最も適切な英文を選びなさい。", "options": ["How does your mother call you?", "What does your mother call you?", "Who does your mother call you?", "When does your mother call you?"], "correct": 1, "exp": "「何と呼びますか」と名前や呼称を聞くときは、What を使って What do you call ~? とします。"}, {"id": "2-16", "q": "【和訳】We know about her because she is a famous singer. の意味として正しいものを選びなさい。", "options": ["彼女は有名な歌手のとき、私たちは彼女を知っている。", "彼女は有名な歌手なので、私たちは彼女のこと（について）を知っている。", "もし彼女が有名な歌手なら、私たちは彼女を知っている。", "私たちは有名な歌手なので、彼女を知っている。"], "correct": 1, "exp": "because 節が理由（～なので）を表します。"}, {"id": "2-17", "q": "【読解】本文 \"One of the paintings showed Detective Conan, my favorite character.\" に基づいて、チャイナタウンの壁には何の絵がありましたか？", "options": ["ドラえもん", "名探偵コナン", "ピカチュウ", "アンパンマン"], "correct": 1, "exp": "英文の \"Detective Conan\" から「名探偵コナン」であることが分かります。"}, {"id": "2-18", "q": "【読解】本文 \"People call this area Little India. Many people from India live in this area.\" に基づいて、リトル・インディア(Little India)には主に誰が多く住んでいますか？", "options": ["中国から来た人々", "マレーシアから来た人々", "インドから来た人々", "日本から来た人々"], "correct": 2, "exp": "本文の \"Many people from India live in this area.\" からインド出身の人々だと分かります。"}, {"id": "2-19", "q": "【読解】本文 \"This picture shows a big mosque with an onion-shaped dome.\" に基づいて、アラブ・ストリートにあるモスクのドームはどのような形をしていますか？", "options": ["ピラミッド型", "四角形", "星型", "タマネギ型"], "correct": 3, "exp": "本文の \"onion-shaped\"（タマネギ型の）から読み取れます。"}, {"id": "2-20", "q": "【読解】本文 \"I think (that) food travels around the world and changes in each place.\" に基づいて、筆者は食べ物についてどう考えていますか？", "options": ["食べ物は世界中を旅して、各地で変化すると思う。", "食べ物は世界中どこでも同じ味であるべきだと思う。", "外国の食べ物は日本には合わないと思う。", "日本の食べ物は世界で一番美味しいと思う。"], "correct": 0, "exp": "travels around the world(世界を旅する)、changes in each place(それぞれの場所で変化する)から判断します。"}], "set3": [{"id": "3-1", "q": "【単語並べ替え】「私は来週、新しい自転車を買う予定です。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ to / buy / am / I / next week / going / a new bike / . ]", "options": ["I am buy going to a new bike next week.", "I am going to buy a new bike next week.", "I going to am buy a new bike next week.", "I buy am going to a new bike next week."], "correct": 1, "exp": "be going to + 動詞の原形 (buy) の順序になります。"}, {"id": "3-2", "q": "【和訳】My grandmother sent me a letter. の意味として正しいものを選びなさい。", "options": ["祖母は私から手紙を受け取った。", "私は祖母に手紙を送った。", "祖母が私に手紙を送ってくれた。", "祖母の手紙が私に届いた。"], "correct": 2, "exp": "send + 人 + 物 で「人に物を送る」。sent は send の過去形です。"}, {"id": "3-3", "q": "【空所補充】私の友達は私をサヤと呼びます。<br>My friends (　　) (　　) Saya.", "options": ["call I", "call me", "call my", "call mine"], "correct": 1, "exp": "call A B で「私（目的格）」は me を使います。"}, {"id": "3-4", "q": "【英訳】図書館に行くとき、彼は本を借ります。最も適切な英文を選びなさい。", "options": ["If he goes to the library, he borrows books.", "Because he goes to the library, he borrows books.", "When he goes to the library, he borrows books.", "That he goes to the library, he borrows books."], "correct": 2, "exp": "「～するとき」なので When を使います。"}, {"id": "3-5", "q": "【単語並べ替え】「もしこの歌を知っているなら、一緒に歌いましょう。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ together / you / if / know / let's / this song / , / sing / . ]", "options": ["If you know this song, let's sing together.", "If know you this song, let's sing together.", "Let's sing together, if you know this song.", "If you this song know, let's sing together."], "correct": 0, "exp": "If 節は If + 主語 + 動詞 の順。※後半にIfを持ってくる場合はカンマ(,)は不要ですが、選択肢にはカンマがあるためIfが前になります。"}, {"id": "3-6", "q": "【空所補充】私はこの絵が美しいとは思いません。<br>I (　　) (　　) this picture is beautiful.", "options": ["don't know", "am not", "don't think", "won't think"], "correct": 2, "exp": "「～だと思わない」は I don't think (that) ~ の形にします。"}, {"id": "3-7", "q": "【和訳】We will not go to the park today. の意味として正しいものを選びなさい。", "options": ["私たちは今日、公園に行きませんでした。", "私たちは今日、公園に行かないでしょう。", "私たちは今日、公園に行く予定です。", "私たちは今日、公園に行きたくありません。"], "correct": 1, "exp": "will not (won't) は未来の否定「～しないでしょう、～するつもりはない」を表します。"}, {"id": "3-8", "q": "【単語並べ替え】「あなたが暇なとき、何をしますか。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ are / you / what / you / do / free / when / do / ? ]", "options": ["What do you do when you are free?", "What you do when do you are free?", "When are you free what do you do?", "What do when you are free you do?"], "correct": 0, "exp": "What do you do (何をしますか) に when 節 (when you are free) を続けます。"}, {"id": "3-9", "q": "【英訳】とても面白かったので、私はその本をたくさん持っています。最も適切な英文を選びなさい。", "options": ["I have a lot of books when I like reading.", "I have a lot of books if I like reading.", "I have a lot of books because I like reading.", "I have a lot of books but I like reading."], "correct": 2, "exp": "理由（～だから）を表す接続詞 because を使います。※和文は少し意訳ですが「本を読むのが好きだから」に相当します。"}, {"id": "3-10", "q": "【空所補充】私があなたに夕食を作りましょう。<br>I will (　　) you dinner.", "options": ["make", "makes", "making", "made"], "correct": 0, "exp": "will（助動詞）の後ろの動詞は必ず「原形」になります。"}, {"id": "3-11", "q": "【単語並べ替え】「もしあなたが私のチームに参加してくれたら、私たちはうれしいです。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ team / you / will / happy / join / our / be / if / , / we / . ]", "options": ["If you join our team, we will be happy.", "If join you our team, we will be happy.", "We will be happy if you join our team.", "If we will be happy, you join our team."], "correct": 0, "exp": "If + 主語 + 動詞 ~, 主節. の形。カンマがあるので If が文頭です。"}, {"id": "3-12", "q": "【和訳】I don't think that Dad has an umbrella. の意味として正しいものを選びなさい。", "options": ["お父さんが傘を持っているとは思わない。", "お父さんは傘を持っていると思う。", "お父さんは傘を持っていないことを知らない。", "私はお父さんの傘を持っていない。"], "correct": 0, "exp": "I don't think (that) ~ で「～だとは思わない」と否定の意見を述べます。"}, {"id": "3-13", "q": "【空所補充】バスケットボールはわくわくするスポーツだと思います。<br>I (　　) (　　) basketball is an exciting sport.", "options": ["think that", "know that", "call that", "show that"], "correct": 0, "exp": "「～だと思います」は I think that ~ を使います。"}, {"id": "3-14", "q": "【英訳】明日は雨が降るでしょうか？最も適切な英文を選びなさい。", "options": ["Will it rain tomorrow?", "Does it rain tomorrow?", "Is it rain tomorrow?", "Are it rain tomorrow?"], "correct": 0, "exp": "未来の天気の予測の疑問文には Will it ~? を使います。"}, {"id": "3-15", "q": "【空所補充】私はブラウン先生が学校の近くに住んでいることを知っています。<br>I (　　) (　　) Ms. Brown lives near the school.", "options": ["think that", "know that", "call that", "give that"], "correct": 1, "exp": "「～だと知っている」は I know that ~ を使います。"}, {"id": "3-16", "q": "【単語並べ替え】「彼女は彼にその秘密を話すつもりです。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ him / tell / is / to / the secret / going / she / . ]", "options": ["She is going to tell him the secret.", "She is tell to going him the secret.", "She going is to tell him the secret.", "She is going to him tell the secret."], "correct": 0, "exp": "be going to + 動詞の原形(tell) + 人(him) + 物(the secret) の順です。"}, {"id": "3-17", "q": "【読解】本文 \"Sapporo ramen uses a miso-based soup. It stays warm because the soup is thick.\" に基づいて、札幌ラーメンのスープは何ベースですか？", "options": ["しょうゆベース", "しおベース", "とんこつベース", "みそベース"], "correct": 3, "exp": "本文の \"miso-based soup\" から「みそベース」であることが分かります。"}, {"id": "3-18", "q": "【読解】本文 \"Sapporo ramen uses a miso-based soup. It stays warm because the soup is thick.\" に基づいて、札幌ラーメンが温かいままである理由は何ですか？", "options": ["器が特別な石だから", "スープが厚い（とろみや油の層がある）から", "麺が太いから", "スープが辛いから"], "correct": 1, "exp": "\"because the soup is thick\" (スープが thick だから) と理由が書かれています。"}, {"id": "3-19", "q": "【読解】本文 \"This ramen uses a soy sauce-based soup... Some restaurants open early in the morning because people there often eat ramen for breakfast.\" に基づいて、喜多方(Kitakata)で朝早く開くラーメン店がある理由は何ですか？", "options": ["麺が早く売り切れるから", "店主が早起きだから", "朝食にラーメンを食べる人が多いから", "夜は営業できないから"], "correct": 2, "exp": "\"because people there often eat ramen for breakfast\" (そこの人々はよく朝食にラーメンを食べるから) が理由です。"}, {"id": "3-20", "q": "【読解】本文 \"Spaghetti came from Italy, but a Japanese chef created spaghetti Napolitan in Japan.\" に基づいて、ナポリタン・スパゲッティはどこの国で作られましたか？", "options": ["イタリア", "中国", "日本", "アメリカ"], "correct": 2, "exp": "\"created spaghetti Napolitan in Japan\" から「日本」で作り出されたことが分かります。"}], "set4": [{"id": "4-1", "q": "【空所補充】彼は今夜、宿題をするつもりですか。<br>(　　) he going to do his homework tonight?", "options": ["Is", "Are", "Does", "Will"], "correct": 0, "exp": "he に対応する be動詞の疑問文なので Is が先頭にきます。"}, {"id": "4-2", "q": "【英訳】彼らはいつ出発する予定ですか。最も適切な英文を選びなさい。", "options": ["What are they going to leave?", "Where are they going to leave?", "When are they going to leave?", "Who are they going to leave?"], "correct": 2, "exp": "「いつ」を聞いているので疑問詞 When を使います。"}, {"id": "4-3", "q": "【単語並べ替え】「もうすぐ雨が降るでしょう。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ will / soon / it / rain / . ]", "options": ["It will soon rain.", "It rain will soon.", "Will it rain soon.", "It will rain soon."], "correct": 3, "exp": "天気の it + will + 動詞の原形(rain) + soon の語順です。"}, {"id": "4-4", "q": "【和訳】Mr. Brown teaches us English. の意味として正しいものを選びなさい。", "options": ["ブラウン先生は私たちの英語を学びます。", "ブラウン先生は私たちに英語を教えます。", "ブラウン先生は私たちから英語を教わります。", "私たちはブラウン先生に英語を教えます。"], "correct": 1, "exp": "teach + 人(us) + 物(English) で「私たちに英語を教える」となります。"}, {"id": "4-5", "q": "【空所補充】私たちはこの神社をお稲荷さんと呼びます。<br>We call (　　) (　　) Oinari-san.", "options": ["this shrine", "that shrine", "the temple", "a temple"], "correct": 0, "exp": "「この神社」は this shrine となります。"}, {"id": "4-6", "q": "【英訳】私が子供だったとき、私はこの本が大好きでした。最も適切な英文を選びなさい。", "options": ["If I was a child, I loved this book.", "When I am a child, I loved this book.", "When I was a child, I loved this book.", "Because I am a child, I loved this book."], "correct": 2, "exp": "「子供だったとき」と過去のことなので When 節の中の動詞は was を使います。"}, {"id": "4-7", "q": "【単語並べ替え】「もし明日晴れたら、テニスをしよう。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ tomorrow / play tennis / it / if / is / , / sunny / let's / . ]", "options": ["If it is sunny tomorrow, let's play tennis.", "If is it sunny tomorrow, let's play tennis.", "Let's play tennis, if it is sunny tomorrow.", "If tomorrow it is sunny, let's play tennis."], "correct": 0, "exp": "If 節の中は未来のことでも現在形(is)を使います。カンマがあるため If 節が前です。"}, {"id": "4-8", "q": "【和訳】I like summer because I can swim. の意味として正しいものを選びなさい。", "options": ["私は泳ぐことができるとき、夏が好きだ。", "私が泳ぐことができるなら、夏が好きだ。", "泳ぐことができるので、私は夏が好きだ。", "夏が好きなので、私は泳ぐことができる。"], "correct": 2, "exp": "because 節が理由（～なので）を表します。"}, {"id": "4-9", "q": "【空所補充】私はオンライン授業は生徒にとって便利だと思います。<br>I think (　　) online classes are convenient for students.", "options": ["what", "how", "that", "why"], "correct": 2, "exp": "「～だと思う」は I think that ~ を使います。"}, {"id": "4-10", "q": "【英訳】あなたはメグが上手に日本語を話すということを知っていますか。最も適切な英文を選びなさい。", "options": ["Are you know that Meg speaks Japanese well?", "Do you know that Meg speaks Japanese well?", "Do you know what Meg speaks Japanese well?", "Does you know that Meg speaks Japanese well?"], "correct": 1, "exp": "一般動詞 know の疑問文なので Do you know ~? にし、接続詞の that で文をつなぎます。"}, {"id": "4-11", "q": "【単語並べ替え】「私は彼がカナダ出身であることを知っています。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ from / that / know / he / is / Canada / I / . ]", "options": ["I know that he is from Canada.", "I know he that is from Canada.", "I know that is he from Canada.", "That I know he is from Canada."], "correct": 0, "exp": "I know that + 主語(he) + 動詞(is) ~ の語順です。"}, {"id": "4-12", "q": "【和訳】When I visited his house, he was watching TV. の意味として正しいものを選びなさい。", "options": ["彼が私の家を訪れたとき、私はテレビを見ていた。", "私が彼の家を訪れたので、彼はテレビを見ていた。", "もし私が彼の家を訪れたら、彼はテレビを見ている。", "私が彼の家を訪れたとき、彼はテレビを見ていた。"], "correct": 3, "exp": "When ~ は「～したとき」。主語と動詞の関係を正確に訳します。"}, {"id": "4-13", "q": "【空所補充】私の父はよく夕食を作ってくれます。<br>My father often (　　) (　　) dinner.", "options": ["make we", "makes us", "make us", "makes our"], "correct": 1, "exp": "「（人）に（物）を作る」は make + 人 + 物。主語が三人称単数なので makes、目的格は us になります。"}, {"id": "4-14", "q": "【単語並べ替え】「私はあなたにこの本を貸しましょう。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ this book / lend / will / you / I / . ]", "options": ["I will you lend this book.", "I will lend you this book.", "I will lend this book you.", "I you will lend this book."], "correct": 1, "exp": "will + lend(動詞) + 人(you) + 物(this book) の語順です。"}, {"id": "4-15", "q": "【英訳】私たちは来年、アメリカに行く予定です。最も適切な英文を選びなさい。", "options": ["We are go to go to America next year.", "We are going to go to America next year.", "We will going to go to America next year.", "We are going go to America next year."], "correct": 1, "exp": "「～する予定」は be going to + 動詞の原形。行く(go)が続くので going to go になります。"}, {"id": "4-16", "q": "【空所補充】彼らはその赤ちゃんをエマと呼びました。<br>They (　　) the baby Emma.", "options": ["call", "called", "calling", "calls"], "correct": 1, "exp": "「呼びました」と過去形なので call に ed がついて called となります。"}, {"id": "4-17", "q": "【読解】本文 \"I think uniforms are good because I don't want to choose my clothes every morning.\" に基づいて、筆者が制服を良いと考えている理由は何ですか？", "options": ["制服はおしゃれだから", "安く服が買えるから", "毎朝服を選ぶ必要がないから", "みんなと同じ服を着たいから"], "correct": 2, "exp": "\"don't want to choose my clothes every morning\" (毎朝服を選びたくない) が理由です。"}, {"id": "4-18", "q": "【読解】本文 \"People in Singapore speak different languages. For example, my uncle speaks Tamil and English. So, I can communicate with him in English.\" に基づいて、筆者は叔父と何語でコミュニケーションをとりますか？", "options": ["日本語", "タミル語", "マレー語", "英語"], "correct": 3, "exp": "\"communicate with him in English\" (彼と英語でコミュニケーションをとる) と記載されています。"}, {"id": "4-19", "q": "【読解】本文 \"Ramen came from China, and now it is a very popular Japanese food.\" に基づいて、ラーメンはもともとどこの国の食べ物ですか？", "options": ["日本", "中国", "イタリア", "アメリカ"], "correct": 1, "exp": "\"Ramen came from China\" (ラーメンは中国から来た) と書かれています。"}, {"id": "4-20", "q": "【読解】本文 \"There are various kinds of ramen in Japan. These different kinds of ramen reflect the different climates, food cultures, people's lives, and the creativity of chefs.\" に基づいて、日本の様々な種類のラーメンは何を反映(reflect)していますか？", "options": ["気候、食文化、人々の生活、シェフの創造性", "外国の言語と歴史", "若者の流行とデザイン", "野菜の生産量と消費量"], "correct": 0, "exp": "\"climates(気候), food cultures(食文化), people's lives(人々の生活), creativity of chefs(シェフの創造性)\" と本文に列挙されています。"}], "set5": [{"id": "5-1", "q": "【空所補充】あなたは明日、野球をする予定ですか。<br>(　　) you (　　) (　　) play baseball tomorrow?", "options": ["Are / going to", "Do / going to", "Will / going to", "Is / going to"], "correct": 0, "exp": "be going to の疑問文。主語が you なので Are を文頭に置きます。"}, {"id": "5-2", "q": "【和訳】I will take your picture. の意味として正しいものを選びなさい。", "options": ["私はあなたの写真を持っています。", "私があなたの写真を撮りましょう。", "あなたは私の写真を撮るでしょう。", "私はあなたの写真を見せるつもりです。"], "correct": 1, "exp": "take a picture で「写真を撮る」。will はその場で決めた意志「～しましょう」を表します。"}, {"id": "5-3", "q": "【英訳】その本を貸してくれる？（依頼） 最も適切な英文を選びなさい。", "options": ["Do you lend me the book?", "Are you lend me the book?", "Will you lend me the book?", "Have you lend me the book?"], "correct": 2, "exp": "「～してくれませんか」と依頼するときは Will you ~? をよく使います。"}, {"id": "5-4", "q": "【単語並べ替え】「母が私にカバンを買ってくれる予定なんだ。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ buy / going / me / is / to / a bag / my mother / . ]", "options": ["My mother is going to buy me a bag.", "My mother is going buy to me a bag.", "My mother going to is buy me a bag.", "My mother is going to me buy a bag."], "correct": 0, "exp": "is going to + buy(動詞) + me(人) + a bag(物) の順です。"}, {"id": "5-5", "q": "【空所補充】みんなハルと呼んでください。<br>(　　) (　　) Haru, please.", "options": ["Call I", "Call me", "Name me", "Tell me"], "correct": 1, "exp": "「私をハルと呼んで」は命令文で Call me Haru. となります。"}, {"id": "5-6", "q": "【和訳】Everyone called him Riku. の意味として正しいものを選びなさい。", "options": ["みんな彼をリクと呼んでいる。", "みんな彼をリクと呼んでいた。", "彼がみんなをリクと呼んだ。", "誰も彼をリクと呼ばなかった。"], "correct": 1, "exp": "called と過去形なので「呼んでいた（呼んだ）」となります。"}, {"id": "5-7", "q": "【英訳】公園に行ったとき、そこでトムを見たよ。最も適切な英文を選びなさい。", "options": ["If I went to the park, I saw Tom there.", "When I go to the park, I saw Tom there.", "When I went to the park, I saw Tom there.", "Because I went to the park, I saw Tom there."], "correct": 2, "exp": "「行ったとき」と過去の話なので When 節の動詞は went になります。"}, {"id": "5-8", "q": "【単語並べ替え】「悲しいとき、あなたは何をしますか。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ are / you / do / what / you / do / sad / when / ? ]", "options": ["What do you do when you are sad?", "What you do when do you are sad?", "When are you sad what do you do?", "What do when you are sad you do?"], "correct": 0, "exp": "What do you do に when 節 (when you are sad) を続けます。"}, {"id": "5-9", "q": "【空所補充】もしのどがかわいたなら、このお茶を飲んでいいよ。<br>If you (　　) thirsty, you can drink this tea.", "options": ["is", "am", "are", "be"], "correct": 2, "exp": "you に対するbe動詞現在形は are です。thirstyは「のどが渇いた」という形容詞です。"}, {"id": "5-10", "q": "【和訳】I respect Ryo because he always tries hard. の意味として正しいものを選びなさい。", "options": ["彼がいつも努力するとき、私はリョウを尊敬する。", "彼がいつも努力するなら、私はリョウを尊敬する。", "彼はいつも努力するので、私はリョウを尊敬する。", "私はリョウを尊敬するので、彼はいつも努力する。"], "correct": 2, "exp": "because 節は理由（～なので）を表します。"}, {"id": "5-11", "q": "【英訳】あなたのチームが勝つと思うよ。最も適切な英文を選びなさい。", "options": ["I think if your team will win.", "I think what your team will win.", "I think that your team will win.", "I think when your team will win."], "correct": 2, "exp": "「～だと思う」は I think that ~ を使います。"}, {"id": "5-12", "q": "【単語並べ替え】「田中先生は北海道出身なのを私は知っているよ。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ from / Ms. Tanaka / know / that / is / I / Hokkaido / . ]", "options": ["I know Ms. Tanaka that is from Hokkaido.", "I know that Ms. Tanaka is from Hokkaido.", "I know that from Hokkaido is Ms. Tanaka.", "That I know Ms. Tanaka is from Hokkaido."], "correct": 1, "exp": "I know that + 節(Ms. Tanaka is from Hokkaido) の語順です。"}, {"id": "5-13", "q": "【空所補充】あなたの名前を教えてくれない？<br>Can you (　　) (　　) your name?", "options": ["tell I", "tell me", "teach me", "show I"], "correct": 1, "exp": "「（人）に～を教える（伝える）」は tell + 人 + 物。私（目的格）には me を使います。"}, {"id": "5-14", "q": "【単語並べ替え】「私は読書が好きだから、たくさん本を持っているよ。」となるように並べ替えたとき、正しい英文を選びなさい。<br>[ reading / books / because / I / a lot of / like / have / I / . ]", "options": ["I have a lot of books because I like reading.", "Because I have a lot of books I like reading.", "I like reading because I have a lot of books.", "I have a lot of because books I like reading."], "correct": 0, "exp": "「たくさん本を持っている」(I have a lot of books) の後ろに理由(because I like reading)を続けます。"}, {"id": "5-15", "q": "【和訳】I don't think that I can read this book. の意味として正しいものを選びなさい。", "options": ["私はこの本を読むことができると思う。", "私がこの本を読むことはできないと思う。", "私はこの本を読んだことを知らない。", "私はこの本を読むつもりはない。"], "correct": 1, "exp": "I don't think (that) ~ は「～だとは思わない、～ではないと思う」という意味になります。"}, {"id": "5-16", "q": "【空所補充】私は今日の午後、映画を見るつもりだよ。<br>I (　　) (　　) (　　) see a movie this afternoon.", "options": ["will going to", "am going to", "is going to", "am go to"], "correct": 1, "exp": "予定を表す be going to。主語が I なので am going to です。"}, {"id": "5-17", "q": "【読解】本文 \"I asked the second-year students two questions about breakfast... Eighty-five percent of the students said 'yes'.\" に基づいて、朝食に関する質問に「はい」と答えた生徒の割合は何パーセントですか？", "options": ["15パーセント", "55パーセント", "85パーセント", "95パーセント"], "correct": 2, "exp": "\"Eighty-five percent\" (85パーセント) と本文に書かれています。"}, {"id": "5-18", "q": "【読解】本文 \"Most of the students have rice or bread as a staple food.\" に基づいて、生徒たちの主食(staple food)として挙げられているのは何と何ですか？", "options": ["米またはパン", "米または麺", "パンまたはシリアル", "肉または魚"], "correct": 0, "exp": "\"rice or bread\" (米またはパン) と書かれています。"}, {"id": "5-19", "q": "【読解】本文 \"If you catch a falling leaf, is it good luck or bad luck? ... you will have good luck.\" に基づいて、落ち葉をキャッチするとイギリスではどうなると言われていますか？", "options": ["7年間の不幸が訪れる", "幸運が訪れる", "蛇がやってくる", "テストで良い点が取れる"], "correct": 1, "exp": "\"you will have good luck\" (幸運が訪れる) と書かれています。"}, {"id": "5-20", "q": "【読解】本文 \"If you break a mirror? It's really bad in the U.K. If you do so, you will have seven years bad luck.\" に基づいて、鏡を割るとイギリスではどうなると言われていますか？", "options": ["幸運が訪れる", "新しい鏡がもらえる", "7年間の不運が訪れる", "蛇がやってくる"], "correct": 2, "exp": "\"you will have seven years bad luck\" (7年間の不運が訪れる) と書かれています。"}]};
+    
+    // ユーザーの解答履歴や間違えた問題IDを保存するデータ構造
+    let userData = {
+        wrongQuestions: []
+    };
+    
+    let currentQuestions = [];
+    let isReviewMode = false;
+
+    // 初期化
+    function loadTest() {
+        isReviewMode = false;
+        const setKey = document.getElementById('set-selector').value;
+        currentQuestions = questionsDB[setKey];
+        renderQuestions();
+        updateReviewButton();
+    }
+
+    // 間違えた問題のみを復習
+    function loadWrongReview() {
+        isReviewMode = true;
+        currentQuestions = [];
+        
+        // 全セットから間違えた問題IDを検索して抽出
+        for (let set in questionsDB) {
+            questionsDB[set].forEach(q => {
+                if (userData.wrongQuestions.includes(q.id)) {
+                    currentQuestions.push(q);
+                }
+            });
+        }
+        
+        if (currentQuestions.length === 0) {
+            alert("現在、復習する間違えた問題はありません！素晴らしいです。");
+            return;
+        }
+        renderQuestions();
+    }
+
+    // 問題の描画
+    function renderQuestions() {
+        const container = document.getElementById('test-container');
+        container.innerHTML = '';
+        document.getElementById('score-board').style.display = 'none';
+        
+        if(currentQuestions.length === 0) return;
+        
+        let html = '';
+        currentQuestions.forEach((q, index) => {
+            html += `
+            <div class="question-card" id="card-${q.id}">
+                <div class="question-title">問${index + 1}. ${q.q}</div>
+                <ul class="options-list">
+                    ${q.options.map((opt, optIndex) => `
+                        <li>
+                            <label>
+                                <input type="radio" name="q-${q.id}" value="${optIndex}">
+                                ${opt}
+                            </label>
+                        </li>
+                    `).join('')}
+                </ul>
+                <div class="explanation-box" id="exp-${q.id}"></div>
+            </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+        document.getElementById('action-buttons').style.display = 'block';
+        
+        // テスト開始時にページトップへ
+        window.scrollTo(0, 0);
+    }
+
+    // 採点処理
+    function gradeTest() {
+        let score = 0;
+        let total = currentQuestions.length;
+        let newlyWrong = [];
+        let newlyCorrect = [];
+
+        currentQuestions.forEach((q, index) => {
+            const selected = document.querySelector(`input[name="q-${q.id}"]:checked`);
+            const expBox = document.getElementById(`exp-${q.id}`);
+            const card = document.getElementById(`card-${q.id}`);
+            
+            expBox.style.display = 'block';
+            expBox.className = 'explanation-box ';
+            
+            let statusBadge = '';
+
+            if (selected) {
+                const ansIndex = parseInt(selected.value);
+                if (ansIndex === q.correct) {
+                    // 正解
+                    score++;
+                    expBox.classList.add('correct-box');
+                    statusBadge = '<span class="status-badge badge-correct">〇 正解</span>';
+                    newlyCorrect.push(q.id);
+                } else {
+                    // 不正解
+                    expBox.classList.add('wrong-box');
+                    statusBadge = `<span class="status-badge badge-wrong">× 不正解</span><br><b>あなたの回答:</b> ${q.options[ansIndex]} <br>`;
+                    newlyWrong.push(q.id);
+                }
+            } else {
+                // 無回答
+                expBox.classList.add('wrong-box');
+                statusBadge = `<span class="status-badge badge-wrong">× 無回答</span><br>`;
+                newlyWrong.push(q.id);
+            }
+
+            expBox.innerHTML = `
+                ${statusBadge}
+                <b>正解:</b> ${q.options[q.correct]}<br>
+                <b>解説:</b> ${q.exp}
+            `;
+            
+            // ラジオボタンを無効化
+            const radios = document.querySelectorAll(`input[name="q-${q.id}"]`);
+            radios.forEach(r => r.disabled = true);
+        });
+
+        // スコア表示
+        const scoreBoard = document.getElementById('score-board');
+        scoreBoard.innerHTML = `あなたの得点: ${score} / ${total}点 (${Math.round(score/total*100)}%)`;
+        scoreBoard.style.display = 'block';
+        
+        // userDataの更新（間違えたリストの追加と削除）
+        newlyWrong.forEach(id => {
+            if (!userData.wrongQuestions.includes(id)) {
+                userData.wrongQuestions.push(id);
+            }
+        });
+        newlyCorrect.forEach(id => {
+            userData.wrongQuestions = userData.wrongQuestions.filter(vid => vid !== id);
+        });
+        
+        // UI更新
+        document.getElementById('action-buttons').style.display = 'none';
+        updateReviewButton();
+        
+        // 結果までスクロール
+        scoreBoard.scrollIntoView({behavior: 'smooth'});
+    }
+
+    function updateReviewButton() {
+        const btn = document.getElementById('btn-review');
+        if (userData.wrongQuestions.length > 0) {
+            btn.style.display = 'inline-block';
+            btn.textContent = `間違えた問題 (${userData.wrongQuestions.length}問) を復習`;
+        } else {
+            btn.style.display = 'none';
+        }
+    }
+
+    // JSONエクスポート
+    function exportData() {
+        const dataStr = JSON.stringify(userData);
+        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        
+        const exportFileDefaultName = 'english_test_data_v2.json';
+        
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+    }
+
+    // JSONインポート
+    function importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const importedData = JSON.parse(e.target.result);
+                if (importedData && Array.isArray(importedData.wrongQuestions)) {
+                    userData = importedData;
+                    updateReviewButton();
+                    alert('データの読み込みが完了しました。');
+                } else {
+                    alert('データ形式が正しくありません。');
+                }
+            } catch (err) {
+                alert('ファイルの読み込みに失敗しました。');
+            }
+            // 入力をリセット
+            event.target.value = '';
+        };
+        reader.readAsText(file);
+    }
+
+    // 初期化時にボタン状態を更新
+    updateReviewButton();
+
+</script>
+</body>
+</html>
