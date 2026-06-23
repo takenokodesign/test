@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>サイエンス・ケミカルクエスト</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 【重要】環境制限で真っ白になるのを防ぐ強制リセット */
+    html, body {
+      width: 100%; height: 100%; margin: 0; padding: 0;
+      background-color: #111827 !important; color: #ffffff !important;
+      overflow: hidden; overscroll-behavior: none; font-family: sans-serif;
+    }
+
+    #app-wrapper {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-color: #111827; display: flex; justify-content: center; align-items: center; overflow: hidden;
+    }
+
+    #game-container {
+      width: 100%; max-width: 768px; height: 100%;
+      background-color: #1f2937 !important; position: relative; display: flex; flex-direction: column; overflow: hidden;
+    }
+
+    .screen-bg { background-color: #111827 !important; }
+    .overlay-bg { background-color: rgba(0, 0, 0, 0.85) !important; }
+
+    /* アニメーション群 */
+    .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(4px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
+
+    .hit { animation: hit 0.1s ease-in-out; filter: brightness(1.5) sepia(1) hue-rotate(-50deg) saturate(3); }
+    @keyframes hit {
+      0% { transform: scale(1) translate(0,0); }
+      50% { transform: scale(0.9) translate(10px, -10px); }
+      100% { transform: scale(1) translate(0,0); }
+    }
+
+    .dmg-popup {
+      position: absolute; font-weight: bold; color: #fbbf24; text-shadow: 2px 2px 0 #000;
+      animation: floatUp 0.5s ease-out forwards; pointer-events: none; z-index: 60;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
+    }
+
+    .chest-drop { animation: chestDrop 1s ease-out forwards; }
+    @keyframes chestDrop {
+      0% { transform: translateY(-300px) scale(0.5); opacity: 0; }
+      60% { transform: translateY(20px) scale(1.1); opacity: 1; }
+      80% { transform: translateY(-10px) scale(0.95); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    
+    .gacha-shake { animation: gachaShake 0.4s ease-in-out infinite; }
+    @keyframes gachaShake {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(15deg); }
+      75% { transform: rotate(-15deg); }
+    }
+    
+    .gacha-pop { animation: gachaPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    @keyframes gachaPop {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* 元素図鑑のキラキラ動くアニメーション */
+    @keyframes shineAndFloat {
+      0% { box-shadow: 0 0 5px #60a5fa, 0 0 10px #60a5fa; transform: translateY(0); }
+      50% { box-shadow: 0 0 15px #34d399, 0 0 25px #34d399; transform: translateY(-4px); }
+      100% { box-shadow: 0 0 5px #60a5fa, 0 0 10px #60a5fa; transform: translateY(0); }
+    }
+    .element-shiny {
+      animation: shineAndFloat 2s infinite alternate ease-in-out;
+      border: 2px solid #60a5fa !important;
+      background: linear-gradient(135deg, #1f2937, #374151);
+    }
+
+    * { -webkit-tap-highlight-color: transparent; }
+  </style>
+</head>
+<body>
+
+  <div id="app-wrapper">
+    <div id="game-container" class="shadow-2xl">
+      
+      <div class="absolute top-4 left-4 z-[100] flex items-center bg-gray-900/80 px-4 py-2 rounded-full border border-yellow-500 shadow-md">
+        <span class="text-yellow-400 font-bold text-xl mr-2">🪙</span>
+        <span id="global-coins" class="text-white font-bold text-lg md:text-xl">0</span>
+      </div>
+
+      <button onclick="openMenu()" class="absolute top-4 right-4 z-[100] p-2 bg-gray-800 rounded-lg border border-gray-500 shadow-lg active:scale-95 transition-transform">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <!-- メニュー -->
+      <div id="side-menu" class="hidden absolute inset-0 z-[110] overlay-bg flex flex-col items-center justify-center p-6">
+        <div class="bg-gray-800 border-2 border-gray-600 rounded-2xl p-6 w-full max-w-sm flex flex-col gap-4 text-center shadow-2xl">
+          <h3 class="text-3xl font-extrabold text-white mb-2">MENU</h3>
+          <button onclick="toggleMute()" id="btn-mute" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 py-4 rounded-xl font-bold text-xl shadow-md transition-transform">🎵 BGM: ON</button>
+          <button onclick="showCollectionFromMenu()" class="bg-blue-600 hover:bg-blue-500 active:scale-95 py-4 rounded-xl font-bold text-xl shadow-md transition-transform">🧪 元素コレクション</button>
+          <button onclick="backToTitleFromMenu()" class="bg-red-600 hover:bg-red-500 active:scale-95 py-4 rounded-xl font-bold text-xl shadow-md transition-transform">🏠 タイトルへ戻る</button>
+          <button onclick="closeMenu()" class="mt-4 text-gray-400 hover:text-white underline py-2 text-lg active:scale-95 transition-transform">閉じる</button>
+        </div>
+      </div>
+
+      <!-- タイトル画面 -->
+      <div id="screen-title" class="absolute inset-0 z-50 screen-bg flex flex-col items-center justify-center p-6 text-center overflow-y-auto">
+        <div class="my-auto w-full flex flex-col items-center">
+          <p class="text-yellow-400 font-bold mb-2">超難関！全10ステージ (各5問)</p>
+          <h1 class="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 mb-2 drop-shadow-lg leading-tight">
+            ケミカル・クエスト<br><span class="text-2xl md:text-3xl text-yellow-300">〜化学の試練〜</span>
+          </h1>
+          <p class="text-sm md:text-base text-gray-300 mb-10 font-bold">記述・複合問題あり！正解して<span class="text-red-400">連打</span>でAPを稼ごう！</p>
+          
+          <div class="flex flex-col gap-4 w-full max-w-sm">
+            <button onclick="startGame()" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 transition-transform text-white font-bold py-4 rounded-2xl text-2xl shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+              試練に挑む (START)
+            </button>
+            <button onclick="showCollection()" class="bg-blue-600 hover:bg-blue-500 active:scale-95 transition-transform text-white font-bold py-4 rounded-2xl text-xl shadow-lg flex justify-center items-center gap-2">
+              🧪 元素コレクション
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- コレクション画面 -->
+      <div id="screen-collection" class="hidden absolute inset-0 z-50 screen-bg flex flex-col items-center p-6 text-center overflow-y-auto pt-20">
+        <h2 class="text-2xl md:text-3xl font-bold text-blue-400 mb-2 shrink-0">元素コレクション</h2>
+        <p class="text-gray-300 font-bold mb-6">全20種類を集めよう！</p>
+        
+        <button onclick="drawGacha()" class="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 active:scale-95 transition-transform text-white font-extrabold py-4 px-8 rounded-full text-xl shadow-[0_0_15px_rgba(234,179,8,0.5)] mb-6 shrink-0 border-2 border-yellow-300">
+          100🪙 で元素を抽出する
+        </button>
+
+        <div id="collection-grid" class="grid grid-cols-4 md:grid-cols-5 gap-3 w-full max-w-xl mb-8 shrink-0 py-4">
+          <!-- JSで生成 -->
+        </div>
+        <button onclick="hideCollection()" class="bg-gray-600 hover:bg-gray-500 active:scale-95 transition-transform text-white font-bold py-3 px-10 rounded-xl text-lg shadow-lg mt-auto mb-8 shrink-0">戻る</button>
+      </div>
+
+      <!-- ガチャ演出オーバーレイ -->
+      <div id="gacha-overlay" class="hidden absolute inset-0 z-[120] overlay-bg flex flex-col items-center justify-center p-6 text-center">
+        <div id="gacha-flask" class="text-8xl md:text-[120px] mb-8">🧪</div>
+        <div id="gacha-result" class="hidden flex-col items-center">
+          <div id="gacha-result-icon" class="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-emerald-300 mb-2 drop-shadow-lg">Na</div>
+          <div id="gacha-result-name" class="text-2xl font-bold text-yellow-400 mb-2">ナトリウム</div>
+          <div id="gacha-result-msg" class="text-lg text-white font-bold bg-red-500 px-4 py-1 rounded-full mb-8">NEW!</div>
+        </div>
+        <button id="gacha-close-btn" onclick="closeGacha()" class="hidden bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-bold py-3 px-10 rounded-xl text-xl shadow-lg">OK</button>
+      </div>
+
+      <!-- 宝箱演出オーバーレイ -->
+      <div id="chest-overlay" class="hidden absolute inset-0 z-[60] overlay-bg flex flex-col items-center justify-center p-6 text-center">
+        <h2 id="chest-title" class="text-3xl md:text-5xl font-extrabold text-yellow-400 mb-8 drop-shadow-md">中ボス撃破！宝箱出現！</h2>
+        <button id="chest-box" onclick="openChest()" class="text-8xl md:text-[150px] mb-8 chest-drop transition-transform hover:scale-110 active:scale-95">🎁</button>
+        <p id="chest-inst" class="text-xl text-white font-bold animate-pulse">タップして開ける！</p>
+      </div>
+
+      <!-- バトル画面 -->
+      <div id="screen-battle" class="hidden h-full flex flex-col relative w-full">
+        <div class="absolute top-16 left-4 z-10 font-bold text-yellow-300 text-sm md:text-base drop-shadow-md bg-black/50 px-3 py-1 rounded-full border border-gray-600">
+          AP: <span id="total-ap-display">0</span>
+        </div>
+
+        <div class="flex justify-between items-center p-4 pt-16 bg-gray-900 border-b border-gray-700 h-28 shrink-0">
+          <div class="flex flex-col w-1/3">
+            <span class="text-[10px] md:text-xs text-blue-300 font-bold mb-1">あなた HP: <span id="player-hp-text">3/3</span></span>
+            <div class="w-full bg-gray-700 rounded-full h-2 md:h-3 border border-gray-600">
+              <div id="player-hp-bar" class="bg-blue-500 h-full rounded-full transition-all duration-300" style="width: 100%"></div>
+            </div>
+          </div>
+          <div class="text-center px-2">
+            <div id="stage-name" class="text-xs md:text-sm font-bold text-yellow-400">ステージ 1</div>
+            <div id="question-count" class="text-[10px] md:text-xs text-gray-400">1問目</div>
+          </div>
+          <div class="flex flex-col w-1/3 items-end">
+            <span class="text-[10px] md:text-xs text-purple-300 font-bold mb-1"><span id="enemy-name-display">モンスター</span> HP: <span id="enemy-hp-text">1000</span></span>
+            <div class="w-full bg-gray-700 rounded-full h-2 md:h-3 border border-gray-600 flex justify-end">
+              <div id="enemy-hp-bar" class="bg-red-500 h-full rounded-full transition-all duration-300" style="width: 100%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="battle-main-area" class="flex-1 min-h-0 flex flex-col items-center justify-start p-4 md:p-6 relative overflow-y-auto w-full">
+          <div class="mt-2 w-full max-w-xl flex flex-col items-center">
+            <div id="enemy-sprite" class="text-6xl md:text-[100px] mb-4 drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)] transition-transform flex justify-center z-10 shrink-0">💧</div>
+            
+            <!-- 問題文（長文対策でスクロール可能に） -->
+            <div class="bg-gray-700 border-2 border-gray-400 p-4 rounded-2xl w-full shadow-lg relative min-h-[90px] max-h-[140px] overflow-y-auto flex items-center justify-center z-10 mb-4 shrink-0">
+              <h2 id="question-text" class="text-sm md:text-lg font-bold text-center leading-relaxed">問題文がここに入ります</h2>
+            </div>
+            
+            <div class="w-full bg-gray-900 rounded-full h-3 mb-4 border border-gray-500 shrink-0 z-10">
+              <div id="timer-bar" class="bg-green-500 h-full rounded-full w-full"></div>
+            </div>
+
+            <!-- 回答ボタン -->
+            <div id="choices-container" class="grid grid-cols-2 gap-2 md:gap-3 w-full shrink-0 z-10">
+            </div>
+          </div>
+          <div class="h-24 md:h-32 w-full shrink-0"></div>
+        </div>
+
+        <div id="rush-overlay" class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center overlay-bg">
+          <h2 class="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-yellow-400 animate-pulse mb-6 drop-shadow-md italic tracking-wider">
+            RUSH TIME!!
+          </h2>
+          <p class="text-2xl text-white font-bold mb-4 bg-black/50 px-4 py-2 rounded-full border border-gray-500">残り時間: <span id="rush-timer" class="text-red-400">3.00</span> 秒</p>
+          <button id="btn-rush" class="relative w-48 h-48 md:w-64 md:h-64 rounded-full bg-gradient-to-br from-red-500 to-orange-600 border-8 border-red-300 shadow-[0_0_30px_rgba(255,0,0,0.8)] active:scale-90 active:from-red-600 active:to-orange-700 transition-transform flex items-center justify-center text-4xl font-black text-white shrink-0">
+            TAP!!
+          </button>
+          <p class="mt-6 text-base font-bold text-gray-200 bg-black/50 px-4 py-2 rounded-lg">連打でAPを稼げ！（APはコインに変換）</p>
+        </div>
+      </div>
+
+      <!-- モーダル -->
+      <div id="modal-overlay" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center p-6 overlay-bg">
+        <div class="bg-gray-800 border-2 border-gray-400 rounded-2xl p-6 md:p-8 w-full max-w-md flex flex-col items-center text-center shadow-2xl relative overflow-hidden">
+          <h2 id="modal-title" class="text-3xl md:text-4xl font-extrabold mb-2 relative z-10"></h2>
+          <p id="modal-subtitle" class="text-base md:text-lg text-gray-200 mb-2 font-bold relative z-10 whitespace-pre-wrap"></p>
+          
+          <div id="modal-ap-display" class="hidden text-base md:text-lg text-yellow-300 font-bold mb-4 relative z-10 bg-gray-900 px-4 py-2 rounded-full border border-yellow-500">
+            獲得コイン: +0🪙
+          </div>
+          
+          <div id="modal-exp-container" class="bg-gray-900 p-4 rounded-lg w-full mb-6 border border-gray-500 text-left relative z-10 max-h-48 overflow-y-auto">
+            <span class="text-sm text-emerald-400 font-bold mb-1 block">💡 解説</span>
+            <p id="modal-exp" class="text-sm md:text-base text-gray-100 leading-relaxed"></p>
+          </div>
+          
+          <button id="modal-btn" onclick="nextAction()" class="relative z-10 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-bold py-4 w-full rounded-xl text-xl transition-transform shadow-lg shrink-0">
+            次へ
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // データ管理（コイン・元素）
+    // ==========================================
+    let playerCoins = parseInt(localStorage.getItem('chemicalQuestCoins')) || 0;
+    let unlockedElements = JSON.parse(localStorage.getItem('chemicalQuestElements')) || [];
+
+    const elementsData = [
+      { no: 1, sym: "H", name: "水素" }, { no: 2, sym: "He", name: "ヘリウム" },
+      { no: 3, sym: "Li", name: "リチウム" }, { no: 4, sym: "Be", name: "ベリリウム" },
+      { no: 5, sym: "B", name: "ホウ素" }, { no: 6, sym: "C", name: "炭素" },
+      { no: 7, sym: "N", name: "窒素" }, { no: 8, sym: "O", name: "酸素" },
+      { no: 9, sym: "F", name: "フッ素" }, { no: 10, sym: "Ne", name: "ネオン" },
+      { no: 11, sym: "Na", name: "ナトリウム" }, { no: 12, sym: "Mg", name: "マグネシウム" },
+      { no: 13, sym: "Al", name: "アルミニウム" }, { no: 14, sym: "Si", name: "ケイ素" },
+      { no: 15, sym: "P", name: "リン" }, { no: 16, sym: "S", name: "硫黄" },
+      { no: 17, sym: "Cl", name: "塩素" }, { no: 18, sym: "Ar", name: "アルゴン" },
+      { no: 19, sym: "K", name: "カリウム" }, { no: 20, sym: "Ca", name: "カルシウム" },
+      { no: 26, sym: "Fe", name: "鉄" }, { no: 29, sym: "Cu", name: "銅" }, { no: 47, sym: "Ag", name: "銀" }
+    ];
+
+    function saveGameData() {
+      localStorage.setItem('chemicalQuestCoins', playerCoins);
+      localStorage.setItem('chemicalQuestElements', JSON.stringify(unlockedElements));
+      document.getElementById('global-coins').innerText = playerCoins;
+    }
+    document.getElementById('global-coins').innerText = playerCoins;
+
+    // ==========================================
+    // 🎵 Web Audio API BGM & SE
+    // ==========================================
+    const SoundEngine = (function() {
+      let ctx = null; let isPlaying = false; let currentStageIndex = 0; let isMuted = false; let timerId = null;
+      function mtof(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+      const tracks = [
+        { t: 150, w: 'square', s: [60, 64, 67, 72, 67, 64, 60, 55] }, { t: 120, w: 'triangle', s: [60, 63, 67, 63, 59, 62, 67, 62] },
+        { t: 180, w: 'square', s: [72, 72, 60, 60, 67, 67, 60, 60] }, { t: 140, w: 'sawtooth', s: [55, 62, 67, 74, 67, 62, 55, 50] },
+        { t: 110, w: 'sawtooth', s: [36, 48, 36, 48, 35, 47, 35, 47] }, { t: 160, w: 'square', s: [69, 72, 76, 81, 76, 72, 69, 64] },
+        { t: 130, w: 'triangle', s: [62, 65, 69, 74, 69, 65, 62, 57] }, { t: 170, w: 'sawtooth', s: [60, 72, 60, 72, 59, 71, 59, 71] },
+        { t: 120, w: 'sawtooth', s: [40, 43, 47, 43, 39, 42, 46, 42] }, { t: 80,  w: 'square', s: [48, 0, 49, 0, 50, 0, 49, 0] }
+      ];
+      let step = 0;
+      function playLoop() {
+        if(!isPlaying) return;
+        const track = tracks[currentStageIndex % tracks.length]; const note = track.s[step % track.s.length];
+        if (note > 0 && !isMuted && ctx) {
+          const osc = ctx.createOscillator(); const gain = ctx.createGain();
+          osc.type = track.w; osc.frequency.value = mtof(note); const noteLen = (60 / track.t) * 0.5;
+          gain.gain.setValueAtTime(0.05, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + noteLen);
+          osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + noteLen);
+        }
+        step++; timerId = setTimeout(playLoop, (60 / track.t) * 1000 * 0.5);
+      }
+      return {
+        init: function() { if(!ctx) { const AudioContext = window.AudioContext || window.webkitAudioContext; if(AudioContext) ctx = new AudioContext(); } if(ctx && ctx.state === 'suspended') ctx.resume(); },
+        startBGM: function(stageIdx) { this.init(); currentStageIndex = stageIdx; step = 0; if(!isPlaying) { isPlaying = true; playLoop(); } },
+        stopBGM: function() { isPlaying = false; clearTimeout(timerId); },
+        toggleMute: function() { isMuted = !isMuted; return isMuted; },
+        playSE: function(type) {
+          if (isMuted || !ctx) return;
+          const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); const t = ctx.currentTime;
+          if (type === 'correct') { osc.type = 'sine'; osc.frequency.setValueAtTime(880, t); osc.frequency.setValueAtTime(1108, t + 0.1); gain.gain.setValueAtTime(0.1, t); gain.gain.linearRampToValueAtTime(0, t + 0.3); osc.start(t); osc.stop(t + 0.3); }
+          else if (type === 'wrong') { osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, t); osc.frequency.linearRampToValueAtTime(100, t + 0.3); gain.gain.setValueAtTime(0.1, t); gain.gain.linearRampToValueAtTime(0, t + 0.3); osc.start(t); osc.stop(t + 0.3); }
+          else if (type === 'hit') { osc.type = 'square'; osc.frequency.setValueAtTime(150, t); osc.frequency.exponentialRampToValueAtTime(40, t + 0.1); gain.gain.setValueAtTime(0.15, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1); osc.start(t); osc.stop(t + 0.1); }
+          else if (type === 'fanfare') { osc.type = 'square'; osc.frequency.setValueAtTime(523.25, t); osc.frequency.setValueAtTime(659.25, t+0.2); osc.frequency.setValueAtTime(783.99, t+0.4); gain.gain.setValueAtTime(0.1, t); gain.gain.linearRampToValueAtTime(0, t + 1.0); osc.start(t); osc.stop(t + 1.0); }
+          else if (type === 'glass') { osc.type = 'triangle'; osc.frequency.setValueAtTime(2000, t); osc.frequency.exponentialRampToValueAtTime(100, t + 0.2); gain.gain.setValueAtTime(0.2, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.2); osc.start(t); osc.stop(t + 0.2); }
+        }
+      }
+    })();
+
+    // ==========================================
+    // UI制御 ＆ 元素図鑑
+    // ==========================================
+    function openMenu() { document.getElementById('side-menu').classList.remove('hidden'); }
+    function closeMenu() { document.getElementById('side-menu').classList.add('hidden'); }
+    function toggleMute() {
+      const isMuted = SoundEngine.toggleMute(); const btn = document.getElementById('btn-mute');
+      if(isMuted) { btn.innerText = "🔇 BGM: OFF"; btn.classList.replace('bg-indigo-600', 'bg-gray-600'); }
+      else { btn.innerText = "🎵 BGM: ON"; btn.classList.replace('bg-gray-600', 'bg-indigo-600'); SoundEngine.init(); }
+    }
+    function showCollectionFromMenu() { closeMenu(); document.getElementById('screen-battle').classList.add('hidden'); SoundEngine.stopBGM(); showCollection(); }
+    function backToTitleFromMenu() { closeMenu(); isGameOver = true; SoundEngine.stopBGM(); document.getElementById('screen-battle').classList.add('hidden'); document.getElementById('screen-title').classList.remove('hidden'); clearInterval(timerInterval); }
+
+    function showCollection() {
+      SoundEngine.init(); document.getElementById('screen-title').classList.add('hidden'); document.getElementById('screen-collection').classList.remove('hidden'); renderCollection();
+    }
+    function hideCollection() { document.getElementById('screen-collection').classList.add('hidden'); document.getElementById('screen-title').classList.remove('hidden'); }
+
+    function renderCollection() {
+      const grid = document.getElementById('collection-grid'); grid.innerHTML = '';
+      elementsData.forEach(el => {
+        const hasEl = unlockedElements.includes(el.no);
+        const card = document.createElement('div');
+        // キラキラアニメーションクラスの付与判定
+        if (hasEl) {
+          card.className = "element-shiny rounded-lg p-2 flex flex-col items-center justify-center aspect-square shadow-md transition-all";
+          card.innerHTML = `<div class="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-br from-blue-300 to-emerald-300 drop-shadow-md">${el.sym}</div><div class="text-[10px] md:text-xs font-bold text-gray-200 mt-1">${el.name}</div>`;
+        } else {
+          card.className = "bg-gray-800 border-2 border-gray-600 rounded-lg p-2 flex flex-col items-center justify-center aspect-square shadow-sm";
+          card.innerHTML = `<div class="text-xl md:text-2xl text-gray-600 font-bold">?</div>`;
+        }
+        grid.appendChild(card);
+      });
+    }
+
+    function drawGacha() {
+      if (playerCoins < 100) { alert("コインが足りません！"); return; }
+      playerCoins -= 100; saveGameData(); renderCollection();
+      
+      const overlay = document.getElementById('gacha-overlay'); const flask = document.getElementById('gacha-flask');
+      const resultDiv = document.getElementById('gacha-result'); const btn = document.getElementById('gacha-close-btn');
+      
+      overlay.classList.remove('hidden'); flask.classList.remove('hidden'); flask.classList.add('gacha-shake');
+      resultDiv.classList.add('hidden'); resultDiv.classList.remove('gacha-pop'); btn.classList.add('hidden');
+
+      const hit = elementsData[Math.floor(Math.random() * elementsData.length)];
+      const isNew = !unlockedElements.includes(hit.no);
+      if(isNew) { unlockedElements.push(hit.no); saveGameData(); } else { playerCoins += 30; saveGameData(); } 
+
+      setTimeout(() => {
+        SoundEngine.playSE('glass'); flask.classList.remove('gacha-shake'); flask.classList.add('hidden');
+        document.getElementById('gacha-result-icon').innerText = hit.sym; document.getElementById('gacha-result-name').innerText = hit.name;
+        const msg = document.getElementById('gacha-result-msg');
+        if(isNew) { msg.innerText = "NEW!"; msg.className = "text-lg text-white font-bold bg-red-500 px-4 py-1 rounded-full mb-8"; }
+        else { msg.innerText = "カブリ... (30🪙 返還)"; msg.className = "text-lg text-white font-bold bg-gray-500 px-4 py-1 rounded-full mb-8"; }
+        resultDiv.classList.remove('hidden'); resultDiv.classList.add('gacha-pop');
+        setTimeout(() => { btn.classList.remove('hidden'); }, 800);
+      }, 1500);
+    }
+    function closeGacha() { document.getElementById('gacha-overlay').classList.add('hidden'); renderCollection(); }
+
+    // ==========================================
+    // 高難易度・記述・複合問題 (全10ステージ)
+    // ==========================================
+    const stages = [
+      {
+        name: "ST 1: 元素の森", enemyIcon: "💧", enemyName: "スライム", maxHp: 800, isBoss: false,
+        questions: [
+          { q: "次のうち、分子をつくらない物質（単体）はどれか？", choices: ["水素", "二酸化炭素", "酸素", "銀"], ans: 3, exp: "金属（銀や鉄など）は分子をつくらず、原子が規則正しく並んでできています。" },
+          { q: "炭酸ナトリウム（Na₂CO₃）の分子1つに含まれる原子の総数はいくつか？", choices: ["3個", "5個", "6個", "7個"], ans: 2, exp: "Naが2個、Cが1個、Oが3個なので、合計で6個の原子が含まれます。" },
+          { q: "アンモニア（NH₃）が10分子あるとき、水素（H）原子は全部で何個あるか？", choices: ["3個", "10個", "13個", "30個"], ans: 3, exp: "1分子の中にH原子が3個あるため、10分子では 3×10＝30個 になります。" },
+          { q: "1種類の原子だけでできている物質を何というか？", choices: ["純物質", "化合物", "単体", "混合物"], ans: 2, exp: "水素（H₂）や酸素（O₂）、銀（Ag）などは1種類の原子からなる「単体」です。" },
+          { q: "次の物質のうち、様々な物質が混ざっている「混合物」はどれか？", choices: ["水", "空気", "塩化ナトリウム", "鉄"], ans: 1, exp: "空気は窒素や酸素、二酸化炭素などが混ざった混合物です。" }
+        ]
+      },
+      {
+        name: "ST 2: 金属の洞窟", enemyIcon: "🦇", enemyName: "ドラキー", maxHp: 1200, isBoss: false,
+        questions: [
+          { q: "金属に共通する性質として【間違っている】ものはどれか？", choices: ["電気をよく通す", "磁石に引きつけられる", "熱をよく伝える", "たたくと薄く広がる"], ans: 1, exp: "鉄などは磁石につきますが、銅やアルミニウムなど磁石につかない金属も多いため、共通の性質ではありません。" },
+          { q: "図表計算：質量が 23.7g、体積が 3.0cm³ の金属がある。この金属の密度は何 g/cm³ か？", choices: ["7.9 g/cm³", "71.1 g/cm³", "8.9 g/cm³", "2.7 g/cm³"], ans: 0, exp: "密度 ＝ 質量 ÷ 体積。 23.7 ÷ 3.0 ＝ 7.9 g/cm³ （鉄の密度）になります。" },
+          { q: "有機物を燃やしたときに必ず発生する2つの物質の組み合わせは？", choices: ["水素と酸素", "二酸化炭素と水", "一酸化炭素とアンモニア", "窒素と水"], ans: 1, exp: "有機物には炭素（C）と水素（H）が含まれているため、燃やすと二酸化炭素と水ができます。" },
+          { q: "メスシリンダーで液体の体積を正確に量るとき、目の位置として正しいのは？", choices: ["液面を上から見下ろす", "液面の最も高い位置を水平に見る", "液面のへこんだ最も低い位置を水平に見る", "下から見上げる"], ans: 2, exp: "液面のへこんだ一番低い位置（メニスカス）を水平に見るのが正しい量り方です。" },
+          { q: "ガスバーナーに火をつけるときの正しい手順の順番は？", choices: ["元栓→マッチ→ガス調節ねじ", "マッチ→元栓→空気調節ねじ", "元栓→コック→マッチ→ガス調節ねじ", "ガス調節ねじ→マッチ→空気調節ねじ"], ans: 2, exp: "元栓→コック→マッチを擦って近づける→ガス調節ねじを開く、の順です。" }
+        ]
+      },
+      {
+        name: "ST 3: 化学の館", enemyIcon: "👻", enemyName: "ゴースト", maxHp: 1500, isBoss: false,
+        questions: [
+          { q: "炭酸水素ナトリウムを加熱したとき、試験管の口にたまる液体が「水」であることを確かめる方法は？", choices: ["石灰水が白く濁る", "フェノールフタレイン溶液が赤くなる", "青色の塩化コバルト紙が赤色になる", "火を近づけると音を立てて燃える"], ans: 2, exp: "青色の塩化コバルト紙は、水に触れると赤色（桃色）に変化する性質があります。" },
+          { q: "炭酸水素ナトリウムと加熱後に残る炭酸ナトリウムの性質のちがいとして正しいものは？", choices: ["加熱後の方が水に溶けにくく、アルカリ性が弱い", "加熱後の方が水によく溶け、アルカリ性が強い", "加熱後の方が水によく溶け、酸性が強い", "性質はまったく変わらない"], ans: 1, exp: "炭酸ナトリウムは水によく溶け、フェノールフタレイン溶液を濃い赤色にする強いアルカリ性を示します。" },
+          { q: "酸化銀の熱分解の化学反応式を完成させよ。[ A ] Ag₂O → [ B ] Ag + O₂", choices: ["A:2, B:2", "A:1, B:2", "A:2, B:4", "A:4, B:2"], ans: 2, exp: "酸素分子（O₂）を合わせるために酸化銀が2つ（2Ag₂O）必要で、その結果銀原子は4つ（4Ag）になります。" },
+          { q: "酸化銀の熱分解で発生した気体の性質として正しいものは？", choices: ["特有の刺激臭がある", "石灰水を白く濁らせる", "火のついた線香を入れると激しく燃える", "空気より非常に軽い"], ans: 2, exp: "発生する気体は酸素（O₂）なので、モノが燃えるのを助ける働き（助燃性）があります。" },
+          { q: "記述：炭酸水素ナトリウムの加熱をやめるとき、火を消す前に必ず行う操作とその理由は？", choices: ["試験管を立てる。気体が逃げるのを防ぐため", "ガラス管を水から出す。水が逆流して試験管が割れるのを防ぐため", "水をかける。早く冷ますため", "ふたをする。爆発を防ぐため"], ans: 1, exp: "加熱をやめると試験管内の空気が冷えて収縮し、気圧が下がって水が逆流するため、必ずガラス管を抜きます。" }
+        ]
+      },
+      {
+        name: "ST 4: 分解の塔", enemyIcon: "🦅", enemyName: "キメラ", maxHp: 2000, isBoss: false,
+        questions: [
+          { q: "記述：水の電気分解を行う際、純粋な水ではなく、少量の水酸化ナトリウムを溶かす理由は？", choices: ["発生する気体の量を増やすため", "電流を流れやすくするため", "発生した気体の臭いを消すため", "水の温度を上げるため"], ans: 1, exp: "純粋な水は電流を通しにくいため、電流を流れやすくする水酸化ナトリウムなどを溶かします。" },
+          { q: "水の電気分解で、陽極（＋極）と陰極（－極）から発生する気体の体積比（陽極：陰極）は？", choices: ["1：2", "2：1", "1：1", "3：2"], ans: 0, exp: "陽極からは酸素、陰極からは水素が発生し、酸素：水素＝1：2 の体積比になります。" },
+          { q: "陰極（－極）から発生した気体にマッチの火を近づけるとどうなるか？", choices: ["火が消える", "激しく燃える", "音を立てて燃える", "白く濁る"], ans: 2, exp: "陰極からは水素が発生するため、火を近づけると「ポンッ」と音を立てて燃え、水ができます。" },
+          { q: "塩化銅水溶液を電気分解すると、陽極（＋極）で発生する物質の性質は？", choices: ["赤色の金属が付着する", "特有の刺激臭があり、インクの色を脱色する", "火を近づけると音を立てて燃える", "石灰水を白く濁らせる"], ans: 1, exp: "陽極からは塩素（Cl₂）が発生します。プールの消毒液のような臭いがし、脱色作用があります。" },
+          { q: "塩化銅水溶液の電気分解の正しい化学反応式は？", choices: ["CuCl₂ → Cu + Cl₂", "2CuCl → 2Cu + Cl₂", "CuCl₂ → Cu + 2Cl", "Cu₂Cl → 2Cu + Cl"], ans: 0, exp: "塩化銅（CuCl₂）が、銅（Cu）と塩素分子（Cl₂）に分解されます。" }
+        ]
+      },
+      {
+        name: "ST 5: 分解の守護者", enemyIcon: "🦍", enemyName: "キングコング", maxHp: 4000, isBoss: true,
+        questions: [
+          { q: "複合穴埋め：水を電気分解すると、(ア)極に酸素、(イ)極に水素が発生し、その体積比はア：イ ＝ (ウ)：(エ) になる。", choices: ["ア=陽, イ=陰, ウ=2, エ=1", "ア=陰, イ=陽, ウ=1, エ=2", "ア=陽, イ=陰, ウ=1, エ=2", "ア=陰, イ=陽, ウ=2, エ=1"], ans: 2, exp: "陽極（＋）からは酸素が1、陰極（－）からは水素が2の割合で発生します。" },
+          { q: "複合穴埋め：炭酸水素ナトリウムを加熱すると、(ア)、(イ)、(ウ)に分解される。ア〜ウのうち気体は(エ)である。", choices: ["ア=炭酸ナトリウム, イ=水, ウ=二酸化炭素, エ=二酸化炭素", "ア=酸化銀, イ=水素, ウ=酸素, エ=酸素", "ア=塩化ナトリウム, イ=水, ウ=塩素, エ=塩素", "ア=炭酸ナトリウム, イ=アンモニア, ウ=水, エ=アンモニア"], ans: 0, exp: "炭酸水素ナトリウムの熱分解はテスト頻出！固体の炭酸ナトリウム、液体の水、気体の二酸化炭素ができます。" },
+          { q: "記述：塩化銅水溶液の電気分解で、陰極（－極）に赤い物質が付着した。これをかたいものでこするとどうなるか？", choices: ["ボロボロに崩れる", "特有の光沢が出る", "青色に変化する", "刺激臭を放つ"], ans: 1, exp: "陰極に付着した赤い物質は金属の「銅」であるため、こすると金属特有の光沢が出ます。" },
+          { q: "図表想定計算：酸化銀 2.90g を完全に熱分解すると、銀が 2.70g 残った。発生した酸素の質量は？", choices: ["0.20g", "2.70g", "5.60g", "1.45g"], ans: 0, exp: "質量保存の法則より、発生した気体（酸素）の質量は 2.90g － 2.70g ＝ 0.20g となります。" },
+          { q: "次のうち、「分解」にあたる化学変化はどれか？", choices: ["水素と酸素から水ができる", "鉄がさびてボロボロになる", "炭酸水素ナトリウムから二酸化炭素が発生する", "銅を加熱すると黒くなる"], ans: 2, exp: "1種類の物質が2種類以上の別の物質に分かれる変化を「分解」といいます。" }
+        ]
+      },
+      {
+        name: "ST 6: 化合の荒野", enemyIcon: "🪨", enemyName: "ゴーレム", maxHp: 3000, isBoss: false,
+        questions: [
+          { q: "鉄と硫黄の混合物を加熱してできる物質の化学式は？", choices: ["Fe₂S", "FeSO₄", "FeS", "SFe"], ans: 2, exp: "鉄（Fe）と硫黄（S）が化合して、硫化鉄（FeS）ができます。" },
+          { q: "鉄と硫黄を加熱した後にできる物質（硫化鉄）に、うすい塩酸を加えると発生する気体は？", choices: ["二酸化炭素", "アンモニア", "硫化水素", "塩素"], ans: 2, exp: "硫化鉄に塩酸を加えると、腐った卵のような特有の臭いを持つ「硫化水素」が発生します。" },
+          { q: "記述：鉄と硫黄の反応は、一度上部を加熱し始めると、火を止めても反応が最後まで進む。その理由は？", choices: ["鉄が酸素と結びつくから", "反応で発生した熱によって、次の反応が進むため", "硫黄が燃えやすいから", "塩酸が発生するから"], ans: 1, exp: "鉄と硫黄の化合は「発熱反応」であり、自ら出した熱で次々と反応が連鎖していきます。" },
+          { q: "銅と硫黄の粉末を混ぜて加熱すると、激しく熱と光を出して化合する。できる物質は？", choices: ["酸化銅", "塩化銅", "炭酸銅", "硫化銅"], ans: 3, exp: "銅（Cu）と硫黄（S）が結びついて、黒色の硫化銅（CuS）ができます。" },
+          { q: "水素と酸素の混合気体に点火すると、爆発的に反応して水ができる。この化学反応式は？", choices: ["H₂ + O → H₂O", "H₂ + O₂ → H₂O₂", "2H₂ + O₂ → 2H₂O", "H + O → HO"], ans: 2, exp: "水素分子2つと酸素分子1つが結びついて、水分子が2つできる反応です。" }
+        ]
+      },
+      {
+        name: "ST 7: 金属の沼", enemyIcon: "🛸", enemyName: "はぐれメタル", maxHp: 3500, isBoss: false,
+        questions: [
+          { q: "複合穴埋め：銅を空気中で加熱すると(ア)色の(イ)になる。これを化学式で書くと(ウ)である。", choices: ["ア=白, イ=酸化マグネシウム, ウ=MgO", "ア=黒, イ=酸化銅, ウ=CuO", "ア=黒, イ=硫化銅, ウ=CuS", "ア=赤, イ=塩化銅, ウ=CuCl₂"], ans: 1, exp: "銅（赤色）は酸素と結びついて黒色の酸化銅（CuO）になります。" },
+          { q: "マグネシウムを加熱すると激しく光を出して燃える。このとき起こっている化学変化は？", choices: ["酸化（化合）", "還元", "熱分解", "電気分解"], ans: 0, exp: "物質が酸素と結びつく化学変化を「酸化」といいます。熱や光を出す激しい酸化を「燃焼」と呼びます。" },
+          { q: "酸化銅と炭素の粉末を混ぜて加熱すると、二酸化炭素が発生し銅が残る。このとき炭素が起こした化学変化は？", choices: ["還元", "酸化", "分解", "凝固"], ans: 1, exp: "炭素は酸化銅から酸素を奪い取って結びつき、二酸化炭素になるため「酸化」されています。" },
+          { q: "酸化銅と炭素の反応で、酸化銅が酸素を奪われる化学変化を何というか？", choices: ["酸化", "還元", "分解", "蒸発"], ans: 1, exp: "酸化物が酸素を奪われてもとの物質に戻る変化を「還元」といいます。酸化と還元は常に同時に起こります。" },
+          { q: "記述：スチールウール（鉄）を燃やした後、もとの質量より大きくなる理由は？", choices: ["鉄が膨張したから", "空気中の二酸化炭素を吸収したから", "結びついた酸素の分だけ質量が増えるから", "炭素が結びついたから"], ans: 2, exp: "鉄が酸素と化合して酸化鉄になるため、結びついた酸素の質量分だけ重くなります。" }
+        ]
+      },
+      {
+        name: "ST 8: 法則の神殿", enemyIcon: "🐉", enemyName: "ドラゴン", maxHp: 4500, isBoss: false,
+        questions: [
+          { q: "うすい塩酸と炭酸水素ナトリウムを密閉容器（ふた付き）内で反応させると、反応前後の質量はどうなる？", choices: ["増加する", "減少する", "変わらない", "ゼロになる"], ans: 2, exp: "化学変化の前後で物質全体の質量が変わらないことを「質量保存の法則」といいます。" },
+          { q: "前問で、密閉容器のふたを開けると全体の質量はどうなる？", choices: ["増加する", "減少する", "変わらない", "変化を繰り返す"], ans: 1, exp: "ふたを開けると、発生した気体（二酸化炭素）が空気中に逃げてしまうため、質量は減少したように見えます。" },
+          { q: "銅を完全に酸化させたとき、銅と結びつく酸素の質量の比（銅：酸素）は？", choices: ["3：2", "1：1", "4：1", "2：1"], ans: 2, exp: "銅4gに対して酸素1gが結びつき、5gの酸化銅ができます（4：1の定比例）。" },
+          { q: "計算：マグネシウム 1.2g を完全に酸化させると、何 g の酸化マグネシウムができるか？(Mg：O ＝ 3：2)", choices: ["1.6 g", "2.0 g", "3.2 g", "2.4 g"], ans: 1, exp: "Mg：O＝3：2なので、結びつく酸素は 1.2 × (2/3) ＝ 0.8g。できる酸化マグネシウムは 1.2 ＋ 0.8 ＝ 2.0g です。" },
+          { q: "計算：銅 8.0g を加熱したが、不十分で加熱後の質量が 9.0g になった。反応せずに残っている銅は何 g か？", choices: ["4.0 g", "5.0 g", "1.0 g", "3.0 g"], ans: 0, exp: "質量が1.0g増えたのは結びついた酸素。銅:酸素=4:1より、反応した銅は 1.0 × 4 ＝ 4.0g。残りは 8.0 － 4.0 ＝ 4.0g です。" }
+        ]
+      },
+      {
+        name: "ST 9: 反応の支配者", enemyIcon: "🐉🐉🐉", enemyName: "キングギドラ", maxHp: 7000, isBoss: true,
+        questions: [
+          { q: "化学反応式の係数を答えよ： ( ア ) Cu ＋ O₂ → ( イ ) CuO", choices: ["ア=1, イ=2", "ア=2, イ=1", "ア=2, イ=2", "ア=4, イ=2"], ans: 2, exp: "右辺のOが2つ（2CuO）になるため、左辺のCuも2つ（2Cu）必要になります。" },
+          { q: "計算：マグネシウム 3.0g を完全に燃焼させるのに必要な酸素は何 g か？(Mg：O ＝ 3：2)", choices: ["1.5 g", "2.0 g", "4.5 g", "5.0 g"], ans: 1, exp: "質量の比が 3：2 なので、マグネシウム 3.0g に結びつく酸素はそのまま 2.0g になります。" },
+          { q: "複合穴埋め：酸化銅と炭素の反応で、酸化銅は(ア)され、炭素は(イ)される。この反応の式は 2CuO ＋ C → (ウ) Cu ＋ CO₂ となる。", choices: ["ア=酸化, イ=還元, ウ=1", "ア=還元, イ=酸化, ウ=2", "ア=分解, イ=化合, ウ=2", "ア=還元, イ=酸化, ウ=4"], ans: 1, exp: "酸素を奪われるのが還元、酸素と結びつくのが酸化です。銅は右辺で2つできるため係数は2になります。" },
+          { q: "図表想定計算：銅粉 4.0g から酸化銅 5.0g ができる。銅 10.0g を完全に加熱すると質量は何 g 増加するか？", choices: ["1.0 g", "2.5 g", "12.5 g", "5.0 g"], ans: 1, exp: "銅4gで質量が1g増加（酸素1g）するので、銅10gなら 10 × (1/4) ＝ 2.5g の酸素が結びつき増加します。" },
+          { q: "記述：木炭（炭素）が燃えると周囲の酸素と結びついて二酸化炭素になるが、燃えた後の木炭の質量は減る。なぜか？", choices: ["炭素が消滅するから", "発生した二酸化炭素が空気中に逃げてしまうから", "熱の分だけ軽くなるから", "木炭が縮むから"], ans: 1, exp: "気体になって空気中に散らばってしまうため、残った固体の質量は減少します。" }
+        ]
+      },
+      {
+        name: "ST 10: 化学の魔王", enemyIcon: "🦖", enemyName: "ゴジラ", maxHp: 12000, isBoss: true,
+        questions: [
+          { q: "複合記述：酸化銀の熱分解で、試験管の底に残った白い物質が「金属」であることを確かめる方法を2つ答えよ。", choices: ["水に溶かす、石灰水に入れる", "こすって光沢を出す、叩いて広げる", "火を近づける、匂いをかぐ", "塩酸を入れる、赤色リトマス紙を当てる"], ans: 1, exp: "金属の共通の性質である「金属光沢」「展性・延性（叩くと広がる）」または「電気を通す」ことを確認します。" },
+          { q: "実験考察：鉄と硫黄の混合物が入った試験管の上部だけを加熱し、赤くなったら火を止めた。その後の反応はどうなるか？", choices: ["すぐに反応が止まる", "冷めるまでゆっくり進む", "火を止めても、発生した熱によって反応が最後まで進む", "爆発する"], ans: 2, exp: "鉄と硫黄の化合は発熱反応なので、自ら出した熱で次々と反応が進んでいきます。" },
+          { q: "化学反応式完成：炭酸水素ナトリウムの熱分解。 2NaHCO₃ → ( ア ) ＋ ( イ ) ＋ H₂O", choices: ["ア=Na₂CO₃ , イ=CO₂", "ア=Na₂O , イ=CO₂", "ア=Na₂CO₃ , イ=O₂", "ア=NaCl , イ=CO"], ans: 0, exp: "テスト超頻出！炭酸ナトリウム（Na₂CO₃）、二酸化炭素（CO₂）、水（H₂O）の3つに分解されます。" },
+          { q: "難問計算：銅粉 1.6g とマグネシウム粉末 1.2g をそれぞれ完全に酸化させた。できた酸化物の質量の合計は何 g か？", choices: ["2.8 g", "3.0 g", "4.0 g", "5.6 g"], ans: 2, exp: "銅(4:5)より酸化銅は 1.6×(5/4)＝2.0g。Mg(3:5)より酸化Mgは 1.2×(5/3)＝2.0g。合計で 4.0g になります。" },
+          { q: "超重要記述：化学変化の前後で「質量保存の法則」が成り立つ理由を、『原子』という言葉を使って説明せよ。", choices: ["原子が新しくできるから", "原子の大きさが変わるから", "化学変化の前後で、原子の組み合わせは変わるが、原子の種類と数は変わらないから", "原子がすべて消えるから"], ans: 2, exp: "原子は新しくできたり、他の種類に変わったり、なくなったりしない（ドルトンの原子説）ため、全体の質量は保存されます。" }
+        ]
+      }
+    ];
+
+    // ==========================================
+    // ゲーム進行ロジック
+    // ==========================================
+    let currentStageIndex = 0; let currentQuestionIndex = 0;
+    let playerMaxHP = 3; let playerHP = 3; let enemyHP = 1000; let maxEnemyHP = 1000;
+    let totalAP = 0; let earnedCoinsInRound = 0;
+    let timerInterval; let timeLeft = 200; const MAX_TIME = 200;
+    let currentQuestions = []; let isGameOver = false; let isStageClear = false;
+    let isRushTime = false; let rushTimer = 3.0; let rushInterval;
+
+    const UI = {
+      title: document.getElementById('screen-title'), battle: document.getElementById('screen-battle'),
+      modalOverlay: document.getElementById('modal-overlay'), modalTitle: document.getElementById('modal-title'),
+      modalSubtitle: document.getElementById('modal-subtitle'), modalExp: document.getElementById('modal-exp'),
+      modalBtn: document.getElementById('modal-btn'), playerHpText: document.getElementById('player-hp-text'),
+      playerHpBar: document.getElementById('player-hp-bar'), enemyHpText: document.getElementById('enemy-hp-text'),
+      enemyHpBar: document.getElementById('enemy-hp-bar'), stageName: document.getElementById('stage-name'),
+      enemyName: document.getElementById('enemy-name-display'), questionCount: document.getElementById('question-count'),
+      enemySprite: document.getElementById('enemy-sprite'), questionText: document.getElementById('question-text'),
+      choicesContainer: document.getElementById('choices-container'), timerBar: document.getElementById('timer-bar'),
+      totalApDisplay: document.getElementById('total-ap-display'), modalApDisplay: document.getElementById('modal-ap-display'),
+      rushOverlay: document.getElementById('rush-overlay'), rushTimerText: document.getElementById('rush-timer'),
+      btnRush: document.getElementById('btn-rush'), battleMainArea: document.getElementById('battle-main-area'),
+      chestOverlay: document.getElementById('chest-overlay')
+    };
+
+    function startGame() {
+      SoundEngine.init(); currentStageIndex = 0; playerHP = 3; totalAP = 0; UI.totalApDisplay.innerText = totalAP; isGameOver = false;
+      UI.title.classList.add('hidden'); UI.battle.classList.remove('hidden');
+      loadStage();
+    }
+
+    function loadStage() {
+      const stage = stages[currentStageIndex]; maxEnemyHP = stage.maxHp; enemyHP = maxEnemyHP; isStageClear = false;
+      currentQuestions = [...stage.questions].sort(() => Math.random() - 0.5); currentQuestionIndex = 0;
+      UI.stageName.innerHTML = stage.name; UI.enemyName.innerHTML = stage.enemyName; UI.enemySprite.innerHTML = stage.enemyIcon;
+      UI.enemySprite.style.animation = 'none'; UI.enemySprite.style.opacity = '1'; UI.enemySprite.style.transform = 'scale(1)';
+      updateHPDisplay(); showQuestion(); SoundEngine.startBGM(currentStageIndex);
+    }
+
+    function showQuestion() {
+      UI.questionCount.innerText = `第 ${currentQuestionIndex + 1} 問`;
+      const qData = currentQuestions[currentQuestionIndex]; UI.questionText.innerHTML = qData.q;
+      UI.choicesContainer.innerHTML = '';
+      qData.choices.forEach((choiceHTML, index) => {
+        const btn = document.createElement('button');
+        // 選択肢の文字数が多い場合を考慮し text-xs md:text-base に微調整
+        btn.className = "bg-slate-700 hover:bg-slate-600 active:bg-slate-500 border-2 border-slate-400 rounded-2xl p-2 md:p-3 text-xs md:text-base font-bold flex items-center justify-center transition-transform active:scale-95 shadow-md min-h-[60px] md:min-h-[80px] w-full text-white";
+        btn.innerHTML = choiceHTML; btn.onclick = () => checkAnswer(index);
+        UI.choicesContainer.appendChild(btn);
+      });
+      UI.battleMainArea.scrollTop = 0; startTimer();
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval); timeLeft = MAX_TIME; updateTimerBar();
+      timerInterval = setInterval(() => {
+        timeLeft--; updateTimerBar();
+        if (timeLeft <= 0) { clearInterval(timerInterval); handleTimeout(); }
+      }, 100);
+    }
+
+    function updateTimerBar() {
+      const percentage = (timeLeft / MAX_TIME) * 100; UI.timerBar.style.width = `${percentage}%`;
+      if (percentage > 50) UI.timerBar.className = "bg-green-500 h-full rounded-full transition-all duration-75";
+      else if (percentage > 20) UI.timerBar.className = "bg-yellow-500 h-full rounded-full transition-all duration-75";
+      else UI.timerBar.className = "bg-red-500 h-full rounded-full transition-all duration-75";
+    }
+
+    function handleTimeout() { disableButtons(); takeDamagePlayer(); showModal("TIME UP...", "時間切れ！ダメージを受けた！", currentQuestions[currentQuestionIndex].exp, false); }
+    function disableButtons() { const buttons = UI.choicesContainer.querySelectorAll('button'); buttons.forEach(btn => { btn.disabled = true; btn.style.opacity = '0.5'; }); }
+
+    function checkAnswer(selectedIndex) {
+      clearInterval(timerInterval); disableButtons();
+      const qData = currentQuestions[currentQuestionIndex];
+      if (selectedIndex === qData.ans) { SoundEngine.playSE('correct'); startRushTime(qData.exp); } 
+      else { takeDamagePlayer(); showModal("不正解...", "間違えた！ダメージを受けた！", qData.exp, false); }
+    }
+
+    function takeDamagePlayer() {
+      playerHP--; SoundEngine.playSE('wrong');
+      document.getElementById('app-wrapper').classList.add('shake');
+      setTimeout(() => document.getElementById('app-wrapper').classList.remove('shake'), 400);
+      updateHPDisplay();
+    }
+
+    function applyEnemyDamage(amount) {
+      enemyHP -= amount; if (enemyHP < 0) enemyHP = 0;
+      totalAP += amount; UI.totalApDisplay.innerText = totalAP;
+      UI.enemySprite.classList.add('hit'); setTimeout(() => UI.enemySprite.classList.remove('hit'), 100);
+      updateHPDisplay();
+    }
+
+    function updateHPDisplay() {
+      UI.playerHpText.innerText = `${playerHP}/${playerMaxHP}`; UI.playerHpBar.style.width = `${(playerHP / playerMaxHP) * 100}%`;
+      UI.enemyHpText.innerText = enemyHP; UI.enemyHpBar.style.width = `${(enemyHP / maxEnemyHP) * 100}%`;
+    }
+
+    // ==========================================
+    // ラッシュタイム ＆ 報酬計算
+    // ==========================================
+    let currentExpText = ""; 
+    function startRushTime(expText) {
+      isRushTime = true; currentExpText = expText; rushTimer = 3.0;
+      const baseDmg = Math.floor(100 + (timeLeft / 2)); applyEnemyDamage(baseDmg); showDamagePopup(baseDmg, true);
+      UI.rushOverlay.classList.remove('hidden'); UI.rushTimerText.innerText = rushTimer.toFixed(2); UI.btnRush.onclick = handleRushTap;
+      rushInterval = setInterval(() => {
+        rushTimer -= 0.05;
+        if (rushTimer <= 0) { rushTimer = 0; endRushTime(); }
+        UI.rushTimerText.innerText = rushTimer.toFixed(2);
+      }, 50);
+    }
+
+    function handleRushTap(e) {
+      if(!isRushTime) return; SoundEngine.playSE('hit');
+      const tapDmg = 30 + (currentStageIndex * 20); applyEnemyDamage(tapDmg);
+      createDamagePopup(e, tapDmg);
+    }
+
+    function createDamagePopup(e, amount) {
+      const popup = document.createElement('div'); popup.className = 'dmg-popup text-2xl md:text-4xl'; popup.innerText = `+${amount} AP`;
+      const rect = UI.btnRush.getBoundingClientRect();
+      const clientX = e.clientX || (rect.left + rect.width / 2); const clientY = e.clientY || (rect.top + rect.height / 2);
+      popup.style.left = `${clientX - rect.left - 40}px`; popup.style.top = `${clientY - rect.top - 20}px`;
+      UI.btnRush.appendChild(popup); setTimeout(() => popup.remove(), 500);
+    }
+
+    function showDamagePopup(amount, isBase=false) {
+      const popup = document.createElement('div'); popup.className = `dmg-popup text-3xl md:text-5xl ${isBase ? 'text-emerald-400' : 'text-yellow-400'} z-[70]`; popup.innerText = isBase ? `正解! +${amount}` : `+${amount}`;
+      const rect = UI.enemySprite.getBoundingClientRect(); const parentRect = UI.battleMainArea.getBoundingClientRect();
+      popup.style.left = `${(rect.left - parentRect.left) + (rect.width / 2) - 50}px`; popup.style.top = `${(rect.top - parentRect.top) - 30}px`;
+      UI.battleMainArea.appendChild(popup); setTimeout(() => popup.remove(), 600);
+    }
+
+    function endRushTime() {
+      clearInterval(rushInterval); isRushTime = false; UI.rushOverlay.classList.add('hidden'); UI.btnRush.onclick = null;
+      if(enemyHP <= 0) { handleWin(); } 
+      else { earnedCoinsInRound = 0; showModal("RUSH FINISH!", `怒涛の連打でダメージを与えた！`, currentExpText, true); }
+    }
+
+    // ==========================================
+    // 勝利演出（宝箱ドロップなど）
+    // ==========================================
+    function handleWin() {
+      isStageClear = true; SoundEngine.stopBGM();
+      const stage = stages[currentStageIndex];
+      UI.enemySprite.style.animation = 'capture 1s ease-in-out forwards';
+      
+      let reward = 100; // 通常
+      if(stage.enemyName === "キングコング") reward = 500;
+      if(stage.enemyName === "キングギドラ") reward = 1000;
+      if(stage.enemyName === "ゴジラ") reward = 3000;
+      earnedCoinsInRound = reward;
+      
+      setTimeout(() => {
+        if(stage.isBoss) {
+          SoundEngine.playSE('fanfare');
+          UI.chestOverlay.classList.remove('hidden');
+        } else {
+          playerCoins += reward; saveGameData();
+          showModal("STAGE CLEAR!!", `${stage.enemyName} を撃破した！`, currentExpText, true, true);
+        }
+      }, 1000);
+    }
+
+    function openChest() {
+      UI.chestOverlay.classList.add('hidden');
+      playerCoins += earnedCoinsInRound; saveGameData();
+      showModal("BOSS DEFEATED!!", `見事ボスを撃破し、宝箱からコインをゲット！`, currentExpText, true, true);
+    }
+
+    function showModal(title, subtitle, exp, isCorrect, isWin = false) {
+      UI.modalTitle.innerText = title; UI.modalSubtitle.innerText = subtitle; UI.modalExp.innerHTML = exp;
+      document.getElementById('modal-exp-container').scrollTop = 0;
+
+      // 【誤爆防止】連打直後に誤って「次へ」を押さないよう、ボタンを1.5秒間ロック
+      UI.modalBtn.disabled = true;
+      UI.modalBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      setTimeout(() => {
+        UI.modalBtn.disabled = false;
+        UI.modalBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      }, 1500);
+
+      if (isWin) {
+        UI.modalApDisplay.classList.remove('hidden');
+        UI.modalApDisplay.innerText = `獲得コイン: +${earnedCoinsInRound}🪙`;
+        UI.modalTitle.className = "text-3xl md:text-4xl font-extrabold mb-2 text-yellow-400 relative z-10 drop-shadow-md";
+        UI.modalBtn.className = "relative z-10 bg-yellow-600 hover:bg-yellow-500 active:scale-95 text-white font-bold py-4 w-full rounded-xl text-xl transition-transform shadow-lg mt-2 shrink-0";
+      } else if (isCorrect) {
+        UI.modalApDisplay.classList.add('hidden');
+        UI.modalTitle.className = "text-3xl md:text-4xl font-extrabold mb-2 text-emerald-400 relative z-10";
+        UI.modalBtn.className = "relative z-10 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold py-4 w-full rounded-xl text-xl transition-transform shadow-lg mt-2 shrink-0";
+      } else {
+        UI.modalApDisplay.classList.add('hidden');
+        UI.modalTitle.className = "text-3xl md:text-4xl font-extrabold mb-2 text-red-400 relative z-10";
+        UI.modalBtn.className = "relative z-10 bg-red-600 hover:bg-red-500 active:scale-95 text-white font-bold py-4 w-full rounded-xl text-xl transition-transform shadow-lg mt-2 shrink-0";
+      }
+
+      if (playerHP <= 0) {
+        isGameOver = true; SoundEngine.stopBGM();
+        UI.modalSubtitle.innerText = "プレイヤーのHPがゼロになった...";
+        UI.modalBtn.innerText = "タイトルへ戻る";
+        UI.modalBtn.className = "relative z-10 bg-gray-600 hover:bg-gray-500 active:scale-95 text-white font-bold py-4 w-full rounded-xl text-xl transition-transform shadow-lg mt-2 shrink-0";
+      } else if (isStageClear) {
+        if (currentStageIndex >= stages.length - 1) {
+          UI.modalTitle.innerText = "ALL CLEAR!!!";
+          UI.modalTitle.className = "text-4xl md:text-5xl font-extrabold mb-2 text-yellow-400 relative z-10 animate-bounce mt-4";
+          UI.modalSubtitle.innerText = `伝説のゴジラを撃破し、完全クリア！\n獲得したコインで元素ガチャを回そう！`;
+          UI.modalBtn.innerText = "タイトルへ戻る";
+        } else { UI.modalBtn.innerText = "次のステージへ"; }
+      } else { UI.modalBtn.innerText = "次の問題へ"; }
+
+      setTimeout(() => { UI.modalOverlay.classList.remove('hidden'); }, 500); 
+    }
+
+    function nextAction() {
+      UI.modalOverlay.classList.add('hidden');
+      if (isGameOver || (isStageClear && currentStageIndex >= stages.length - 1)) {
+        document.getElementById('screen-battle').classList.add('hidden');
+        document.getElementById('screen-title').classList.remove('hidden');
+      } else if (isStageClear) {
+        currentStageIndex++; loadStage();
+      } else {
+        currentQuestionIndex++; if (currentQuestionIndex >= currentQuestions.length) currentQuestionIndex = 0; showQuestion();
+      }
+    }
+  </script>
+</body>
+</html>
