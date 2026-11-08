@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="ja" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>バイオ・クエスト - 中学理科モンスター討伐RPG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        rpg: {
+                            dark: '#090d16',
+                            card: '#131c2e',
+                            border: '#2a3b5c',
+                            accent: '#00f2fe',
+                            gold: '#ffd700',
+                            danger: '#ff4b4b',
+                            success: '#00e676'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            background-color: #090d16;
+            color: #f1f5f9;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+        .pixel-font {
+            font-family: 'Press Start 2P', monospace;
+        }
+        @keyframes floatMonster {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: floatMonster 3s ease-in-out infinite;
+        }
+        @keyframes attackDash {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(35px) scale(1.1); filter: brightness(1.5); }
+            100% { transform: translateX(0); }
+        }
+        .animate-attack {
+            animation: attackDash 0.3s ease-in-out;
+        }
+        @keyframes damageShake {
+            0%, 100% { transform: translate(0, 0); }
+            20% { transform: translate(-10px, 5px); }
+            40% { transform: translate(10px, -5px); }
+            60% { transform: translate(-8px, -5px); }
+            80% { transform: translate(8px, 5px); }
+        }
+        .animate-shake {
+            animation: damageShake 0.4s ease-in-out;
+        }
+        @keyframes slashEffect {
+            0% { opacity: 1; transform: scale(0.5) rotate(-20deg); }
+            50% { opacity: 1; transform: scale(1.3) rotate(10deg); color: #ffd700; }
+            100% { opacity: 0; transform: scale(1.8) rotate(45deg); }
+        }
+        .slash-anim {
+            animation: slashEffect 0.4s forwards;
+        }
+        /* Custom scrollbar for mobile */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131c2e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a3b5c;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-2 sm:p-4 max-w-md mx-auto">
+
+    <!-- Header / Status Bar -->
+    <header class="w-full bg-rpg-card border-2 border-rpg-border rounded-2xl p-3 shadow-2xl mb-3 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+            <span class="text-2xl">🧬</span>
+            <div>
+                <h1 class="text-xs pixel-font text-transparent bg-clip-text bg-gradient-to-r from-rpg-accent to-rpg-gold">
+                    BIO QUEST
+                </h1>
+                <p class="text-[10px] text-slate-400" id="player-title">見習い生物士</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3 text-right">
+            <div>
+                <div class="text-[10px] text-slate-400">Lv.<span id="player-lvl">1</span> | EXP: <span id="player-exp">0</span></div>
+                <div class="text-xs font-bold text-rpg-gold"><span id="player-gold">0</span> G</div>
+            </div>
+            <button onclick="openMenu()" class="bg-rpg-border hover:bg-slate-700 text-white p-2 rounded-xl text-xs border border-slate-600 transition shadow">
+                ⚙️
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Game Container -->
+    <main id="app-container" class="w-full flex-1 flex flex-col justify-center items-center pb-2">
+        <!-- Injected views go here -->
+    </main>
+
+    <!-- Footer Nav Bar -->
+    <nav class="w-full bg-rpg-card border-2 border-rpg-border rounded-2xl p-2 shadow-2xl mt-2 grid grid-cols-4 gap-2 text-center">
+        <button onclick="switchView('map')" class="py-2 px-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-cyan-400 transition flex flex-col items-center">
+            <span class="text-lg">🗺️</span>
+            <span class="text-[10px]">クエスト</span>
+        </button>
+        <button onclick="switchView('encyclopedia')" class="py-2 px-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-amber-400 transition flex flex-col items-center">
+            <span class="text-lg">📖</span>
+            <span class="text-[10px]">図鑑</span>
+        </button>
+        <button onclick="switchView('review')" class="py-2 px-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-rose-400 transition flex flex-col items-center">
+            <span class="text-lg">⚡</span>
+            <span class="text-[10px]">復習の書</span>
+        </button>
+        <button onclick="switchView('gacha')" class="py-2 px-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-emerald-400 transition flex flex-col items-center">
+            <span class="text-lg">🧪</span>
+            <span class="text-[10px]">実験室ガチャ</span>
+        </button>
+    </nav>
+
+    <!-- Generic Modal Dialog -->
+    <div id="modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-rpg-card border-2 border-rpg-border rounded-2xl p-5 max-w-sm w-full shadow-2xl text-center">
+            <div id="modal-icon" class="text-4xl mb-2">🏆</div>
+            <h3 id="modal-title" class="text-lg font-bold mb-2 text-white pixel-font">TITLE</h3>
+            <p id="modal-text" class="text-slate-300 text-xs mb-5 leading-relaxed">Message text here</p>
+            <button onclick="closeModal()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-2.5 rounded-xl shadow-lg text-xs transition">
+                OK
+            </button>
+        </div>
+    </div>
+
+    <!-- Script Logic -->
+    <script>
+        // Game Database & Stages based on user worksheets (No.24 - No.32)
+        const STAGES = [
+            {
+                id: 1,
+                name: "第1章：細胞の迷宮",
+                bossName: "細胞壁ゴーレム",
+                icon: "🦠",
+                desc: "植物・動物細胞のつくり、細胞呼吸のエネルギー生産を司る最初の番人。",
+                bgGradient: "from-purple-950 to-slate-950",
+                maxHp: 120,
+                questions: [
+                    {
+                        q: "植物細胞だけにあり、細胞膜の外側を囲む丈夫なつくりの名称はどれか？",
+                        options: ["細胞壁", "核", "液胞", "細胞質"],
+                        answer: 0,
+                        explanation: "植物細胞には細胞膜の外側に丈夫な「細胞壁」があります。動物細胞にはありません。"
+                    },
+                    {
+                        q: "細胞内で必ず1つあり、遺伝情報（DNA）が入っている、染色液でよく染まる部分はどれか？",
+                        options: ["ミトコンドリア", "核", "葉緑体", "リボソーム"],
+                        answer: 1,
+                        explanation: "「核」には遺伝情報（DNA）が含まれ、酢酸オルガニン液などで赤く染まります。"
+                    },
+                    {
+                        q: "植物の緑色の粒で、光合成を行う場所の名前は何か？",
+                        options: ["液胞", "ミトコンドリア", "葉緑体", "ゴルジ体"],
+                        answer: 2,
+                        explanation: "「葉緑体」は光のエネルギーを利用して光合成を行う植物特有の緑色の粒です。"
+                    },
+                    {
+                        q: "細胞が行う細胞呼吸についての説明で正しいものはどれか？",
+                        options: [
+                            "養分と二酸化炭素から酸素をつくり出す",
+                            "養分と酸素からエネルギーをとり出し、二酸化炭素と水を放出する",
+                            "水と光からデンプンをつくり出す",
+                            "老廃物を尿として集めて体外に出す"
+                        ],
+                        answer: 1,
+                        explanation: "細胞呼吸では、養分と酸素から生きるためのエネルギーを取り出し、二酸化炭素と水を放出します。"
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "第2章：光合成の森",
+                bossName: "デンプン・スライム",
+                icon: "🌿",
+                desc: "光合成の仕組み、脱色、BTB液の色変化の実験エリアを守る幻獣。",
+                bgGradient: "from-emerald-950 to-slate-950",
+                maxHp: 150,
+                questions: [
+                    {
+                        q: "葉に光が当たるとできる、ヨウ素液に反応して青むらさき色になる物質は何か？",
+                        options: ["グルコース", "デンプン", "セルロース", "グリコーゲン"],
+                        answer: 1,
+                        explanation: "植物は光合成により「デンプン」を合成します。これはヨウ素液で青むらさき色に反応します。"
+                    },
+                    {
+                        q: "葉の緑色の部分を抜いて観察しやすくするために、熱したエタノールに浸す操作の名前はどれか？",
+                        options: ["脱色", "水洗い", "軟化", "染色"],
+                        answer: 0,
+                        explanation: "葉緑素を抜いてヨウ素液の反応を見やすくするため、エタノールで「脱色」を行います。"
+                    },
+                    {
+                        q: "BTB液において、二酸化炭素が多く溶けて酸性になったときの液の色はどれか？",
+                        options: ["青色", "緑色", "黄色", "赤色"],
+                        answer: 2,
+                        explanation: "BTB液は、酸性で「黄色」、中性で「緑色」、アルカリ性で「青色」を示します。"
+                    },
+                    {
+                        q: "光合成で植物が空気中から取り入れる気体（①）と、外へ出す気体（②）の正しい組み合わせはどれか？",
+                        options: [
+                            "①: 酸素 / ②: 二酸化炭素",
+                            "①: 二酸化炭素 / ②: 酸素",
+                            "①: 窒素 / ②: 酸素",
+                            "①: 二酸化炭素 / ②: 水蒸気"
+                        ],
+                        answer: 1,
+                        explanation: "光合成では二酸化炭素を取り入れ、酸素を放出します。"
+                    }
+                ]
+            },
+            {
+                id: 3,
+                name: "第3章：蒸散の回廊",
+                bossName: "ヴァスク・トレント",
+                icon: "🌳",
+                desc: "道管・師管のネットワークと、気孔からの蒸散作用を司る大樹の精霊。",
+                bgGradient: "from-amber-950 to-slate-950",
+                maxHp: 180,
+                questions: [
+                    {
+                        q: "根から吸い上げられた水が、気孔から水蒸気となって出ていく現象を何というか？",
+                        options: ["光合成", "呼吸", "蒸散", "浸透"],
+                        answer: 2,
+                        explanation: "根から吸い上げた水分が水蒸気として気孔から放出される現象を「蒸散」といいます。"
+                    },
+                    {
+                        q: "植物の維管束において、根からの水分や無機養分の通り道となる管はどれか？",
+                        options: ["師管", "道管", "気管", "リンパ管"],
+                        answer: 1,
+                        explanation: "水分や無機養分を運ぶのが「道管」、葉でつくられた養分を運ぶのが「師管」です。"
+                    },
+                    {
+                        q: "気孔を取り囲む、三日月の形をした2つの細胞の名称はどれか？",
+                        options: ["孔辺細胞", "表皮細胞", "維管束鞘細胞", "柔細胞"],
+                        answer: 0,
+                        explanation: "気孔のまわりにある2つの「孔辺細胞」が形を変えて、気体や水蒸気の通り道を調節します。"
+                    },
+                    {
+                        q: "双子葉類（タンポポなど）の茎の維管束の並び方の特徴として正しいものはどれか？",
+                        options: [
+                            "維管束がバラバラに散らばっている",
+                            "維管束が輪のように並んでいる",
+                            "道管が存在しない",
+                            "網状脈ではなく平行脈である"
+                        ],
+                        answer: 1,
+                        explanation: "双子葉類は維管束が輪のように並び、単子葉類は散らばっています。"
+                    }
+                ]
+            },
+            {
+                id: 4,
+                name: "第4章：消化管の洞窟",
+                bossName: "トリプシン・ドラゴン",
+                icon: "🐉",
+                desc: "5大栄養素の分解、消化酵素、小腸絨毛や肝臓の解毒・胆汁生産を狙う巨獣。",
+                bgGradient: "from-rose-950 to-slate-950",
+                maxHp: 220,
+                questions: [
+                    {
+                        q: "炭水化物が消化されて最終的に分解される物質はどれか？",
+                        options: ["アミノ酸", "脂肪酸とモノグリセリド", "ブドウ糖", "乳酸"],
+                        answer: 2,
+                        explanation: "炭水化物は「ブドウ糖」に、タンパク質は「アミノ酸」に、脂肪は「脂肪酸とモノグリセリド」に分解されます。"
+                    },
+                    {
+                        q: "肝臓で作られ、脂肪の消化を助けるが消化酵素は含まれない消化液はどれか？",
+                        options: ["だ液", "胃液", "すい液", "胆汁"],
+                        answer: 3,
+                        explanation: "「胆汁」は肝臓で作られ、脂肪を乳化しますが酵素自体は含みません。"
+                    },
+                    {
+                        q: "小腸の内壁にたくさんあり、養分の吸収効率を上げる小さな突起の名称はどれか？",
+                        options: ["柔毛", "気孔", "繊毛", "毛細血管"],
+                        answer: 0,
+                        explanation: "小腸の壁にある「柔毛（じゅうもう）」が表面積を広げ、効率よく養分を吸収します。"
+                    },
+                    {
+                        q: "小腸の毛細血管で吸収された養分が、心臓に向かう前に最初に経由する主要な臓器はどれか？",
+                        options: ["腎臓", "肝臓", "肺", "胃"],
+                        answer: 1,
+                        explanation: "毛細血管に吸収された養分は門脈を通り、一度「肝臓」に運ばれて栄養の貯蔵や解毒が行われます。"
+                    }
+                ]
+            },
+            {
+                id: 5,
+                name: "第5章：腎臓・肺の神殿",
+                bossName: "ネフロン・キマイラ",
+                icon: "🗿",
+                desc: "肺による呼吸運動、腎臓による老廃物のろ過と尿の生成を司る最終守護神。",
+                bgGradient: "from-indigo-950 to-slate-950",
+                maxHp: 280,
+                questions: [
+                    {
+                        q: "ヒトの胸腔を広げ、肺に空気を吸い込むときに下へ収縮する筋肉の名称はどれか？",
+                        options: ["肋骨", "横隔膜", "心筋", "上腕二頭筋"],
+                        answer: 1,
+                        explanation: "息を吸うときは肋骨が上がり、「横隔膜」が下がって胸腔が広がり、空気が入ります。"
+                    },
+                    {
+                        q: "肺のつくりに関する説明で、肺胞の数が多いことによる最大のメリットはどれか？",
+                        options: [
+                            "肺の体積を小さくするため",
+                            "表面積が大きくなり、CO2とO2の交換を効率よく行うため",
+                            "気管支を太くするため",
+                            "心臓からの血圧に耐えるため"
+                        ],
+                        answer: 1,
+                        explanation: "肺胞が無数にあることで表面積が非常に大きくなり、効率よく気体の交換ができます。"
+                    },
+                    {
+                        q: "腎臓の主なはたらきとして正しいものはどれか？",
+                        options: [
+                            "胆汁を合成して蓄える",
+                            "血液中の不要な老廃物（尿素など）をこし出し、尿をつくる",
+                            "二酸化炭素を体外へ放出する",
+                            "消化酵素を十二指腸に分泌する"
+                        ],
+                        answer: 1,
+                        explanation: "腎臓は血液をろ過し、アンモニアから変換された尿素などの不要物を尿として生成します。"
+                    },
+                    {
+                        q: "腎臓で一度こし出されたあと、再び血液中に戻される（再吸収される）必要な物質の例はどれか？",
+                        options: ["尿素", "水分やブドウ糖、アミノ酸", "アンモニア", "過剰なアルコール"],
+                        answer: 1,
+                        explanation: "ろ過された原尿のうち、水分やブドウ糖などの必要な物質は毛細血管に「再吸収」されます。"
+                    }
+                ]
+            }
+        ];
+
+        // Persistent Game Save State
+        let gameState = JSON.parse(localStorage.getItem('bio_quest_save_v2')) || {
+            level: 1,
+            exp: 0,
+            gold: 100,
+            completedStages: [],
+            inventory: [],
+            missedQuestions: []
+        };
+
+        let currentView = 'map'; // 'map', 'battle', 'encyclopedia', 'review', 'gacha'
+        let currentStage = null;
+        let currentQIndex = 0;
+        let playerHp = 100;
+        let maxPlayerHp = 100;
+        let monsterHp = 100;
+        let comboCount = 0;
+        let battleActive = false;
+
+        function saveGame() {
+            localStorage.setItem('bio_quest_save_v2', JSON.stringify(gameState));
+        }
+
+        function switchView(viewName) {
+            currentView = viewName;
+            render();
+        }
+
+        function showModal(title, text, icon = "🏆") {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-text').innerText = text;
+            document.getElementById('modal-icon').innerText = icon;
+            document.getElementById('modal').classList.remove('hidden');
+            document.getElementById('modal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('flex');
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        function openMenu() {
+            showModal("メニュー / 設定", `
+                現在のプレイヤーLv: ${gameState.level}<br>
+                討伐済みステージ数: ${gameState.completedStages.length} / ${STAGES.length}<br>
+                所持ゴールド: ${gameState.gold} G<br><br>
+                <button onclick="resetData()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-xl text-xs font-bold mt-2">セーブデータをリセット</button>
+            `, "⚙️");
+        }
+
+        function resetData() {
+            if (confirm("本当にセーブデータをリセットしますか？")) {
+                localStorage.removeItem('bio_quest_save_v2');
+                gameState = { level: 1, exp: 0, gold: 100, completedStages: [], inventory: [], missedQuestions: [] };
+                closeModal();
+                switchView('map');
+            }
+        }
+
+        // Master Render Switcher
+        function render() {
+            const container = document.getElementById('app-container');
+            document.getElementById('player-lvl').innerText = gameState.level;
+            document.getElementById('player-exp').innerText = gameState.exp;
+            document.getElementById('player-gold').innerText = gameState.gold;
+            document.getElementById('player-title').innerText = gameState.completedStages.length === STAGES.length ? '👑 究極生物マスター' : '見習い生物士';
+
+            if (currentView === 'map') {
+                renderStageMap(container);
+            } else if (currentView === 'battle') {
+                renderBattle(container);
+            } else if (currentView === 'encyclopedia') {
+                renderEncyclopedia(container);
+            } else if (currentView === 'review') {
+                renderReview(container);
+            } else if (currentView === 'gacha') {
+                renderGacha(container);
+            }
+        }
+
+        // 1. Stage Map View
+        function renderStageMap(container) {
+            let unlockedCount = gameState.completedStages.length + 1;
+            if (unlockedCount > STAGES.length) unlockedCount = STAGES.length;
+
+            let html = `
+                <div class="w-full text-center mb-3">
+                    <h2 class="text-sm pixel-font text-cyan-400 mb-1">クエストMAP選択</h2>
+                    <p class="text-xs text-slate-400">討伐する章を選び、生物クイズに挑め！</p>
+                </div>
+                <div class="w-full space-y-3 overflow-y-auto max-h-[62vh] pr-1">
+            `;
+
+            STAGES.forEach((stage) => {
+                const isCleared = gameState.completedStages.includes(stage.id);
+                const isUnlocked = stage.id <= unlockedCount;
+
+                html += `
+                    <div class="bg-rpg-card border-2 ${isUnlocked ? 'border-rpg-border hover:border-cyan-400' : 'border-slate-800 opacity-60'} rounded-2xl p-3 shadow-lg flex items-center justify-between transition relative overflow-hidden">
+                        ${isCleared ? '<div class="absolute top-2 right-2 bg-amber-500/20 text-rpg-gold text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/30">討伐完了 ★</div>' : ''}
+                        <div class="flex items-center space-x-3">
+                            <span class="text-3xl p-2 bg-slate-900 rounded-xl border border-slate-800">${stage.icon}</span>
+                            <div>
+                                <span class="text-[10px] text-cyan-400 font-bold">STAGE ${stage.id}</span>
+                                <h3 class="text-sm font-bold text-white">${stage.bossName}</h3>
+                                <p class="text-[10px] text-slate-400 line-clamp-1">${stage.name}</p>
+                            </div>
+                        </div>
+                        <div>
+                            ${isUnlocked ? `
+                                <button onclick="startBattle(${stage.id})" class="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-bold py-2 px-4 rounded-xl shadow transition">
+                                    ${isCleared ? '再戦' : '出撃'}
+                                </button>
+                            ` : `
+                                <button disabled class="bg-slate-800 text-slate-500 text-xs font-bold py-2 px-3 rounded-xl cursor-not-allowed">
+                                    🔒
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        // 2. Battle System View
+        function startBattle(stageId) {
+            currentStage = STAGES.find(s => s.id === stageId);
+            currentQIndex = 0;
+            maxPlayerHp = 100 + (gameState.level - 1) * 20;
+            playerHp = maxPlayerHp;
+            monsterHp = currentStage.maxHp;
+            comboCount = 0;
+            battleActive = true;
+            currentView = 'battle';
+            render();
+        }
+
+        function renderBattle(container) {
+            if (!battleActive) return;
+            const q = currentStage.questions[currentQIndex];
+            const maxMonsterHp = currentStage.maxHp;
+            const monsterHpPct = Math.max(0, (monsterHp / maxMonsterHp) * 100);
+            const playerHpPct = Math.max(0, (playerHp / maxPlayerHp) * 100);
+
+            let html = `
+                <div class="w-full bg-gradient-to-b ${currentStage.bgGradient} border-2 border-rpg-border rounded-2xl p-3 shadow-2xl relative flex flex-col justify-between">
+                    <!-- Top Bar -->
+                    <div class="flex justify-between items-center mb-3">
+                        <button onclick="switchView('map')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700">
+                            ◀ 撤退
+                        </button>
+                        <div class="text-center">
+                            <span class="text-[10px] text-cyan-400 font-bold">${currentStage.name}</span>
+                            <div class="text-xs font-bold text-slate-200">Q.${currentQIndex + 1} / ${currentStage.questions.length}</div>
+                        </div>
+                        <div class="text-[10px] bg-amber-500/20 text-rpg-gold px-2 py-0.5 rounded-full border border-amber-500/30 font-bold">
+                            🔥 x${comboCount}
+                        </div>
+                    </div>
+
+                    <!-- Arena Visual -->
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <!-- Monster Box -->
+                        <div id="monster-box" class="bg-slate-900/90 border border-slate-700 rounded-xl p-3 text-center relative flex flex-col items-center justify-center shadow-inner">
+                            <div id="monster-icon" class="text-4xl animate-float mb-1">${currentStage.icon}</div>
+                            <div class="text-xs font-bold text-white truncate w-full">${currentStage.bossName}</div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mt-1 border border-slate-700">
+                                <div id="monster-hp-bar" class="bg-gradient-to-r from-red-500 to-rose-600 h-full transition-all duration-300" style="width: ${monsterHpPct}%"></div>
+                            </div>
+                            <div class="text-[9px] text-slate-400 mt-0.5">${monsterHp}/${maxMonsterHp} HP</div>
+                        </div>
+
+                        <!-- Player Box -->
+                        <div id="player-box" class="bg-slate-900/90 border border-slate-700 rounded-xl p-3 text-center relative flex flex-col items-center justify-center shadow-inner">
+                            <div class="text-4xl mb-1">🧙‍♂️</div>
+                            <div class="text-xs font-bold text-white">生物士 Lv.${gameState.level}</div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mt-1 border border-slate-700">
+                                <div id="player-hp-bar" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-full transition-all duration-300" style="width: ${playerHpPct}%"></div>
+                            </div>
+                            <div class="text-[9px] text-slate-400 mt-0.5">${playerHp}/${maxPlayerHp} HP</div>
+                        </div>
+                    </div>
+
+                    <!-- Question Box -->
+                    <div class="bg-rpg-card border-2 border-rpg-border rounded-xl p-3 mb-2 shadow-xl">
+                        <div class="text-[10px] text-cyan-400 font-bold mb-1">理科クイズ</div>
+                        <h3 class="text-xs sm:text-sm font-bold text-white mb-3 leading-relaxed">${q.q}</h3>
+                        
+                        <div class="grid grid-cols-1 gap-2">
+            `;
+
+            q.options.forEach((opt, idx) => {
+                html += `
+                    <button onclick="handleBattleAnswer(${idx})" class="text-left bg-slate-800/90 hover:bg-slate-700 hover:border-cyan-400 border border-slate-700 text-slate-200 text-xs font-medium p-2.5 rounded-xl transition flex items-center space-x-2 shadow">
+                        <span class="bg-slate-700 text-cyan-400 font-bold w-5 h-5 rounded-lg flex items-center justify-center flex-shrink-0 text-[10px]">
+                            ${['A', 'B', 'C', 'D'][idx]}
+                        </span>
+                        <span>${opt}</span>
+                    </button>
+                `;
+            });
+
+            html += `
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function handleBattleAnswer(selectedIdx) {
+            if (!battleActive) return;
+            const q = currentStage.questions[currentQIndex];
+            const isCorrect = selectedIdx === q.answer;
+
+            const monsterBox = document.getElementById('monster-box');
+            const playerBox = document.getElementById('player-box');
+
+            if (isCorrect) {
+                comboCount++;
+                let baseDmg = Math.floor(currentStage.maxHp / currentStage.questions.length);
+                let damage = Math.round(baseDmg * (1 + (comboCount - 1) * 0.3));
+                monsterHp = Math.max(0, monsterHp - damage);
+
+                monsterBox.classList.add('animate-shake');
+                setTimeout(() => monsterBox.classList.remove('animate-shake'), 400);
+
+                showBattleResultModal(true, q.explanation, damage, () => {
+                    if (monsterHp <= 0) {
+                        winBattle();
+                    } else {
+                        currentQIndex++;
+                        if (currentQIndex >= currentStage.questions.length) {
+                            winBattle();
+                        } else {
+                            render();
+                        }
+                    }
+                });
+            } else {
+                comboCount = 0;
+                let damage = Math.round(maxPlayerHp * 0.25);
+                playerHp = Math.max(0, playerHp - damage);
+
+                // Save to missed questions for Review mode
+                if (!gameState.missedQuestions.some(item => item.q === q.q)) {
+                    gameState.missedQuestions.push(q);
+                    saveGame();
+                }
+
+                playerBox.classList.add('animate-shake');
+                setTimeout(() => playerBox.classList.remove('animate-shake'), 400);
+
+                showBattleResultModal(false, q.explanation, damage, () => {
+                    if (playerHp <= 0) {
+                        loseBattle();
+                    } else {
+                        render();
+                    }
+                });
+            }
+        }
+
+        function showBattleResultModal(isCorrect, explanation, pts, callback) {
+            const modal = document.getElementById('modal');
+            document.getElementById('modal-icon').innerText = isCorrect ? "✨" : "💥";
+            document.getElementById('modal-title').innerText = isCorrect ? "正解！ 攻撃ヒット！" : "不正解… モンスターの反撃！";
+            document.getElementById('modal-text').innerHTML = `
+                <div class="mb-2 font-bold text-xs ${isCorrect ? 'text-rpg-success' : 'text-rpg-danger'}">
+                    ${isCorrect ? `-${pts} ダメージ与えた！（コンボ x${comboCount}）` : `-${pts} HPのダメージを受けた`}
+                </div>
+                <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800 text-[11px] text-slate-300 text-left leading-relaxed">
+                    <span class="text-cyan-400 font-bold block mb-1">💡 プリント解説:</span>
+                    ${explanation}
+                </div>
+            `;
+            
+            const btn = modal.querySelector('button');
+            btn.onclick = () => {
+                closeModal();
+                btn.onclick = closeModal;
+                callback();
+            };
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function winBattle() {
+            battleActive = false;
+            let earnedExp = 50 * currentStage.id;
+            let earnedGold = 100 * currentStage.id;
+
+            gameState.exp += earnedExp;
+            gameState.gold += earnedGold;
+
+            if (gameState.exp >= gameState.level * 100) {
+                gameState.level++;
+                gameState.exp = 0;
+            }
+
+            if (!gameState.completedStages.includes(currentStage.id)) {
+                gameState.completedStages.push(currentStage.id);
+            }
+            saveGame();
+
+            const container = document.getElementById('app-container');
+            container.innerHTML = `
+                <div class="w-full bg-rpg-card border-2 border-rpg-border rounded-2xl p-6 text-center shadow-2xl">
+                    <div class="text-5xl mb-2 animate-bounce">🏆</div>
+                    <h2 class="text-base pixel-font text-rpg-gold mb-2">ボス討伐成功！</h2>
+                    <p class="text-xs text-slate-300 mb-4">「${currentStage.bossName}」を撃破し、理科の知識を習得した！</p>
+                    
+                    <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-xs text-left mb-4 space-y-1">
+                        <div>✨ 獲得 EXP: <span class="text-cyan-400 font-bold">+${earnedExp}</span></div>
+                        <div>💰 獲得 ゴールド: <span class="text-rpg-gold font-bold">+${earnedGold} G</span></div>
+                    </div>
+
+                    <button onclick="switchView('map')" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 text-white font-bold py-3 rounded-xl shadow-lg text-xs transition">
+                        マップに戻る
+                    </button>
+                </div>
+            `;
+        }
+
+        function loseBattle() {
+            battleActive = false;
+            const container = document.getElementById('app-container');
+            container.innerHTML = `
+                <div class="w-full bg-rpg-card border-2 border-rpg-danger/40 rounded-2xl p-6 text-center shadow-2xl">
+                    <div class="text-5xl mb-2">💀</div>
+                    <h2 class="text-base pixel-font text-rpg-danger mb-2">力尽きてしまった…</h2>
+                    <p class="text-xs text-slate-300 mb-5">プリントの解説を復習して、再挑戦しよう！</p>
+                    
+                    <div class="space-y-2">
+                        <button onclick="startBattle(${currentStage.id})" class="w-full bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow">
+                            リトライする
+                        </button>
+                        <button onclick="switchView('map')" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl border border-slate-700 text-xs transition">
+                            マップに戻る
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 3. Encyclopedia View (モンスター図鑑 & 理科解説)
+        function renderEncyclopedia(container) {
+            let html = `
+                <div class="w-full text-center mb-3">
+                    <h2 class="text-sm pixel-font text-amber-400 mb-1">生物・モンスター図鑑</h2>
+                    <p class="text-xs text-slate-400">討伐したボスと理科プリントの重要事項</p>
+                </div>
+                <div class="w-full space-y-3 overflow-y-auto max-h-[62vh] pr-1">
+            `;
+
+            STAGES.forEach((stage) => {
+                const isCleared = gameState.completedStages.includes(stage.id);
+
+                html += `
+                    <div class="bg-rpg-card border-2 border-rpg-border rounded-2xl p-3 shadow-lg">
+                        <div class="flex items-center space-x-3 mb-2">
+                            <span class="text-3xl p-2 bg-slate-900 rounded-xl border border-slate-800">${isCleared ? stage.icon : '❓'}</span>
+                            <div>
+                                <span class="text-[10px] text-amber-400 font-bold">STAGE ${stage.id}</span>
+                                <h3 class="text-xs font-bold text-white">${isCleared ? stage.bossName : '未遭遇のモンスター'}</h3>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-300 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800/80 leading-relaxed">
+                            ${isCleared ? stage.desc : '該当ステージのボスを討伐すると、詳細な生態データと理科の解説が解放されます。'}
+                        </p>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        // 4. Review Mode View (復習の書)
+        function renderReview(container) {
+            let html = `
+                <div class="w-full text-center mb-3">
+                    <h2 class="text-sm pixel-font text-rose-400 mb-1">復習の書</h2>
+                    <p class="text-xs text-slate-400">バトルで間違えた問題を集中的に再確認！</p>
+                </div>
+            `;
+
+            if (gameState.missedQuestions.length === 0) {
+                html += `
+                    <div class="w-full bg-rpg-card border-2 border-rpg-border rounded-2xl p-8 text-center my-auto">
+                        <div class="text-4xl mb-2">🌟</div>
+                        <h3 class="text-xs font-bold text-white mb-1">間違いノートは空です</h3>
+                        <p class="text-[10px] text-slate-400">クエストで間違えた問題がここに自動でストックされます。</p>
+                    </div>
+                `;
+            } else {
+                html += `<div class="w-full space-y-3 overflow-y-auto max-h-[58vh] pr-1">`;
+                gameState.missedQuestions.forEach((item, idx) => {
+                    html += `
+                        <div class="bg-rpg-card border-2 border-rose-900/50 rounded-2xl p-3 shadow-lg">
+                            <div class="text-[10px] text-rose-400 font-bold mb-1">復習問題 #${idx + 1}</div>
+                            <h3 class="text-xs font-bold text-white mb-2">${item.q}</h3>
+                            <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800 text-[11px] text-slate-300 leading-relaxed mb-2">
+                                <span class="text-cyan-400 font-bold block mb-0.5">💡 解説:</span>
+                                ${item.explanation}
+                            </div>
+                            <button onclick="removeMissed(${idx})" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold py-1 px-3 rounded-lg border border-slate-700">
+                                覚えたので除外する ✓
+                            </button>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function removeMissed(idx) {
+            gameState.missedQuestions.splice(idx, 1);
+            saveGame();
+            render();
+        }
+
+        // 5. Gacha / Lab Shop View (実験室ガチャ)
+        function renderGacha(container) {
+            container.innerHTML = `
+                <div class="w-full text-center mb-3">
+                    <h2 class="text-sm pixel-font text-emerald-400 mb-1">実験室ガチャ</h2>
+                    <p class="text-xs text-slate-400">ゴールドを消費してレア理科アイテムを手に入れよう！</p>
+                </div>
+                <div class="w-full bg-rpg-card border-2 border-rpg-border rounded-2xl p-5 text-center shadow-2xl flex flex-col items-center justify-center">
+                    <div class="text-6xl mb-3 animate-pulse">🧪</div>
+                    <h3 class="text-sm font-bold text-white mb-1">ゴールド実験ガチャ</h3>
+                    <p class="text-xs text-slate-300 mb-4">1回: <span class="text-rpg-gold font-bold">100 G</span></p>
+                    <button onclick="pullGacha()" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 text-white font-bold py-3 px-8 rounded-xl shadow-lg text-xs transition">
+                        ガチャを回す 🔬
+                    </button>
+                </div>
+            `;
+        }
+
+        function pullGacha() {
+            if (gameState.gold < 100) {
+                showModal("ゴールド不足", "ゴールドが足りません！ステージをクリアしてゴールドを稼ごう！", "⚠️");
+                return;
+            }
+            gameState.gold -= 100;
+            
+            const items = [
+                "高級光学顕微鏡 (理科力UP)",
+                "ピペットマン (正確度UP)",
+                "ヨウ素液ボトル (デンプン反応強化)",
+                "ビーカーセット (実験成功率UP)",
+                "人体模型パズル (生物マスター)"
+            ];
+            const reward = items[Math.floor(Math.random() * items.length)];
+            gameState.inventory.push(reward);
+            saveGame();
+
+            showModal("ガチャ結果！", `おめでとうございます！<br><span class="text-rpg-gold font-bold text-sm">${reward}</span> を手に入れました！`, "🎉");
+        }
+
+        // Initial Load
+        window.onload = function() {
+            render();
+        };
+    </script>
+</body>
+</html>
