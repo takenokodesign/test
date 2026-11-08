@@ -1,0 +1,1617 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>中2理科 からだ攻略</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<style>
+/* Layout: 左メニュー / 中央コンテンツ / 右メモ欄(画像添付可)。スマホは下タブ + メモはシート表示 */
+:root{
+  --bg:#eef4f2; --surface:#ffffff; --surface2:#e6efec; --line:#cfdcd8;
+  --fg:#12302a; --fg2:#4d6a63; --accent:#12805a; --accent-fg:#ffffff; --accent-soft:#d3efe3;
+  --iodine:#5a3fc8; --iodine-soft:#e5defa; --btb:#f0b90b; --btb-soft:#fbefc0;
+  --ok:#12805a; --ok-soft:#d3efe3; --ng:#cf3e22; --ng-soft:#fbdcd4;
+  --k1:#1b7f5c; --k2:#5a3fc8; --k3:#d98a00; --k4:#c2386b; --k5:#2071c7; --k6:#c2562a; --k7:#0f8f9e;
+  --fgreen:#46b27a; --fgreenl:#cdeedb; --fblue:#5b8fe0; --fbluel:#d6e5fb; --fred:#e0554a; --fpink:#f3a1b8; --fpinkl:#fbd9e3;
+  --fyellow:#f2c94c; --fpurple:#6a4fd0; --fpurplel:#d9d0f6; --fgray:#c9d3d0; --fpaper:#fbfdfc; --fbrown:#b98957;
+  --shadow:0 1px 2px rgba(18,48,42,.08),0 6px 18px rgba(18,48,42,.06);
+  --font:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
+  --fontb:"Noto Sans JP","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d1716; --surface:#15231f; --surface2:#1c2f2a; --line:#2b423c;
+  --fg:#e5f2ee; --fg2:#98b5ad; --accent:#3fcf98; --accent-fg:#06231a; --accent-soft:#17382e;
+  --iodine:#a592f5; --iodine-soft:#2a2350; --btb:#f4c62f; --btb-soft:#3a3210;
+  --ok:#3fcf98; --ok-soft:#17382e; --ng:#ff8468; --ng-soft:#3d1f19;
+  --k1:#3fcf98; --k2:#a592f5; --k3:#f0b43a; --k4:#f07aa5; --k5:#6fb1ff; --k6:#f09064; --k7:#4fd2e0;
+  --fgreen:#3fa56c; --fgreenl:#24473a; --fblue:#5b8fe0; --fbluel:#22385a; --fred:#e0665c; --fpink:#d98aa3; --fpinkl:#4a2a38;
+  --fyellow:#d9b13b; --fpurple:#8a73ec; --fpurplel:#32295c; --fgray:#34504a; --fpaper:#1b2c27; --fbrown:#a67a4c;
+  --shadow:0 1px 2px rgba(0,0,0,.4);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1716; --surface:#15231f; --surface2:#1c2f2a; --line:#2b423c;
+  --fg:#e5f2ee; --fg2:#98b5ad; --accent:#3fcf98; --accent-fg:#06231a; --accent-soft:#17382e;
+  --iodine:#a592f5; --iodine-soft:#2a2350; --btb:#f4c62f; --btb-soft:#3a3210;
+  --ok:#3fcf98; --ok-soft:#17382e; --ng:#ff8468; --ng-soft:#3d1f19;
+  --k1:#3fcf98; --k2:#a592f5; --k3:#f0b43a; --k4:#f07aa5; --k5:#6fb1ff; --k6:#f09064; --k7:#4fd2e0;
+  --fgreen:#3fa56c; --fgreenl:#24473a; --fblue:#5b8fe0; --fbluel:#22385a; --fred:#e0665c; --fpink:#d98aa3; --fpinkl:#4a2a38;
+  --fyellow:#d9b13b; --fpurple:#8a73ec; --fpurplel:#32295c; --fgray:#34504a; --fpaper:#1b2c27; --fbrown:#a67a4c;
+  --shadow:0 1px 2px rgba(0,0,0,.4);color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--fontb);font-size:15px;line-height:1.7;
+  padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));-webkit-text-size-adjust:100%}
+h1,h2,h3,h4{font-family:var(--font);margin:0;line-height:1.35;text-wrap:balance}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--iodine);outline-offset:2px}
+.sr{position:absolute;left:-9999px}
+
+/* shell */
+#app{display:grid;grid-template-columns:208px minmax(0,1fr) 300px;gap:16px;max-width:1360px;margin:0 auto;padding-block:12px;min-height:100%}
+#side{position:sticky;top:12px;align-self:start;height:calc(100vh - 24px);display:flex;flex-direction:column;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 10px;box-shadow:var(--shadow);overflow:auto}
+.brand{display:flex;align-items:center;gap:8px;padding:2px 8px 12px;font-family:var(--font);font-weight:900;font-size:16px;line-height:1.2}
+.brand small{display:block;font-weight:500;font-size:11px;color:var(--fg2)}
+.nv{display:flex;align-items:center;gap:10px;border:0;background:transparent;text-align:left;padding:10px 12px;border-radius:12px;font-weight:700;font-size:14px;color:var(--fg2);width:100%}
+.nv svg{width:20px;height:20px;flex:none}
+.nv:hover{background:var(--surface2)}
+.nv.on{background:var(--accent);color:var(--accent-fg)}
+.sp{flex:1}
+#main{min-width:0;padding-bottom:84px}
+#memo{position:sticky;top:12px;align-self:start;height:calc(100vh - 24px);background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}
+.mh{padding:12px 14px;border-bottom:1px solid var(--line);font-family:var(--font);font-weight:900;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mh small{display:block;font-weight:500;color:var(--fg2);font-size:12px;font-family:var(--fontb)}
+.mlist{flex:1;overflow:auto;padding:10px 12px;display:flex;flex-direction:column;gap:10px}
+.note{background:var(--surface2);border-radius:12px;padding:8px 10px;font-size:13.5px;white-space:pre-wrap;word-break:break-word}
+.note img{display:block;max-width:100%;border-radius:8px;margin-top:6px}
+.note .d{display:flex;justify-content:space-between;color:var(--fg2);font-size:11px;margin-top:4px}
+.mform{border-top:1px solid var(--line);padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.mform textarea{width:100%;min-height:64px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);padding:8px;font:inherit;font-size:14px}
+.mrow{display:flex;gap:8px;align-items:center}
+.pv{max-width:100%;max-height:120px;border-radius:8px}
+#memoBtn{display:none}
+#tabs{display:none}
+
+/* topbar (mobile) */
+#top{display:none}
+
+/* common */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
+.pg{display:flex;flex-direction:column;gap:14px}
+.pt{font-size:22px;font-weight:900;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sub{color:var(--fg2);font-size:13.5px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.btn{border:0;border-radius:12px;padding:10px 16px;font-weight:800;background:var(--accent);color:var(--accent-fg);display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px}
+.btn.g{background:var(--surface2);color:var(--fg)}
+.btn.o{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn.w{background:var(--ng);color:#fff}
+.btn.i{background:var(--iodine);color:#fff}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.s{min-height:36px;padding:6px 12px;font-size:13px}
+.chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:800;background:var(--surface2);color:var(--fg2)}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.ng{background:var(--ng-soft);color:var(--ng)}
+.chip.iod{background:var(--iodine-soft);color:var(--iodine)}
+.bar{height:10px;border-radius:99px;background:var(--surface2);overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:99px;background:var(--accent);transition:width .5s}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tab{display:flex;gap:6px;flex-wrap:wrap}
+.tab button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-weight:700;font-size:13px}
+.tab button.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.num{font-variant-numeric:tabular-nums}
+hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+
+/* home */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
+.bubble{background:var(--accent-soft);color:var(--fg);border-radius:16px;padding:12px 14px;position:relative;font-weight:700}
+.stats4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.st{background:var(--surface2);border-radius:14px;padding:10px;text-align:center}
+.st b{display:block;font-family:var(--font);font-size:22px;line-height:1.2}
+.st span{font-size:11.5px;color:var(--fg2)}
+.lvl{display:flex;flex-direction:column;gap:4px}
+.ring{--p:0;width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--surface2) 0);display:grid;place-items:center;flex:none}
+.ring i{width:48px;height:48px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-style:normal;font-weight:900;font-size:13px}
+.tcard{display:flex;flex-direction:column;gap:8px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.tcard:hover{border-color:var(--accent)}
+.tcard h3{font-size:16px}
+.big{font-family:var(--font);font-weight:900;font-size:34px;line-height:1}
+.badges{display:flex;flex-wrap:wrap;gap:8px}
+.bdg{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;background:var(--surface2);font-size:12.5px;font-weight:700;color:var(--fg2);opacity:.55}
+.bdg.on{opacity:1;background:var(--btb-soft);color:var(--fg)}
+.bdg svg{width:18px;height:18px}
+
+/* figures */
+.figbox{background:var(--fpaper);border:1px solid var(--line);border-radius:14px;padding:8px;overflow-x:auto}
+svg.fig{display:block;width:100%;max-width:560px;height:auto;margin:0 auto}
+.fig .ln{fill:none;stroke:var(--fg);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.fig .ln2{fill:none;stroke:var(--fg);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.fig .th{fill:none;stroke:var(--fg2);stroke-width:1}
+.fig .ldr{stroke:var(--fg2);stroke-width:1.2}
+.fig .tdot{fill:var(--fg)}
+.fig text{fill:var(--fg);font-family:var(--fontb);font-size:11.5px}
+.fig .tb{font-weight:700;font-size:12.5px}
+.fig .tc{text-anchor:middle}
+.fig .lb{fill:var(--surface);stroke:var(--fg);stroke-width:1.3}
+.fig .lb.hl{fill:var(--btb);stroke:var(--fg)}
+.fig .lt{text-anchor:middle;font-weight:800;font-size:11.5px}
+.fig .lt.hl{fill:#1a1a1a}
+.fig .fgr{fill:var(--fgreen)} .fig .fgl{fill:var(--fgreenl)} .fig .fbu{fill:var(--fblue)} .fig .fbl{fill:var(--fbluel)}
+.fig .frd{fill:var(--fred)} .fig .fpk{fill:var(--fpink)} .fig .fpl{fill:var(--fpinkl)} .fig .fyl{fill:var(--fyellow)}
+.fig .fpu{fill:var(--fpurple)} .fig .fpp{fill:var(--fpurplel)} .fig .fgy{fill:var(--fgray)} .fig .fpa{fill:var(--fpaper)} .fig .fbr{fill:var(--fbrown)}
+.fig .sbu{stroke:var(--fblue)} .fig .srd{stroke:var(--fred)} .fig .spk{stroke:var(--fpink)} .fig .syl{stroke:var(--fyellow)}
+.fig .w{stroke-width:3} .fig .w2{stroke-width:5}
+.fig .dash{stroke-dasharray:5 4}
+.flow{display:flex;flex-direction:column;gap:10px}
+.flr{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.flr b{background:var(--surface);border:1.5px solid var(--fg2);border-radius:8px;padding:2px 8px;font-size:12.5px}
+.flr b.q{background:var(--btb);color:#1a1a1a;border-color:var(--fg)}
+.flr i{font-style:normal;color:var(--fg2)}
+.flr .t{font-weight:800;font-size:12.5px;margin-right:4px}
+
+/* quiz */
+.qwrap{display:flex;flex-direction:column;gap:12px}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.qtxt{font-size:17px;font-weight:700;line-height:1.7}
+.qno{font-family:var(--font);font-weight:900;color:var(--accent)}
+.ch{display:flex;flex-direction:column;gap:8px}
+.cb{display:flex;gap:10px;align-items:flex-start;text-align:left;border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:11px 12px;font-weight:600;min-height:48px}
+.cb i{font-style:normal;flex:none;width:26px;height:26px;border-radius:50%;background:var(--surface2);display:grid;place-items:center;font-size:12.5px;font-weight:900}
+.cb:hover{border-color:var(--accent)}
+.cb.sel{border-color:var(--iodine);background:var(--iodine-soft)}
+.cb.ok{border-color:var(--ok);background:var(--ok-soft)}
+.cb.ng{border-color:var(--ng);background:var(--ng-soft)}
+.fillin{display:flex;gap:8px}
+.fillin input{flex:1;min-width:0;font:inherit;font-size:17px;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--fg)}
+.fb{border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.fb.ok{background:var(--ok-soft)} .fb.ng{background:var(--ng-soft)}
+.fb h3{font-size:17px}
+.exp{background:var(--surface);border-radius:12px;padding:10px 12px;font-size:14.5px}
+.nav20{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}
+.nav20 button{border:1.5px solid var(--line);background:var(--surface);border-radius:8px;min-height:34px;font-weight:800;font-size:12.5px;padding:0}
+.nav20 .dn{background:var(--iodine-soft);border-color:var(--iodine)}
+.nav20 .fl{box-shadow:inset 0 -4px 0 var(--btb)}
+.nav20 .cur{outline:3px solid var(--fg)}
+.timer{font-family:var(--font);font-weight:900;font-size:20px;font-variant-numeric:tabular-nums;background:var(--fg);color:var(--bg);border-radius:10px;padding:2px 12px}
+.timer.low{background:var(--ng);color:#fff}
+.sticky{position:sticky;top:8px;z-index:5;background:var(--bg);padding-block:6px}
+
+/* result */
+.score{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.score .big{font-size:56px;color:var(--accent)}
+.hb{display:grid;grid-template-columns:104px 1fr 60px;gap:8px;align-items:center;font-size:13px;margin-block:6px}
+.hb .bar{height:14px}
+.hb em{font-style:normal;font-weight:800;text-align:right}
+.hb.k1 .bar>i{background:var(--k1)}.hb.k2 .bar>i{background:var(--k2)}.hb.k3 .bar>i{background:var(--k3)}.hb.k4 .bar>i{background:var(--k4)}.hb.k5 .bar>i{background:var(--k5)}.hb.k6 .bar>i{background:var(--k6)}.hb.k7 .bar>i{background:var(--k7)}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+svg.ch2{width:100%;height:auto;display:block}
+.ch2 text{fill:var(--fg2);font-size:11px;font-family:var(--fontb)}
+.ch2 .gl{stroke:var(--line);fill:none}
+.ch2 .ax{stroke:var(--fg2);fill:none}
+.ch2 .tt{fill:var(--fg);font-weight:800}
+.wr{border-left:5px solid var(--ng);padding-left:12px;display:flex;flex-direction:column;gap:8px}
+details.q{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:10px 12px}
+details.q summary{cursor:pointer;font-weight:700}
+.cf{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+.cf i{position:absolute;top:-12px;width:9px;height:14px;opacity:.9;animation:fall 2.6s ease-in forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+@media (prefers-reduced-motion:reduce){.cf{display:none}.bar>i{transition:none}.cardf{transition:none!important}}
+
+/* lesson */
+.lsec{display:flex;flex-direction:column;gap:10px}
+.lsec h3{font-size:18px;display:flex;gap:8px;align-items:center}
+.lsec h3 b{background:var(--accent);color:var(--accent-fg);border-radius:8px;min-width:28px;height:28px;display:grid;place-items:center;font-size:14px;padding:0 6px}
+.lsec p{margin:0}
+.key{background:var(--btb-soft);border-radius:12px;padding:10px 12px;font-weight:700;font-size:14.5px}
+.key small{display:block;font-weight:800;color:var(--fg2);font-size:11.5px;letter-spacing:.06em}
+.mn{background:var(--iodine-soft);border-radius:12px;padding:10px 12px;font-size:14.5px}
+.mn small{display:block;font-weight:800;color:var(--iodine);font-size:11.5px;letter-spacing:.06em}
+.ut{width:100%;border-collapse:collapse;font-size:13.5px}
+.ut th,.ut td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+.ut th{background:var(--surface2)}
+.tw{overflow-x:auto}
+.ucard{display:flex;gap:12px;align-items:center;text-align:left;width:100%;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:12px}
+.ucard .dot{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:900;font-family:var(--font);flex:none}
+.k1.dot{background:var(--k1)}.k2.dot{background:var(--k2)}.k3.dot{background:var(--k3)}.k4.dot{background:var(--k4)}.k5.dot{background:var(--k5)}.k6.dot{background:var(--k6)}.k7.dot{background:var(--k7)}
+.dot{color:#fff}
+
+/* cards */
+.scene{perspective:900px}
+.cardf{position:relative;min-height:230px;transform-style:preserve-3d;transition:transform .45s;cursor:pointer}
+.cardf.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;padding:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:10px;border:2px solid var(--line);background:var(--surface);font-size:19px;font-weight:700}
+.face.b{transform:rotateY(180deg);background:var(--accent-soft);border-color:var(--accent)}
+.rsb p{margin:0 0 10px}
+.rs{color:var(--ng);font-weight:800;border-bottom:2px dotted var(--ng);cursor:pointer;padding:0 2px}
+.cover .rs:not(.open){color:transparent;background:var(--fpink);border-radius:4px;border-bottom-color:transparent}
+.cover .rs.open{background:transparent}
+
+/* data */
+.json{width:100%;min-height:90px;font-family:ui-monospace,Menlo,monospace;font-size:12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--fg);padding:8px}
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:800;z-index:60;max-width:90vw;text-align:center}
+.lvup{background:linear-gradient(120deg,var(--iodine),var(--k4));color:#fff;border-radius:16px;padding:12px 16px;font-weight:900;text-align:center}
+
+@media (max-width:1100px){
+  #app{grid-template-columns:208px minmax(0,1fr)}
+  #memo{position:fixed;right:0;top:0;bottom:0;width:min(360px,92vw);height:auto;align-self:stretch;max-height:100%;border-radius:18px 0 0 18px;z-index:40;transform:translateX(105%);transition:transform .25s}
+  #memo.open{transform:none}
+  #memoBtn{display:inline-flex}
+}
+@media (max-width:760px){
+  #app{grid-template-columns:minmax(0,1fr);padding-block:0}
+  #side{display:none}
+  #top{display:flex;align-items:center;justify-content:space-between;gap:8px;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding:8px 0}
+  #top .brand{padding:0}
+  #tabs{display:grid;grid-template-columns:repeat(6,1fr);position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);padding:4px max(6px,env(safe-area-inset-right,0px)) calc(4px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px))}
+  #tabs button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:0;font-size:10.5px;font-weight:800;color:var(--fg2);padding:6px 0;border-radius:10px;line-height:1.3}
+  #tabs button svg{width:22px;height:22px}
+  #tabs button.on{color:var(--accent);background:var(--accent-soft)}
+  .hero{grid-template-columns:1fr}
+  .stats4{grid-template-columns:repeat(2,1fr)}
+  .hb{grid-template-columns:84px 1fr 52px}
+  .qtxt{font-size:16px}
+  #main{padding-bottom:96px}
+}
+.ibtn{border:1px solid var(--line);background:var(--surface);border-radius:12px;width:40px;height:40px;display:inline-grid;place-items:center;padding:0}
+.ibtn svg{width:20px;height:20px}
+
+.ch2 .pf{fill:var(--accent);fill-opacity:.22;stroke:var(--accent);stroke-width:2}
+.ch2 .pd{fill:var(--accent);stroke:var(--surface);stroke-width:1.5}
+.ch2 .pl{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round}
+#mclose{display:none}
+@media (max-width:1100px){
+  #top{display:flex;align-items:center;justify-content:flex-end;gap:8px;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding:8px 0}
+  #top .brand{display:none}
+  #mclose{display:inline-flex}
+}
+@media (max-width:760px){
+  #top{justify-content:space-between}
+  #top .brand{display:flex}
+}
+
+.charts>.card,.grid>.card{margin:0}
+.grid5{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(118px,1fr))}
+.sect h3{margin-bottom:8px}
+
+</style>
+<div id="app">
+  <nav id="side" aria-label="メニュー">
+    <div class="brand"><svg width="34" height="34" viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="42" r="33" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="5"/><circle cx="40" cy="22" r="10" fill="var(--iodine)"/><circle cx="29" cy="42" r="4.5" fill="var(--fg)"/><circle cx="51" cy="42" r="4.5" fill="var(--fg)"/><path d="M30 54 Q40 63 50 54" stroke="var(--fg)" stroke-width="3.5" stroke-linecap="round" fill="none"/></svg><span>中2理科<small>生物のからだ 定期テスト対策</small></span></div>
+    <div id="navs"></div>
+    <div class="sp"></div>
+    <button class="nv thbtn" data-a="theme" aria-label="テーマ切り替え"><span></span><span class="thlab">ダーク</span></button>
+  </nav>
+  <div style="min-width:0">
+    <header id="top">
+      <div class="brand"><span>中2理科</span></div>
+      <div class="row" style="gap:8px">
+        <button class="ibtn" id="memoBtn" data-a="memoOpen" aria-label="メモを開く"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a1 1 0 0 1 1 1v11l-4 4H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zM8 9h8M8 13h5"/></svg></button>
+        <button class="ibtn" data-a="go" data-p="data" aria-label="データの保存と読み込み"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg></button>
+        <button class="ibtn thbtn" data-a="theme" aria-label="テーマ切り替え"><span></span></button>
+      </div>
+    </header>
+    <main id="main"></main>
+  </div>
+  <aside id="memo" aria-label="メモ・コメント欄">
+    <div class="mh"><div>メモ・コメント<small id="mctx"></small></div><button class="btn g s" id="mclose" data-a="memoClose">閉じる</button></div>
+    <div class="mlist" id="mlist"></div>
+    <div class="mform">
+      <textarea id="mtext" aria-label="メモを書く" placeholder="気づき・質問・覚え方をメモ…"></textarea>
+      <div id="mprev"></div>
+      <div class="mrow"><label class="btn g s" for="mfile">画像を添付</label><input id="mfile" type="file" accept="image/*" class="sr"><span class="sp"></span><button class="btn s" data-a="memoAdd">追加</button></div>
+    </div>
+  </aside>
+</div>
+<nav id="tabs" aria-label="メニュー"></nav>
+<div id="toast" class="toast" hidden role="status"></div>
+
+<script>
+/* ===== 図解ビルダー (SVG) : プリントの図を模式図として再現 ===== */
+var FIGS = {};
+function SV(vb, inner, label) {
+  return '<svg class="fig" viewBox="0 0 ' + vb + '" role="img" aria-label="' + (label || '図') + '">' + inner + '</svg>';
+}
+function TX(x, y, s, cls) { return '<text class="' + (cls || '') + '" x="' + x + '" y="' + y + '">' + s + '</text>'; }
+function ARW(x1, y1, x2, y2, st, fl) {
+  var a = Math.atan2(y2 - y1, x2 - x1), L = 8, W = 4.5;
+  var bx = x2 - Math.cos(a) * L, by = y2 - Math.sin(a) * L;
+  var p1x = bx + Math.cos(a + Math.PI / 2) * W, p1y = by + Math.sin(a + Math.PI / 2) * W;
+  var p2x = bx - Math.cos(a + Math.PI / 2) * W, p2y = by - Math.sin(a + Math.PI / 2) * W;
+  return '<line class="ln w ' + (st || '') + '" x1="' + x1 + '" y1="' + y1 + '" x2="' + bx + '" y2="' + by + '"/>' +
+    '<polygon class="' + (fl || 'tdot') + '" points="' + x2 + ',' + y2 + ' ' + p1x + ',' + p1y + ' ' + p2x + ',' + p2y + '"/>';
+}
+/* ラベル: 通常は丸数字、named=true で名前を表示。hl は強調する番号 */
+function MK(o) {
+  o = o || {};
+  return function (n, name, x, y, tx, ty) {
+    var hl = (o.hl === n), s = '', c = hl ? ' hl' : '';
+    if (tx !== undefined) {
+      s += '<line class="ldr" x1="' + x + '" y1="' + y + '" x2="' + tx + '" y2="' + ty + '"/><circle class="tdot" cx="' + tx + '" cy="' + ty + '" r="2.6"/>';
+    }
+    if (o.named) {
+      var w = name.length * 12 + 12;
+      s += '<rect class="lb' + c + '" x="' + (x - w / 2) + '" y="' + (y - 10) + '" width="' + w + '" height="20" rx="6"/>' +
+        '<text class="lt' + c + '" x="' + x + '" y="' + (y + 4) + '">' + name + '</text>';
+    } else {
+      s += '<circle class="lb' + c + '" cx="' + x + '" cy="' + y + '" r="11"/><text class="lt' + c + '" x="' + x + '" y="' + (y + 4) + '">' + n + '</text>';
+    }
+    return s;
+  };
+}
+
+/* 1. 植物細胞と動物細胞 (プリントNo.24) */
+FIGS.cells = function (o) {
+  var L = MK(o), s = '';
+  s += '<rect class="ln2 fpa" x="20" y="34" width="145" height="150" rx="14"/>';
+  s += '<rect class="ln fgl" x="27" y="41" width="131" height="136" rx="9"/>';
+  s += '<ellipse class="ln fbl" cx="130" cy="132" rx="22" ry="34"/>';
+  s += '<circle class="ln fpp" cx="68" cy="102" r="22"/><circle class="fpu" cx="73" cy="106" r="7"/>';
+  s += '<ellipse class="ln fgr" cx="50" cy="62" rx="11" ry="6"/><ellipse class="ln fgr" cx="104" cy="60" rx="11" ry="6"/><ellipse class="ln fgr" cx="140" cy="70" rx="10" ry="6"/><ellipse class="ln fgr" cx="48" cy="154" rx="11" ry="6"/><ellipse class="ln fgr" cx="92" cy="160" rx="11" ry="6"/>';
+  s += '<ellipse class="fpk" cx="100" cy="122" rx="6" ry="3.5"/><ellipse class="fpk" cx="44" cy="115" rx="6" ry="3.5"/>';
+  s += '<path class="ln2 fgl" d="M240 100 Q245 50 300 46 Q370 44 382 100 Q392 160 330 180 Q260 192 242 150 Z"/>';
+  s += '<circle class="ln fpp" cx="312" cy="112" r="22"/><circle class="fpu" cx="317" cy="116" r="7"/>';
+  s += '<ellipse class="fpk" cx="270" cy="92" rx="6" ry="3.5"/><ellipse class="fpk" cx="352" cy="148" rx="6" ry="3.5"/><ellipse class="fpk" cx="278" cy="150" rx="6" ry="3.5"/>';
+  s += L(6, '細胞壁', 34, 16, 21, 70) + L(4, '細胞膜', 112, 16, 104, 41) + L(3, '核', 100, 206, 74, 122) + L(5, '細胞質', 36, 206, 42, 160);
+  s += L(7, '液胞', 192, 128, 152, 132) + L(8, '葉緑体', 196, 72, 148, 69);
+  s += L(4, '細胞膜', 340, 16, 346, 54) + L(3, '核', 290, 206, 308, 134) + L(5, '細胞質', 362, 202, 352, 158);
+  if (o.named) { s += TX(92, 232, '植物細胞', 'tb tc') + TX(312, 232, '動物細胞', 'tb tc'); } else { s += TX(92, 232, 'A', 'tb tc') + TX(312, 232, 'B', 'tb tc'); }
+  return SV('400 240', s, '植物細胞と動物細胞の図');
+};
+
+/* 2. 細胞呼吸 */
+FIGS.resp = function (o) {
+  var L = MK(o), s = '';
+  s += '<ellipse class="ln2 fgl" cx="190" cy="120" rx="150" ry="62"/>';
+  s += TX(190, 112, '細胞(ミトコンドリアなど)', 'tc tb') + TX(190, 132, '= 細胞呼吸 =', 'tc tb');
+  s += ARW(70, 54, 70, 84, 'sbu', 'fbu') + ARW(130, 54, 130, 78, 'sbu', 'fbu');
+  s += ARW(240, 92, 240, 50, 'srd', 'frd') + ARW(312, 100, 312, 50, 'srd', 'frd');
+  s += ARW(190, 152, 190, 178, 'syl', 'fyl') + '<rect class="ln fyl" x="140" y="182" width="100" height="22" rx="8"/>' + TX(190, 197, 'エネルギー', 'tc tb');
+  s += L(14, '養分', 70, 36) + L(15, '酸素', 130, 36) + L(16, '二酸化炭素', 240, 36) + L(17, '水', 312, 36);
+  return SV('380 210', s, '細胞呼吸の図');
+};
+
+/* 3. ふ入りの葉の実験 */
+FIGS.leafexp = function (o) {
+  var L = MK(o), s = '';
+  var leaf = 'M25 100 Q95 18 170 100 Q95 182 25 100 Z';
+  s += '<defs><clipPath id="lcp"><path d="' + leaf + '"/></clipPath></defs>';
+  function one(ox, after) {
+    var g = '<g transform="translate(' + ox + ',0)">';
+    if (!after) {
+      g += '<path class="ln2 fgr" d="' + leaf + '"/><ellipse class="fgl" cx="125" cy="105" rx="28" ry="17" clip-path="url(#lcp)"/>';
+    } else {
+      g += '<path class="ln2 fpu" d="' + leaf + '"/><g clip-path="url(#lcp)"><ellipse class="fpa" cx="125" cy="105" rx="28" ry="17"/><rect class="fpa" x="70" y="40" width="50" height="120"/></g><path class="ln2" d="' + leaf + '"/>';
+    }
+    g += '<line class="th" x1="25" y1="100" x2="170" y2="100"/><rect class="ln dash" x="70" y="55" width="50" height="90" rx="3"/>';
+    g += L(1, '緑・光あり', 40, 30, 46, 96) + L(3, '緑・光なし', 92, 22, 86, 76) + L(2, 'ふ・光あり', 168, 32, 140, 106) + L(4, 'ふ・光なし', 160, 172, 108, 116);
+    return g + '</g>';
+  }
+  if (o.hl === 'b' && !o.named) {
+    s += one(105, false) + TX(205, 198, 'ヨウ素液につける前', 'tc tb') + TX(150, 164, 'アルミはく', 'tb');
+    return SV('420 205', s, 'ふ入りの葉の実験');
+  }
+  s += one(0, false) + one(210, true);
+  s += TX(100, 198, 'ヨウ素液につける前', 'tc tb') + TX(310, 198, 'ヨウ素液につけた後', 'tc tb') + TX(60, 164, 'アルミはく', 'tb');
+  return SV('420 205', s, 'ふ入りの葉の実験');
+};
+
+/* 4. オオカナダモ (P.20) */
+FIGS.elodea = function (o) {
+  var L = MK(o), s = '', P = [[40, 60], [70, 45], [110, 55], [150, 50], [165, 82], [50, 95], [90, 84], [130, 90], [160, 116], [35, 122], [75, 118], [115, 124]];
+  var i;
+  s += '<rect class="ln2 fpa" x="8" y="26" width="184" height="116" rx="22"/><rect class="ln2 fpa" x="212" y="26" width="184" height="116" rx="22"/>';
+  for (i = 0; i < P.length; i++) {
+    s += '<ellipse class="ln fbu" cx="' + (P[i][0] + 8) + '" cy="' + (P[i][1] + 6) + '" rx="9" ry="6"/>';
+    s += '<ellipse class="ln fpa" cx="' + (P[i][0] + 212) + '" cy="' + (P[i][1] + 6) + '" rx="9" ry="6"/>';
+  }
+  s += TX(100, 16, '(A)光をあてた葉', 'tc tb') + TX(304, 16, '(B)光を当てない葉', 'tc tb');
+  s += TX(100, 164, 'ヨウ素液で青く染まる', 'tc') + TX(304, 164, '染まらない', 'tc');
+  s += L(1, '葉緑体', 70, 188, 123, 130);
+  return SV('400 200', s, 'オオカナダモの葉の細胞');
+};
+
+/* 5. BTB液 */
+FIGS.btb = function (o) {
+  var L = MK(o), s = '', xs = [60, 160, 260], cl = ['fyl', 'fgr', 'fbu'], nm = ['酸性', '中性', 'アルカリ性'], i;
+  for (i = 0; i < 3; i++) {
+    s += '<rect class="' + cl[i] + '" x="' + xs[i] + '" y="70" width="40" height="86" rx="3"/>';
+    s += '<path class="ln2" d="M' + xs[i] + ' 36 V150 Q' + xs[i] + ' 162 ' + (xs[i] + 20) + ' 162 Q' + (xs[i] + 40) + ' 162 ' + (xs[i] + 40) + ' 150 V36"/>';
+    s += L(i + 1, nm[i], xs[i] + 20, 20);
+  }
+  s += ARW(180, 190, 80, 190, '', 'tdot') + ARW(180, 190, 280, 190, '', 'tdot');
+  s += TX(180, 184, '二酸化炭素の量', 'tc tb') + TX(30, 195, '多い', 'tb') + TX(300, 195, '少ない', 'tb');
+  return SV('360 205', s, 'BTB液の色の変化');
+};
+
+/* 6. 葉の断面 (No.28) */
+FIGS.leaf = function (o) {
+  var L = MK(o), s = '', i, x;
+  s += TX(10, 14, '葉の表側', 'tb') + TX(10, 226, '葉の裏側', 'tb');
+  s += '<rect class="fgl" x="20" y="48" width="364" height="116"/>';
+  for (i = 0; i < 14; i++) {
+    x = 20 + i * 26;
+    s += '<rect class="ln fpa" x="' + x + '" y="26" width="26" height="18"/>';
+    s += '<rect class="ln fgl" x="' + (x + 2) + '" y="48" width="22" height="46" rx="5"/>';
+    s += '<circle class="fgr" cx="' + (x + 8) + '" cy="62" r="3"/><circle class="fgr" cx="' + (x + 16) + '" cy="78" r="3"/>';
+    if (i !== 10) { s += '<rect class="ln fpa" x="' + x + '" y="166" width="26" height="18"/>'; }
+  }
+  for (i = 0; i < 9; i++) { s += '<ellipse class="ln fgl" cx="' + (46 + i * 40) + '" cy="' + (118 + (i % 2) * 24) + '" rx="22" ry="15"/>'; }
+  s += '<ellipse class="ln2 fpa" cx="200" cy="114" rx="58" ry="32"/>';
+  for (i = 0; i < 3; i++) { s += '<rect class="fbu" x="168" y="' + (98 + i * 7) + '" width="64" height="4" rx="2"/><rect class="fpk" x="168" y="' + (122 + i * 7) + '" width="64" height="4" rx="2"/>'; }
+  s += '<ellipse class="ln fgr" cx="287" cy="175" rx="4.5" ry="9"/><ellipse class="ln fgr" cx="299" cy="175" rx="4.5" ry="9"/>';
+  s += L(3, '道管', 362, 70, 232, 101) + L(4, '師管', 362, 150, 232, 133) + L(5, '維管束', 40, 130, 144, 114) + L(6, '葉緑体', 140, 12, 80, 62);
+  s += L(1, '気孔', 350, 208, 294, 178) + L(2, '孔辺細胞', 222, 208, 286, 176);
+  return SV('400 232', s, '葉の断面');
+};
+
+/* 7. 根と根毛 */
+FIGS.root = function (o) {
+  var L = MK(o), s = '', i, y;
+  s += '<rect class="fbr" x="0" y="0" width="360" height="210" opacity=".18"/>';
+  s += '<path class="ln2 fpa" d="M170 6 H190 Q190 120 185 196 H175 Q170 120 170 6 Z"/>';
+  for (i = 0; i < 9; i++) {
+    y = 100 + i * 10;
+    s += '<line class="ln" x1="' + (172 + (y - 100) * 0.05) + '" y1="' + y + '" x2="' + (140 - (i % 3) * 8) + '" y2="' + (y + 6 - (i % 2) * 8) + '"/>';
+    s += '<line class="ln" x1="' + (188 - (y - 100) * 0.05) + '" y1="' + y + '" x2="' + (222 + (i % 3) * 8) + '" y2="' + (y + 4 - (i % 2) * 8) + '"/>';
+  }
+  s += ARW(110, 150, 150, 160, 'sbu', 'fbu') + ARW(250, 150, 212, 160, 'sbu', 'fbu') + TX(70, 146, '水・無機養分', 'tb') + TX(252, 146, '水・無機養分', 'tb');
+  s += L(1, '根毛', 300, 60, 224, 122) + L(2, '主根', 60, 40, 172, 40);
+  return SV('360 210', s, '根の先端と根毛');
+};
+
+/* 8. 双子葉類・単子葉類の維管束 */
+FIGS.bundle = function (o) {
+  var L = MK(o), s = '', i, a;
+  s += '<circle class="ln2 fgl" cx="100" cy="90" r="68"/><circle class="th" cx="100" cy="90" r="62"/>';
+  for (i = 0; i < 9; i++) { a = i * 2 * Math.PI / 9; s += '<ellipse class="ln fpk" cx="' + (100 + 42 * Math.cos(a)) + '" cy="' + (90 + 42 * Math.sin(a)) + '" rx="6" ry="8"/>'; }
+  s += '<circle class="ln2 fgl" cx="280" cy="90" r="68"/>';
+  var P = [[258, 52], [288, 48], [310, 68], [250, 78], [276, 72], [300, 94], [264, 100], [240, 104], [286, 120], [312, 118], [258, 128], [232, 82], [300, 140], [272, 142], [244, 138], [226, 112], [292, 94], [312, 96]];
+  for (i = 0; i < P.length; i++) { s += '<ellipse class="ln fpk" cx="' + P[i][0] + '" cy="' + P[i][1] + '" rx="5" ry="6"/>'; }
+  s += TX(100, 176, 'A', 'tb tc') + TX(280, 176, 'B', 'tb tc');
+  return SV('380 185', s, '茎の断面の維管束');
+};
+
+/* 9. 蒸散の実験 (P.31) */
+FIGS.transp = function (o) {
+  var s = '', xs = [120, 205, 290, 375], nm = ['A', 'B', 'C', 'D'], ds = [['処理なし', ''], ['葉の裏に', 'ワセリン'], ['葉の表に', 'ワセリン'], ['葉なし', '切口ワセリン']], i, x, af = o.after || [4.7, 8.2, 6.1, 9.6];
+  for (i = 0; i < 4; i++) {
+    x = xs[i];
+    s += '<rect class="fbl" x="' + x + '" y="96" width="36" height="74"/><rect class="fyl" x="' + x + '" y="94" width="36" height="6"/>';
+    s += '<path class="ln2" d="M' + x + ' 50 V162 Q' + x + ' 174 ' + (x + 18) + ' 174 Q' + (x + 36) + ' 174 ' + (x + 36) + ' 162 V50"/>';
+    s += '<line class="ln2" x1="' + (x + 18) + '" y1="30" x2="' + (x + 18) + '" y2="150"/>';
+    if (i !== 3) {
+      s += '<ellipse class="ln fgr" cx="' + (x + 4) + '" cy="40" rx="15" ry="7"/><ellipse class="ln fgr" cx="' + (x + 32) + '" cy="40" rx="15" ry="7"/><ellipse class="ln fgr" cx="' + (x + 4) + '" cy="62" rx="15" ry="7"/><ellipse class="ln fgr" cx="' + (x + 32) + '" cy="62" rx="15" ry="7"/>';
+      if (i === 1) { s += '<line class="ln w2 syl" x1="' + (x - 10) + '" y1="44" x2="' + (x + 14) + '" y2="44"/><line class="ln w2 syl" x1="' + (x + 22) + '" y1="44" x2="' + (x + 46) + '" y2="44"/><line class="ln w2 syl" x1="' + (x - 10) + '" y1="66" x2="' + (x + 14) + '" y2="66"/><line class="ln w2 syl" x1="' + (x + 22) + '" y1="66" x2="' + (x + 46) + '" y2="66"/>'; }
+      if (i === 2) { s += '<line class="ln w2 syl" x1="' + (x - 10) + '" y1="36" x2="' + (x + 14) + '" y2="36"/><line class="ln w2 syl" x1="' + (x + 22) + '" y1="36" x2="' + (x + 46) + '" y2="36"/><line class="ln w2 syl" x1="' + (x - 10) + '" y1="58" x2="' + (x + 14) + '" y2="58"/><line class="ln w2 syl" x1="' + (x + 22) + '" y1="58" x2="' + (x + 46) + '" y2="58"/>'; }
+    } else { s += '<circle class="fyl" cx="' + (x + 18) + '" cy="30" r="4"/>'; }
+    s += TX(x + 18, 192, nm[i], 'tc tb') + TX(x + 18, 205, ds[i][0], 'tc') + TX(x + 18, 217, ds[i][1], 'tc');
+    s += TX(x + 18, 241, '10.0', 'tc num') + TX(x + 18, 262, af[i].toFixed(1), 'tc num');
+  }
+  s += TX(4, 241, '実験前の水の量', '') + TX(4, 262, '実験後の水の量', '') + TX(4, 18, '※水面の油は蒸発を防ぐ', 'tb');
+  s += '<line class="th" x1="0" y1="228" x2="430" y2="228"/><line class="th" x1="0" y1="250" x2="430" y2="250"/><line class="th" x1="0" y1="268" x2="430" y2="268"/>';
+  s += TX(4, 224, '(cm³)', '');
+  return SV('430 272', s, '蒸散の実験');
+};
+
+/* 10. ヒトの消化系 (模式図) */
+FIGS.digest = function (o) {
+  var L = MK(o), s = '';
+  s += '<ellipse class="ln fpl" cx="210" cy="26" rx="22" ry="14"/>';
+  s += '<path class="ln2" d="M210 40 V104" />';
+  s += '<path class="ln2 fpl" d="M200 100 Q166 108 172 142 Q182 166 214 160 Q232 150 226 126 Q222 104 200 100 Z"/>';
+  s += '<path class="ln fbr" d="M236 96 Q300 84 300 118 Q292 142 238 140 Z" opacity=".75"/>';
+  s += '<ellipse class="ln fgr" cx="246" cy="150" rx="8" ry="12"/>';
+  s += '<path class="ln fyl" d="M214 176 Q250 168 276 186 Q250 194 214 190 Z"/>';
+  s += '<path class="ln2" d="M214 156 Q226 170 222 180"/>';
+  s += '<path class="ln fpa" d="M160 252 V198 Q160 190 168 190 H262 Q272 190 272 198 V252 Q272 268 250 268 H226 L216 282" style="stroke-width:11;stroke-opacity:.55"/>';
+  s += '<path class="ln2 fgl" d="M178 206 q14 -10 28 0 t28 0 t28 0 M178 220 q14 10 28 0 t28 0 t28 0 M178 238 q14 -10 28 0 t28 0 t28 0"/>';
+  s += '<circle class="ln fpa" cx="216" cy="296" r="6"/>';
+  s += '<circle class="fyl" cx="192" cy="120" r="2.5"/><circle class="fyl" cx="200" cy="140" r="2.5"/><circle class="fyl" cx="190" cy="148" r="2.5"/><circle class="fyl" cx="236" cy="226" r="2.5"/><circle class="fyl" cx="190" cy="228" r="2.5"/>';
+  s += L(1, '口', 50, 24, 188, 26) + L(2, '食道', 50, 62, 209, 70) + L(3, '胃', 50, 126, 172, 128) + L(4, '十二指腸', 62, 172, 216, 168) + L(5, '小腸', 50, 232, 178, 228) + L(6, '大腸', 50, 268, 160, 244) + L(7, '直腸', 56, 292, 218, 276) + L(8, '肛門', 56, 318, 214, 298);
+  s += L(9, 'だ液せん', 360, 30, 234, 30) + L(10, '肝臓', 372, 82, 286, 108) + L(11, '胆のう', 366, 134, 252, 152) + L(13, 'すい臓', 366, 186, 268, 186) + L(14, '腸せん', 366, 238, 248, 228) + L(12, '胃せん', 50, 96, 193, 120);
+  s += TX(300, 308, '(模式図)', 'tc');
+  return SV('420 330', s, 'ヒトの消化系');
+};
+
+/* 11. 消化液・消化酵素 と 栄養素 (No.30) */
+FIGS.enzymes = function (o) {
+  var L = MK(o), s = '', xc = [210, 290, 370], i;
+  var rows = [['だ液', 1, 'アミラーゼ', 56, 0, 'sr'], ['胃液', 2, 'ペプシン', 88, 1, 'sb'], ['胆汁', 3, '(酵素なし)', 120, 2, 'sp'], ['すい液', 4, 'アミラーゼ', 152, 0, 'sr'], ['', 5, 'トリプシン', 180, 1, 'sb'], ['', 6, 'リパーゼ', 208, 2, 'sp'], ['腸液', 7, 'マルターゼ', 242, 0, 'sr'], ['', 8, 'ペプチダーゼ', 270, 1, 'sb']];
+  var st = { sr: 'srd', sb: 'sbu', sp: 'spk' }, fl = { sr: 'frd', sb: 'fbu', sp: 'fpk' };
+  for (i = 0; i < 3; i++) {
+    s += '<line class="ln2" x1="' + xc[i] + '" y1="34" x2="' + xc[i] + '" y2="296"/><polygon class="tdot" points="' + xc[i] + ',304 ' + (xc[i] - 9) + ',290 ' + (xc[i] + 9) + ',290"/>';
+  }
+  s += TX(210, 16, '炭水化物', 'tc tb') + TX(290, 16, 'タンパク質', 'tc tb') + TX(370, 16, '脂肪', 'tc tb');
+  var r, y, k;
+  for (i = 0; i < rows.length; i++) {
+    r = rows[i]; y = r[3];
+    if (r[0]) { s += TX(8, y + 4, r[0], 'tb') + '<line class="th" x1="4" y1="' + (y - 14) + '" x2="412" y2="' + (y - 14) + '"/>'; }
+    k = (r[1] === 3) ? '' : ' ';
+    s += L(r[1], r[2], 118, y);
+    if (r[1] === 3) { s += ARW(150, y, 362, y, st[r[5]] + ' dash', fl[r[5]]); }
+    else { s += ARW(r[1] === 7 || r[1] === 8 ? 164 : 164, y, xc[r[4]] - 6, y, st[r[5]], fl[r[5]]); }
+  }
+  s += L(9, 'ブドウ糖', 210, 322) + L(10, 'アミノ酸', 290, 322) + L(11, '脂肪酸+モノグリセリド', 370, 322);
+  return SV('420 340', s, '消化液・消化酵素と栄養素の分解');
+};
+
+/* 12. 小腸の柔毛 */
+FIGS.villus = function (o) {
+  var L = MK(o), s = '', i;
+  s += '<path class="ln2 fpa" d="M110 190 V80 Q110 24 170 24 Q230 24 230 80 V190 Z"/>';
+  s += '<path class="ln fpl" d="M126 190 V84 Q126 40 170 40 Q214 40 214 84 V190 Z"/>';
+  s += '<path class="ln w2 fyl" d="M170 60 V190" style="stroke-width:7"/>';
+  s += '<path class="ln w srd" d="M138 188 V90 Q140 60 156 58 M202 188 V90 Q200 60 184 58"/><path class="ln w sbu" d="M146 188 V96 Q148 70 160 66 M194 188 V96 Q192 70 180 66"/>';
+  for (i = 0; i < 5; i++) { s += '<circle class="fyl" cx="' + (60 + (i % 2) * 14) + '" cy="' + (50 + i * 28) + '" r="4"/><circle class="fpk" cx="' + (270 + (i % 2) * 14) + '" cy="' + (60 + i * 28) + '" r="4"/>'; }
+  s += ARW(76, 78, 108, 98, '', 'tdot') + ARW(284, 88, 232, 104, '', 'tdot');
+  s += TX(30, 36, 'ブドウ糖・アミノ酸', '') + TX(236, 40, '脂肪酸・モノグリセリド', '');
+  s += '<path class="ln2" d="M20 196 H330"/>';
+  s += L(1, '柔毛', 170, 12, 170, 28) + L(2, '毛細血管', 62, 150, 138, 130) + L(3, 'リンパ管', 290, 150, 172, 130);
+  return SV('340 210', s, '小腸の柔毛');
+};
+
+/* 13. 吸収と肝臓のフロー (HTML) */
+FIGS.absorb = function (o) {
+  var rows = [
+    ['炭水化物', ['炭水化物', 'ブドウ糖', '毛細血管', '門脈', '肝臓', 'グリコーゲンとして貯蔵']],
+    ['タンパク質', ['タンパク質', 'アミノ酸', '毛細血管', '門脈', '肝臓', 'タンパク質に合成']],
+    ['脂肪', ['脂肪', '脂肪酸とモノグリセリド', '脂肪に再合成', 'リンパ管', '首の下の静脈', '血液で全身へ']]
+  ];
+  var s = '<div class="flow">', i, j;
+  for (i = 0; i < rows.length; i++) {
+    s += '<div class="flr">';
+    for (j = 0; j < rows[i][1].length; j++) {
+      var key = 'r' + (i + 1) + 'c' + (j + 1), q = (o.hl === key);
+      s += '<b' + (q ? ' class="q"' : '') + '>' + (q ? '？' : rows[i][1][j]) + '</b>' + (j < rows[i][1].length - 1 ? '<i>→</i>' : '');
+    }
+    s += '</div>';
+  }
+  return s + '</div>';
+};
+
+/* 14. 腎臓・輸尿管・ぼうこう */
+FIGS.kidney = function (o) {
+  var L = MK(o), s = '';
+  s += '<rect class="ln fbu" x="174" y="24" width="12" height="130" rx="5"/><rect class="ln fred" x="192" y="24" width="12" height="130" rx="5"/>';
+  s += '<path class="ln2 fpk" d="M110 60 Q70 70 78 112 Q86 142 122 126 Q112 100 126 82 Q124 66 110 60 Z"/>';
+  s += '<path class="ln2 fpk" d="M270 60 Q310 70 302 112 Q294 142 258 126 Q268 100 254 82 Q256 66 270 60 Z"/>';
+  s += '<path class="ln w sbu" d="M126 108 Q150 120 160 170 Q164 196 180 204 M254 108 Q230 120 220 170 Q216 196 200 204"/>';
+  s += '<path class="ln2 fyl" d="M150 214 Q190 196 230 214 Q226 250 190 252 Q154 250 150 214 Z"/><path class="ln2" d="M190 252 V270"/>';
+  s += '<path class="ln w srd" d="M186 70 Q150 74 126 92 M198 70 Q232 74 254 92"/>';
+  s += L(1, '腎臓', 44, 80, 82, 96) + L(2, '輸尿管', 84, 176, 158, 168) + L(3, 'ぼうこう', 318, 232, 226, 232) + L(4, '太い血管', 318, 40, 205, 50) + L(5, '尿道', 280, 272, 192, 262);
+  return SV('360 290', s, '腎臓・輸尿管・ぼうこう');
+};
+
+/* 15. 尿をつくるしくみ */
+FIGS.nephron = function (o) {
+  var L = MK(o), s = '', i;
+  s += '<path class="ln fpa" d="M20 118 H110 M20 146 H110"/>';
+  s += '<circle class="ln2 fpa" cx="120" cy="132" r="48"/><circle class="ln fgy" cx="120" cy="132" r="30" opacity=".5"/>';
+  s += '<path class="ln fgy" d="M164 150 Q190 190 250 168 H390 M164 112 Q190 90 250 90 H390" style="stroke-width:12;stroke-opacity:.35"/>';
+  s += '<path class="ln2 fpa" d="M158 150 Q184 150 260 150 H400 M158 118 Q190 110 260 112 H400" opacity="0"/>';
+  s += '<path class="ln w2 spk" d="M16 118 H100 Q132 118 132 134 Q132 150 106 150 Q92 150 92 140 Q92 128 106 128 Q150 126 150 100 Q150 56 200 56 H320 Q360 56 360 90 V130 Q360 150 390 150 H410" style="fill:none"/>';
+  for (i = 0; i < 5; i++) { s += '<rect class="fbu" x="' + (210 + i * 30) + '" y="' + (112 + (i % 2) * 20) + '" width="7" height="7"/>'; }
+  s += '<rect class="fbu" x="108" y="120" width="7" height="7"/><rect class="fbu" x="126" y="140" width="7" height="7"/>';
+  for (i = 0; i < 5; i++) { s += '<circle class="frd" cx="' + (60 + i * 6) + '" cy="132" r="0"/>'; }
+  s += ARW(160, 126, 204, 126, 'sbu', 'fbu') + ARW(310, 106, 310, 70, 'sbu', 'fbu') + ARW(260, 106, 260, 70, 'sbu', 'fbu');
+  s += ARW(300, 176, 360, 176, '', 'tdot') + TX(388, 178, 'ぼうこうへ', 'tc');
+  s += TX(76, 60, '血液の流れ→', '');
+  s += L(1, 'ろ過', 120, 204, 120, 170) + L(2, '再吸収', 300, 40, 290, 70) + L(3, '尿', 380, 206, 330, 168) + L(4, '血管', 40, 90, 50, 116) + L(5, '腎小体', 190, 204, 150, 160);
+  return SV('420 220', s, '尿をつくるしくみ');
+};
+
+/* 16. 息を吸う・はく */
+FIGS.breath = function (o) {
+  var L = MK(o), s = '';
+  function pan(ox, inh) {
+    var g = '<g transform="translate(' + ox + ',0)">';
+    g += '<rect class="ln2 fpa" x="' + (inh ? 40 : 48) + '" y="30" width="' + (inh ? 120 : 104) + '" height="150" rx="40"/>';
+    g += '<ellipse class="ln fpk" cx="100" cy="98" rx="' + (inh ? 44 : 34) + '" ry="' + (inh ? 58 : 50) + '"/>';
+    g += inh ? '<path class="ln2 srd" d="M44 176 Q100 180 156 176"/>' : '<path class="ln2 srd" d="M52 176 Q100 128 148 176"/>';
+    g += inh ? ARW(100, 196, 100, 216, 'srd', 'frd') : ARW(100, 214, 100, 192, 'srd', 'frd');
+    g += inh ? ARW(30, 80, 20, 56, 'sbu', 'fbu') + ARW(170, 80, 180, 56, 'sbu', 'fbu') : ARW(34, 56, 44, 80, 'sbu', 'fbu') + ARW(166, 56, 156, 80, 'sbu', 'fbu');
+    g += '<path class="ln spk" d="M60 52 Q100 38 140 52 M52 72 Q100 56 148 72" opacity=".0"/>';
+    return g + '</g>';
+  }
+  s += pan(0, true) + pan(210, false);
+  if (o.named) { s += TX(100, 14, '息を吸うとき', 'tb tc') + TX(310, 14, '息をはくとき', 'tb tc'); } else { s += TX(100, 14, 'A', 'tb tc') + TX(310, 14, 'B', 'tb tc'); }
+  s += L(1, 'ろっ骨', 24, 120, 44, 110) + L(2, '横隔膜', 100, 236, 100, 178) + L(3, '肺', 100, 98);
+  return SV('420 250', s, '呼吸運動');
+};
+
+/* 17. 肺のつくり */
+FIGS.lung = function (o) {
+  var L = MK(o), s = '', i;
+  s += '<path class="ln2" d="M70 16 V70 M70 70 L46 104 M70 70 L96 104"/>';
+  s += '<path class="ln fpk" d="M60 60 Q16 70 18 140 Q24 190 66 180 Q74 120 66 70 Z"/><path class="ln fpk" d="M80 60 Q124 70 122 140 Q116 190 74 180 Q66 120 74 70 Z"/>';
+  s += ARW(126, 120, 160, 120, '', 'tdot');
+  s += '<path class="ln2" d="M200 20 V70 M200 70 L176 100 M200 70 L224 100"/>';
+  var C = [[170, 112], [186, 104], [206, 106], [222, 112], [178, 128], [196, 124], [214, 128], [188, 146], [206, 146], [168, 144], [224, 144]];
+  for (i = 0; i < C.length; i++) { s += '<circle class="ln fpl" cx="' + C[i][0] + '" cy="' + C[i][1] + '" r="10"/>'; }
+  s += ARW(240, 120, 268, 120, '', 'tdot');
+  s += '<circle class="ln2 fpa" cx="338" cy="118" r="42"/><path class="ln w2 srd" d="M300 80 Q272 118 300 158 Q338 190 380 156 Q404 118 382 80" style="fill:none;stroke-opacity:.9"/>';
+  s += '<circle class="frd" cx="288" cy="120" r="3.5"/><circle class="frd" cx="300" cy="162" r="3.5"/><circle class="frd" cx="338" cy="176" r="3.5"/><circle class="frd" cx="384" cy="150" r="3.5"/>';
+  s += ARW(330, 112, 326, 150, 'sbu', 'fbu') + TX(310, 104, 'O₂', 'tb') + ARW(372, 152, 372, 112, 'srd', 'frd') + TX(354, 104, 'CO₂', 'tb');
+  s += L(1, '気管', 110, 18, 72, 40) + L(2, '気管支', 20, 30, 62, 76) + L(3, '肺胞', 130, 196, 170, 130) + L(4, '毛細血管', 372, 20, 386, 108) + L(5, '赤血球', 262, 196, 300, 160);
+  return SV('420 216', s, '肺と肺胞のつくり');
+};
+
+function figHTML(spec, named) {
+  if (!spec) { return ''; }
+  var p = spec.split(':'), o = { named: !!named }, h = p[1];
+  if (h !== undefined && h !== '') { o.hl = (/^\d+$/.test(h)) ? parseInt(h, 10) : h; }
+  if (p[0] === 'transp' && p[2]) { o.after = p[2].split(',').map(function (x) { return parseFloat(x); }); }
+  if (!FIGS[p[0]]) { return ''; }
+  return '<div class="figbox">' + FIGS[p[0]](o) + '</div>';
+}
+
+/* ===== 単元・解説・暗記カード・赤シート ===== */
+var CATS = [
+  { k: 'cell', n: '細胞のつくり', s: '細胞', i: 1, cl: 'k1', p: 'プリント No.24' },
+  { k: 'photo', n: '光合成', s: '光合成', i: 2, cl: 'k2', p: 'プリント No.25〜26' },
+  { k: 'plant', n: '根・茎・葉と蒸散', s: '植物体', i: 3, cl: 'k3', p: 'プリント No.27〜28' },
+  { k: 'digest', n: '消化', s: '消化', i: 4, cl: 'k4', p: 'プリント No.29〜30' },
+  { k: 'absorb', n: '吸収と肝臓', s: '吸収', i: 5, cl: 'k5', p: 'プリント No.31' },
+  { k: 'excrete', n: '排出(じん臓)', s: '排出', i: 6, cl: 'k6', p: 'プリント No.31〜32' },
+  { k: 'lung', n: '肺と呼吸', s: '呼吸', i: 7, cl: 'k7', p: 'プリント No.32' }
+];
+
+var LESSONS = {
+  cell: {
+    lead: '体も植物も、じつは「小さな部屋(細胞)」が集まってできています。まずは細胞を「小さな町」にたとえて、はたらきを整理しよう。',
+    secs: [
+      { h: '細胞は小さな町', fig: 'cells', html: '<p>1つの細胞の中には、仕事ごとに役割をもったつくりがあります。<b>町</b>にたとえると覚えやすいよ。</p><div class="tw"><table class="ut"><tr><th>つくり</th><th>町でいうと</th><th>はたらき</th></tr><tr><td>核</td><td>市役所</td><td>遺伝情報(DNA)が入っている。染色液で染まる。1つだけある。</td></tr><tr><td>細胞質</td><td>町の敷地</td><td>核のまわりの部分(核以外の細胞の内部)。</td></tr><tr><td>細胞膜</td><td>町の出入口</td><td>細胞質のいちばん外側にあるうすい膜。</td></tr></table></div>', key: '核・細胞膜・細胞質は、動物細胞にも植物細胞にもある「共通のつくり」。', mn: '核=「中心の司令室」、細胞膜=「外の膜(まく)」、細胞質=「質(中身)」と覚えよう。' },
+      { h: '植物細胞にだけあるもの', fig: 'cells', html: '<p>植物は動けないぶん、体を支えたり、自分で養分をつくったりするための特別なつくりがあります。</p><div class="tw"><table class="ut"><tr><th>つくり</th><th>はたらき</th></tr><tr><td>細胞壁</td><td>細胞膜の外側を囲む丈夫なつくり。体を支える。</td></tr><tr><td>液胞</td><td>貯蔵物質や不要な物質が含まれている液。</td></tr><tr><td>葉緑体</td><td>緑色の粒。光合成を行う。</td></tr></table></div>', key: '「細胞壁・液胞・葉緑体」は植物細胞だけ(動物細胞にはない)。', mn: '壁・倉庫(液胞)・ソーラー工場(葉緑体)の3点セット。「植物のへき(壁)・えき(液)・よう(葉)」とリズムで。' },
+      { h: 'そのほかの細胞のつくり', html: '<p>細胞の中には、ほかにも小さな部品があります。</p><div class="tw"><table class="ut"><tr><th>つくり</th><th>はたらき</th></tr><tr><td>ミトコンドリア</td><td>細胞呼吸でエネルギーをとり出す工場</td></tr><tr><td>リボソーム</td><td>タンパク質がつくられる</td></tr><tr><td>ゴルジ体</td><td>つくられたタンパク質をどこに運ぶか決める</td></tr></table></div>', key: 'ミトコンドリアは「エネルギーの工場」。', mn: 'リボソームで「つくる」→ゴルジ体で「配送先を決める」の流れ。' },
+      { h: '細胞呼吸(内呼吸)', fig: 'resp', html: '<p>細胞の1つ1つは、<b>養分</b>と<b>酸素</b>からエネルギーをとり出しています。このとき<b>二酸化炭素</b>と<b>水</b>が出ます。これが<b>細胞呼吸</b>です。</p><p>肺やえらで行う呼吸(<b>外呼吸</b>)に対して、細胞呼吸は<b>内呼吸</b>ともいいます。</p>', key: '養分 + 酸素 → エネルギー + 二酸化炭素 + 水', mn: 'ストーブで薪(養分)が酸素で燃えて、熱(エネルギー)と二酸化炭素と水が出るイメージ。' }
+    ]
+  },
+  photo: {
+    lead: '「光合成はどこで、何を使って、何をつくるのか」を、実験の結果から一歩ずつ確かめていきます。理由とセットで覚えると忘れにくいよ。',
+    secs: [
+      { h: '光合成とは', html: '<p>植物は葉に日光が当たると、空気中の<b>二酸化炭素</b>を取り入れ、<b>酸素</b>を出します。そして光のエネルギーを使って<b>デンプン</b>をつくります。これが<b>光合成</b>です。</p><p>デンプンができたかどうかは、<b>ヨウ素液</b>で調べます。デンプンがあると<b>青紫色</b>に変わります(ヨウ素デンプン反応)。</p>', key: '光合成:二酸化炭素 + 水 →(光)→ デンプン + 酸素', mn: 'ヨウ素液はデンプンに出会うと「青紫に変身」!' },
+      { h: 'ふ入りの葉の実験', fig: 'leafexp', html: '<p><b>問い:光合成は葉のどこで行っているの?</b></p><p>(1) ふ入り(緑色でない部分がある)の葉の一部にアルミニウムはくをかぶせ、光を当てる。(2) 熱湯につけて葉をやわらかくする。(3) 90℃のエタノールにひたす。これは<b>緑色を脱色</b>して、色の変化を見やすくするため。(4) ヨウ素液につけて反応を見る。</p><p><b>結果:</b>青紫色になったのは「光が当たった緑色の部分」だけ。ほかの3つは変化なし。</p><p>だから「光が当たること」と「緑色であること」の<b>両方</b>がそろった部分でデンプンができるとわかる。</p>', key: '光合成が行われる場所:光が当たっている緑色の部分', mn: '4つの部分を比べる実験。1つだけ条件を変えて比べると原因がわかる(対照実験)。' },
+      { h: '緑色の正体は葉緑体', fig: 'elodea', html: '<p>葉の緑色の部分を顕微鏡で見ると、細胞の中に緑色の粒=<b>葉緑体</b>が見えます。光を当てたオオカナダモの葉では、葉緑体がヨウ素液で青く染まり、デンプンができたことがわかります。光を当てなかった葉の葉緑体は染まりません。</p><p>葉の緑色でない部分でデンプンができないのは、<b>葉緑体がない</b>からです。</p>', key: '光合成は細胞の中の「葉緑体」で行われる。', mn: '葉緑体=ソーラーパネル工場。光が当たると稼働してデンプンをつくる。' },
+      { h: '二酸化炭素を調べる方法', fig: 'btb', html: '<p>二酸化炭素は2つの方法で調べられます。</p><div class="tw"><table class="ut"><tr><th>調べ方</th><th>結果</th></tr><tr><td>石灰水</td><td>二酸化炭素があると<b>白くにごる</b></td></tr><tr><td>BTB液</td><td>二酸化炭素が溶けると弱い<b>酸性</b>になり、<b>黄色</b>に近づく</td></tr></table></div><p>BTB液の色:<b>酸性=黄色、中性=緑色、アルカリ性=青色</b>。二酸化炭素が多いほど黄色、少ないほど青色になります。</p><p>水草に光を当てると光合成で二酸化炭素が使われて減るので、BTB液は青っぽく(アルカリ性側に)変わります。</p>', key: 'BTB液:酸性=黄、中性=緑、アルカリ性=青', mn: 'レモン(酸っぱい)は黄色! 「さん(酸)=き(黄)」。' }
+    ]
+  },
+  plant: {
+    lead: '根で吸った水は、茎を通って葉まで運ばれ、葉の気孔から出ていきます。水と養分の「道」と「出口」をつなげて理解しよう。',
+    secs: [
+      { h: '葉の断面と気孔', fig: 'leaf', html: '<p>葉の表面には、2つの三日月形の<b>孔辺細胞</b>で囲まれたすき間=<b>気孔</b>があります。気孔は、<b>水蒸気の出口</b>であり、<b>二酸化炭素や酸素の出入り口</b>です。</p><p>気孔の数は<b>葉の裏側 > 葉の表側</b>。(蒸散の実験で確かめられます)</p>', key: '気孔:水蒸気の出口/CO₂・O₂の出入り口。数は葉の裏側のほうが多い。', mn: '「気孔」の「孔」=あな。孔(こう)辺細胞が2つで門番をしている。' },
+      { h: '蒸散と維管束', fig: 'leaf', html: '<p><b>蒸散</b>とは、根から吸い上げられた水が、気孔から水蒸気となって出ていくことです。</p><p>茎・根・葉には<b>維管束</b>(道管と師管の集まり)が通っています。</p><div class="tw"><table class="ut"><tr><th>管</th><th>はたらき</th><th>葉の断面での位置</th></tr><tr><td>道管</td><td>水を運ぶ。無機養分の通り道にもなる</td><td>表側(上側)</td></tr><tr><td>師管</td><td>葉でつくられた養分を運ぶ</td><td>裏側(下側)</td></tr></table></div>', key: '道管=水、師管=養分。', mn: '「師(し)匠が養分を運ぶ」…ではなく「師管=しっかり養分」。道管の「道」は「水の通り道」。' },
+      { h: '蒸散の実験を計算しよう', fig: 'transp:::', html: '<p>葉の枚数や大きさ、茎の太さがほぼ同じ枝を4本用意し、水が減った量を比べます。水面の<b>油</b>は水の<b>蒸発</b>を防ぐため、<b>ワセリン</b>は<b>気孔をふさぐ</b>ためです。</p><div class="tw"><table class="ut"><tr><th>枝</th><th>蒸散している場所</th><th>減った水</th></tr><tr><td>A 何もしない</td><td>表+裏+茎</td><td>5.3</td></tr><tr><td>B 裏にワセリン</td><td>表+茎</td><td>1.8</td></tr><tr><td>C 表にワセリン</td><td>裏+茎</td><td>3.9</td></tr><tr><td>D 葉なし</td><td>茎</td><td>0.4</td></tr></table></div><p>葉の表 = A - C = 1.4、葉の裏 = A - B = 3.5、茎 = D = 0.4(単位 cm³)。</p>', key: '「ふさいだ場所」の分だけ蒸散が減る。引き算で場所別の蒸散量を求める。', mn: '全体(A)から「ふさがれていない部分」を引くと、ふさいだ場所の量がわかる。' },
+      { h: '根・双子葉類と単子葉類', fig: 'root', html: '<p>根の先端近くに生える細い毛のような根が<b>根毛</b>です。根毛があると根の<b>表面積</b>が広くなり、水などを効率よく吸収できます。</p><div class="tw"><table class="ut"><tr><th></th><th>双子葉類</th><th>単子葉類</th></tr><tr><td>子葉の数</td><td>2枚</td><td>1枚</td></tr><tr><td>葉脈</td><td>網状脈</td><td>平行脈</td></tr><tr><td>根</td><td>主根と側根</td><td>ひげ根</td></tr><tr><td>茎の維管束</td><td>輪のように並ぶ</td><td>散らばっている(散在)</td></tr></table></div>', key: '双子葉=2・網状脈・主根と側根・輪。単子葉=1・平行脈・ひげ根・散在。', mn: '「双(ふたご)=2」「単(ひとり)=1」。ひげ根の「ひげ」はたくさんの細い根。' }
+    ]
+  },
+  digest: {
+    lead: 'ごはんやおかずは、そのままでは体に入れません。細かく分けて(消化)、吸収できるサイズにする旅をたどろう。',
+    secs: [
+      { h: '5大栄養素', html: '<p>食べ物にふくまれる主な栄養素は5つです。</p><div class="tw"><table class="ut"><tr><th>栄養素</th><th>食べ物</th><th>はたらき</th></tr><tr><td>炭水化物</td><td>米・いも・果物</td><td>主にエネルギー源</td></tr><tr><td>タンパク質</td><td>肉・魚・豆腐</td><td>エネルギー源、体をつくる材料</td></tr><tr><td>脂肪</td><td>バター・ごま・油</td><td>主にエネルギー源</td></tr><tr><td>無機質</td><td>Ca・P・NaCl・Feなど</td><td>体の調子をととのえる</td></tr><tr><td>ビタミン</td><td>野菜・果物など</td><td>体の調子をととのえる</td></tr></table></div>', key: '炭水化物・タンパク質・脂肪が「3大栄養素」。', mn: '「ひげ(脂)・たん(タンパク)・たん(炭水)」でエネルギーの3人組。' },
+      { h: '消化の道と消化液', fig: 'digest', html: '<p><b>消化</b>=栄養分を吸収されやすい状態に変えるはたらき。<b>消化器官</b>=消化にかかわる部分全体。<b>消化管</b>=食べ物の通り道の1本の管です。</p><p>食べ物の通り道:<b>口 → 食道 → 胃 → 小腸 → 大腸 → 肛門</b></p><p>消化液を出す器官:だ液せん(だ液)、胃せん(胃液)、肝臓(胆汁。胆のうにたくわえる)、すい臓(すい液)、腸せん(腸液)。</p>', key: '胆汁をつくるのは肝臓、たくわえるのは胆のう。', mn: '「肝(かん)でつくって胆(たん)にためる」。' },
+      { h: '消化酵素のはたらき', fig: 'enzymes', html: '<p>消化液にふくまれる<b>消化酵素</b>が、養分を分解します。酵素は「決まった栄養素だけを切るハサミ」。体温くらい(約36〜40℃)の温度で最もよくはたらきます。</p><div class="tw"><table class="ut"><tr><th>消化液</th><th>酵素</th><th>分解する物</th></tr><tr><td>だ液</td><td>アミラーゼ</td><td>炭水化物(デンプン)</td></tr><tr><td>胃液</td><td>ペプシン</td><td>タンパク質</td></tr><tr><td>胆汁</td><td>酵素なし</td><td>脂肪の消化を助ける</td></tr><tr><td>すい液</td><td>アミラーゼ・トリプシン・リパーゼ</td><td>炭水化物・タンパク質・脂肪</td></tr><tr><td>腸液</td><td>マルターゼ・ペプチダーゼ</td><td>炭水化物・タンパク質</td></tr></table></div>', key: '最終産物:炭水化物→ブドウ糖、タンパク質→アミノ酸、脂肪→脂肪酸とモノグリセリド。', mn: 'ペプ(ペプシン)とトリ(トリプシン)とペプチ(ペプチダーゼ)はタンパク質担当。リパーゼは脂肪担当。' }
+    ]
+  },
+  absorb: {
+    lead: '分解された養分は、小腸で血液やリンパ液の中へ。そのあと肝臓が「配送センター兼化学工場」として大活躍します。',
+    secs: [
+      { h: '小腸と柔毛', fig: 'villus', html: '<p>養分は主に<b>小腸</b>で吸収されます。小腸の壁にはたくさんのひだがあり、表面は<b>柔毛</b>という小さな突起で覆われています。ひだと柔毛で<b>表面積</b>が大きくなり、養分を効率よく吸収できます。</p><div class="tw"><table class="ut"><tr><th>分解された物質</th><th>吸収されるところ</th></tr><tr><td>ブドウ糖</td><td>毛細血管</td></tr><tr><td>アミノ酸</td><td>毛細血管</td></tr><tr><td>脂肪酸とモノグリセリド</td><td>リンパ管</td></tr></table></div>', key: '水に溶けやすいもの→毛細血管、脂肪の分解物→リンパ管。', mn: '脂肪は水に溶けにくいから、別ルート(リンパ管)を通る。' },
+      { h: '吸収のあとの旅路', fig: 'absorb', html: '<p>毛細血管に吸収されたブドウ糖とアミノ酸は<b>門脈</b>に入り、<b>肝臓</b>へ運ばれます。ブドウ糖はグリコーゲンに変えられて貯蔵されます(筋肉へも)。アミノ酸の一部はタンパク質に変えられ、体をつくる材料になります。</p><p>脂肪酸とモノグリセリドは柔毛でもう一度<b>脂肪</b>になり、リンパ管を通って、首の下の太い<b>静脈</b>で血液に合流します。</p>', key: '門脈=小腸から肝臓へ向かう血管。', mn: '「門」をくぐって「肝」へ。門脈→肝臓。' },
+      { h: '肝臓のはたらき', html: '<p>肝臓は大人で1〜1.5kgあり、心臓から送られた血液の約25%が流れ込みます。</p><div class="tw"><table class="ut"><tr><th>はたらき</th><th>内容</th></tr><tr><td>胆汁をつくる</td><td>胆のうにたくわえられる</td></tr><tr><td>養分の貯蔵・つくり変え</td><td>ブドウ糖→グリコーゲン、アミノ酸の一部→タンパク質</td></tr><tr><td>解毒</td><td>アルコールなどの有害な物質を無害にする。有害なアンモニアを無害な尿素に変える</td></tr></table></div>', key: '尿をつくるのは肝臓ではなく腎臓。肝臓は尿素までつくって腎臓へ送る。', mn: '肝臓=体の化学工場「つくる・ためる・毒を消す」。' }
+    ]
+  },
+  excrete: {
+    lead: '体の中でできた「いらないもの」を外に出すしくみ(排出)です。どの器官が、どの物質を、どう出すのかを整理しよう。',
+    secs: [
+      { h: '排出のしくみ', html: '<p><b>排出</b>とは、生物が生きるための活動でできた不要な物質をとり除き、体外に出すはたらきです。</p><div class="tw"><table class="ut"><tr><th>器官</th><th>はたらき</th></tr><tr><td>肺</td><td>細胞呼吸で出た二酸化炭素を体外に出す</td></tr><tr><td>肝臓</td><td>タンパク質(アミノ酸)を分解すると有毒なアンモニアができる→無害な尿素に変える→腎臓へ運ばれる</td></tr><tr><td>腎臓</td><td>血液をろ過して不要な物質や水分を尿としてとり出す</td></tr></table></div>', key: 'アンモニア(有毒) → 肝臓 → 尿素(無害) → 腎臓 → 尿', mn: '「アンモニアをにょうそ(尿素)に変えて、じん(腎)へ」。' },
+      { h: '腎臓と尿の通り道', fig: 'kidney', html: '<p>腎臓は左右に<b>1個ずつ</b>あり、大きさはにぎりこぶしぐらい。太い血管がつながっていて、<b>たくさんの血液が出入り</b>します。</p><p>尿の通り道:<b>腎臓 → 輸尿管 → ぼうこう → 体外</b></p>', key: '尿は腎臓でつくられ、輸尿管を通ってぼうこうにたまる。', mn: '「ジン・ユ・ボウ」で腎臓→輸尿管→ぼうこう。' },
+      { h: '尿をつくるしくみ', fig: 'nephron', html: '<p>腎臓の中では2ステップで尿がつくられます。</p><p><b>1. ろ過:</b>血液中の必要な物質も不要な物質も、いったんこし出される。</p><p><b>2. 再吸収:</b>体に必要な物質(水・アミノ酸・ブドウ糖など)が血液にもどされる。</p><p>のこった不要な物質(尿素など)と水分が<b>尿</b>になり、ぼうこうへ送られます。</p>', key: '必要な物質=水・アミノ酸・ブドウ糖など(再吸収)、不要な物質=尿素など(尿へ)。', mn: '一度「ぜんぶこし出して」、必要なものだけ「もどす」。ざるで全部すくってから大事なものを選び直すイメージ。' }
+    ]
+  },
+  lung: {
+    lead: '肺は自分で動けない器官。では、どうやって息を吸ったりはいたりしているのでしょう? 「箱の大きさ」で考えるとスッキリします。',
+    secs: [
+      { h: '息を吸う・はくしくみ', fig: 'breath', html: '<p>ヒトの肺は<b>2つ</b>。肺には<b>筋肉がない</b>ので、自分で動くことが<b>できません</b>。そこで<b>横隔膜</b>(筋肉)と、ろっ骨を動かす胸の筋肉が、肺の入っている「箱」の大きさを変えています。</p><div class="tw"><table class="ut"><tr><th></th><th>息を吸うとき</th><th>息をはくとき</th></tr><tr><td>ろっ骨</td><td>引き上げられる</td><td>もとの位置にもどる</td></tr><tr><td>横隔膜</td><td>縮んで下がる</td><td>上がる</td></tr><tr><td>肺</td><td>広がる</td><td>もとの大きさにもどる</td></tr></table></div>', key: '吸う=箱が広がる(ろっ骨↑、横隔膜↓)。はく=箱がせまくなる。', mn: '風船の入った箱を広げると、中にむりやり空気が入る、というイメージ。' },
+      { h: '肺のつくりとガス交換', fig: 'lung', html: '<p>鼻・口から吸いこまれた空気は、<b>気管</b>(1本の太い管)→<b>気管支</b>(左右に分かれ、肺の中で枝分かれ)→<b>肺胞</b>(気管支の先にある、うすい膜の袋)へと進みます。</p><p>肺胞の数が多いほど、空気にふれる<b>表面積</b>が大きくなり、<b>二酸化炭素</b>と<b>酸素</b>の交換が効率よく行えます。</p><p>空気中の酸素は肺胞で<b>血液</b>にとりこまれ、全身の細胞に送られて<b>細胞呼吸</b>に使われます。細胞呼吸で発生した二酸化炭素は肺まで来ると<b>肺胞の中</b>に出され、気管を通って体外へ出ます。</p>', key: '肺胞で:酸素は血液へ、二酸化炭素は肺胞へ(ガス交換)。', mn: '小腸の柔毛と同じ!「表面積を大きくして効率アップ」は生物の定番テクニック。' }
+    ]
+  }
+};
+
+/* 暗記カード [単元, おもて, うら] */
+var CARDS = [
+  ['cell', '核のはたらきは?', '遺伝情報(DNA)が入っている。1つだけある。染色液で染まる。'],
+  ['cell', '細胞質のいちばん外側にあるうすい膜は?', '細胞膜'],
+  ['cell', '核のまわりの部分(核以外の細胞の内部)は?', '細胞質'],
+  ['cell', '植物細胞にだけあるつくり3つは?', '細胞壁・液胞・葉緑体'],
+  ['cell', '細胞膜の外側を囲む丈夫なつくりは?', '細胞壁'],
+  ['cell', '貯蔵物質や不要な物質を含む液をもつつくりは?', '液胞'],
+  ['cell', '緑色の粒で光合成を行うつくりは?', '葉緑体'],
+  ['cell', '細胞呼吸でエネルギーをとり出す工場は?', 'ミトコンドリア'],
+  ['cell', 'タンパク質がつくられるのは?', 'リボソーム'],
+  ['cell', 'つくられたタンパク質の運び先を決めるのは?', 'ゴルジ体'],
+  ['cell', '細胞呼吸の材料は?', '養分と酸素'],
+  ['cell', '細胞呼吸でできるものは?', 'エネルギー・二酸化炭素・水'],
+  ['cell', '細胞呼吸の別名は? 肺やえらでの呼吸は?', '内呼吸 / 外呼吸'],
+  ['photo', '光合成でつくられる物質は?', 'デンプン(酸素も出る)'],
+  ['photo', 'デンプンを確かめる薬品と、その色の変化は?', 'ヨウ素液 → 青紫色(ヨウ素デンプン反応)'],
+  ['photo', 'ふ入りの葉をエタノールにひたす理由は?', '緑色を脱色して、色の変化を見やすくするため'],
+  ['photo', 'ふ入りの葉の実験で青紫になった部分は?', '光が当たった緑色の部分'],
+  ['photo', '光合成が行われる場所は?', '葉緑体(細胞の中)'],
+  ['photo', '光合成で取り入れる気体と出す気体は?', '取り入れる:二酸化炭素 / 出す:酸素'],
+  ['photo', '二酸化炭素を調べる2つの方法は?', '石灰水(白くにごる)・BTB液(黄色に近づく)'],
+  ['photo', 'BTB液の色:酸性・中性・アルカリ性は?', '黄色・緑色・青色'],
+  ['photo', '二酸化炭素が多いBTB液の色は?', '黄色(酸性)'],
+  ['plant', '気孔とは?', '2つの孔辺細胞で囲まれたすき間。水蒸気の出口、CO₂・O₂の出入り口'],
+  ['plant', '蒸散とは?', '根から吸い上げられた水が、気孔から水蒸気となって出ていくこと'],
+  ['plant', '気孔の数が多いのは葉のどちら側?', '葉の裏側(裏側 > 表側)'],
+  ['plant', '維管束とは?', '道管と師管の集まり'],
+  ['plant', '道管のはたらきは?', '水を運ぶ。無機養分の通り道にもなる'],
+  ['plant', '師管のはたらきは?', '葉でつくられた養分を運ぶ'],
+  ['plant', '根毛があると何がよいの?', '根の表面積が広くなり、水などを効率よく吸収できる'],
+  ['plant', '双子葉類の特徴は?', '子葉2枚・網状脈・主根と側根・維管束が輪のように並ぶ'],
+  ['plant', '単子葉類の特徴は?', '子葉1枚・平行脈・ひげ根・維管束が散在'],
+  ['plant', '蒸散実験で水面に油を入れる理由は?', '水の蒸発を防ぐため'],
+  ['plant', '蒸散実験で葉にワセリンをぬる理由は?', '気孔をふさぐため'],
+  ['digest', '3大栄養素は?', '炭水化物・タンパク質・脂肪'],
+  ['digest', '体の調子をととのえる栄養素は?', '無機質・ビタミン'],
+  ['digest', '消化・消化器官・消化管のちがいは?', '消化=分解するはたらき/消化器官=はたらく部分全体/消化管=食べ物の通り道の1本の管'],
+  ['digest', '食べ物の通り道を順に!', '口→食道→胃→小腸→大腸→肛門'],
+  ['digest', 'だ液のはたらき(酵素)は?', 'アミラーゼがデンプン(炭水化物)を分解'],
+  ['digest', '胃液にふくまれる酵素は?', 'ペプシン(タンパク質を分解)'],
+  ['digest', '胆汁をつくる器官・たくわえる器官は?', 'つくる=肝臓 / たくわえる=胆のう'],
+  ['digest', '胆汁のはたらきは?', '消化酵素は含まないが、脂肪の消化を助ける'],
+  ['digest', 'すい液の3つの酵素は?', 'アミラーゼ・トリプシン・リパーゼ'],
+  ['digest', '腸液(小腸の壁)の消化酵素は?', 'マルターゼ・ペプチダーゼ'],
+  ['digest', '炭水化物・タンパク質・脂肪の最終分解物は?', 'ブドウ糖・アミノ酸・脂肪酸とモノグリセリド'],
+  ['digest', '消化酵素がいちばんよくはたらく温度は?', '体温くらい(約36〜40℃)'],
+  ['absorb', '小腸の壁の突起は?', '柔毛(表面積を大きくする)'],
+  ['absorb', 'ブドウ糖・アミノ酸が吸収されるところは?', '柔毛の毛細血管'],
+  ['absorb', '脂肪酸とモノグリセリドが吸収されるところは?', 'リンパ管'],
+  ['absorb', '小腸から肝臓へ向かう血管は?', '門脈'],
+  ['absorb', 'ブドウ糖は肝臓で何に変わって貯蔵される?', 'グリコーゲン'],
+  ['absorb', '肝臓でアミノ酸の一部は何に変わる?', 'タンパク質'],
+  ['absorb', '肝臓のはたらき3つは?', '胆汁をつくる・養分の貯蔵やつくり変え・解毒'],
+  ['absorb', 'リンパ管に入った脂肪はどこで血液と合流する?', '首の下の太い静脈'],
+  ['excrete', '排出とは?', '生きるための活動でできた不要な物質をとり除き、体外に出すはたらき'],
+  ['excrete', 'タンパク質を分解してできる有毒な物質は?', 'アンモニア'],
+  ['excrete', '肝臓はアンモニアを何に変える?', '無害な尿素(のち腎臓へ運ばれる)'],
+  ['excrete', '腎臓のはたらきは?', '血液をろ過して、不要な物質や水分を尿としてとり出す'],
+  ['excrete', '尿の通り道を順に!', '腎臓→輸尿管→ぼうこう→体外'],
+  ['excrete', '腎臓で再吸収される物質の例は?', '水・アミノ酸・ブドウ糖'],
+  ['excrete', '尿として出される不要な物質の例は?', '尿素'],
+  ['lung', 'ヒトの肺の数は? 肺に筋肉はある?', '2つ / ない(自分で動けない)'],
+  ['lung', '息を吸うとき、ろっ骨と横隔膜は?', 'ろっ骨:引き上げられる/横隔膜:縮んで下がる→肺が広がる'],
+  ['lung', '息をはくとき、ろっ骨と横隔膜は?', 'ろっ骨:もとの位置にもどる/横隔膜:上がる→肺がもとの大きさにもどる'],
+  ['lung', '空気が通る順は?', '気管→気管支→肺胞'],
+  ['lung', '肺胞とは?', '気管支の先にあるうすい膜の袋'],
+  ['lung', '肺胞が多いと何がよい?', '空気にふれる表面積が大きくなり、ガス交換を効率よくできる'],
+  ['lung', '肺胞でのガス交換は?', '酸素は血液へ、二酸化炭素は肺胞の中へ'],
+  ['lung', '酸素はその後どう使われる?', '全身の細胞に送られ、細胞呼吸に使われる']
+];
+
+/* 赤シート (プリントの文章をそのまま穴埋め形式に) {{答え}} */
+var RED = {
+  cell: ['{{核}}は細胞内に必ず1つある。{{遺伝情報(DNA)}}が入っている。染色液で染まる。', '{{細胞膜}}は細胞質のいちばん外側にあるうすい膜。', '{{細胞質}}は核のまわりの部分(核以外の細胞の内部)。', '植物細胞にしかないつくり:{{細胞壁}}(細胞膜の外側を囲む丈夫なつくり)、{{液胞}}(貯蔵物質や不要な物質が含まれている液)、{{葉緑体}}(緑色の粒で{{光合成}}を行う)。', '{{ミトコンドリア}}は「細胞呼吸」でエネルギーをとり出す工場の役割。{{リボソーム}}ではタンパク質がつくられ、{{ゴルジ体}}はつくられたタンパク質をどこに運ぶかを決める。', '細胞の一つ一つは、{{養分}}と{{酸素}}からエネルギーをとり出し、{{二酸化炭素}}と{{水}}を放出している。これを{{細胞呼吸}}という。', '細胞呼吸のことを{{内呼吸}}ともいう。人間や魚が肺やえらを使って行う呼吸を{{外呼吸}}という。'],
+  photo: ['植物の葉に日光が当たると{{デンプン}}ができる。確認には{{ヨウ素液}}を使い、反応を{{ヨウ素デンプン反応}}という(青紫色)。', '植物は光が当たると、空気中の{{二酸化炭素}}を取り入れ、{{酸素}}を出す。この光のエネルギーを利用して①をつくり出すはたらきを{{光合成}}という。', 'エタノールにひたすのは、緑色の部分を{{脱色}}し、観察しやすくするため。', 'ヨウ素液が反応したのは、葉に光が{{当たっている}}ところの{{緑色}}の部分だけ。', '光合成は、細胞内にある{{葉緑体}}で行われている。', '二酸化炭素を調べるには{{石灰水}}(白くにごる)や{{BTB液}}を使う。', 'BTB液は、酸性で{{黄}}色、中性で{{緑}}色、アルカリ性で{{青}}色になる。二酸化炭素は水に少し溶け、弱い{{酸}}性を示す。'],
+  plant: ['{{気孔}}は2つの三日月形の{{孔辺細胞}}で囲まれたすき間。{{水蒸気}}の出口、二酸化炭素・酸素の出入り口。', '{{蒸散}}は、根から吸い上げられた水が気孔から水蒸気となって出ていくこと。気孔の数は葉の{{裏側}}のほうが多い。', '{{維管束}}は{{道管}}(水を運ぶ・無機養分の通り道)と{{師管}}(葉でつくられた養分を運ぶ)からなる。', '根の先端近くの細い毛のような根を{{根毛}}という。根の{{表面積}}が広くなり、水などを効率よく吸収できる。', '水面に油を注ぐのは水の{{蒸発}}を防ぐため。葉にワセリンをぬるのは{{気孔}}をふさぐため。', '双子葉類:子葉{{2}}枚・{{網状脈}}・{{主根}}と側根・維管束は{{輪}}のように並ぶ。', '単子葉類:子葉{{1}}枚・{{平行脈}}・{{ひげ根}}・維管束は{{散在}}している。'],
+  digest: ['5大栄養素は{{炭水化物}}・{{タンパク質}}・{{脂肪}}・{{無機質}}・{{ビタミン}}。', '{{消化}}は栄養分を吸収されやすい状態に変えるはたらき。{{消化管}}は食べ物の通り道の1本の管。', '口→{{食道}}→{{胃}}→{{小腸}}→{{大腸}}→{{肛門}}', '{{消化液}}は食物を分解する液体。その中の{{消化酵素}}が養分を分解する。体温ぐらいの温度で最もよくはたらく。', 'だ液:{{アミラーゼ}}。胃液:{{ペプシン}}。胆汁:酵素は含まず{{脂肪}}の消化を助ける。すい液:アミラーゼ・{{トリプシン}}・{{リパーゼ}}。腸液:{{マルターゼ}}・ペプチダーゼ。', '炭水化物は{{ブドウ糖}}に、タンパク質は{{アミノ酸}}に、脂肪は{{脂肪酸}}と{{モノグリセリド}}に分解される。'],
+  absorb: ['養分は主に小腸で吸収される。表面は{{柔毛}}という小さな突起で覆われている。', 'ブドウ糖は{{毛細血管}}→{{門脈}}→{{肝臓}}へ。{{グリコーゲン}}に変化して貯蔵される。', 'アミノ酸は毛細血管→門脈→肝臓で{{タンパク質}}に変えられ、体をつくる材料になる。', '脂肪酸とモノグリセリドは再び{{脂肪}}になってから{{リンパ管}}に入り、首の下の太い血管({{静脈}})に入る。', '肝臓は{{胆汁}}をつくり、{{胆のう}}にたくわえる。有害な物質を無害にする{{解毒}}も行う。', '有害な{{アンモニア}}を無害な{{尿素}}に変え、{{腎臓}}へ運ぶ。'],
+  excrete: ['{{排出}}は、生物が生きるために行う活動によってできた不要な物質をとり除き、体外に出すはたらき。', '肺は細胞呼吸で出た{{二酸化炭素}}を体外に出す。', '腎臓は左右に{{1個ずつ}}ある。太い血管がつながり、たくさんの血液が出入りして血液をろ過している。', '不要な物質や水分は{{輸尿管}}を通り、尿として{{ぼうこう}}にためられたあと、体外に出される。', '尿をつくるしくみ:1.血液中の必要な物質・不要な物質ともにこし出される(ろ過)。2.体に必要な物質が{{再吸収}}される。', '必要な物質の例:{{水}}・アミノ酸・ブドウ糖。不要な物質の例:{{尿素}}。'],
+  lung: ['ヒトの肺は{{2}}つある。肺は筋肉が{{ない}}ため、自ら運動することが{{できない}}。', '肺の呼吸運動は{{横隔膜}}という筋肉と、ろっ骨を動かす胸の筋肉のはたらきで行われている。', '息を吸うとき:ろっ骨は{{引き上げられ}}、横隔膜は{{縮んで下がり}}、肺が{{広がる}}。', '息をはくとき:ろっ骨は{{もとの位置にもどり}}、横隔膜は{{上がり}}、肺が{{もとの大きさにもどる}}。', '鼻・口から吸いこまれた空気は{{気管}}→{{気管支}}→{{肺胞}}の順に通る。', '肺胞の数が多いほど、空気にふれる{{表面積}}が大きくなり、二酸化炭素と酸素の交換を効率よく行える。', '空気中の酸素は肺胞で{{血液}}にとりこまれ、全身の細胞の{{細胞呼吸}}に使われる。細胞呼吸で出た二酸化炭素は肺胞の中に出され、気管を通って体外に出る。']
+};
+
+/* ===== 問題 (5回 x 20問 x 5点 = 各100点) =====
+   C(単元, 問題文, [正解, 誤答, 誤答, 誤答], 解説, 図)  … 選択式。表示時に順番をシャッフル
+   F(単元, 問題文, [許容する答え...], 解説, 図)        … 記述式                                 */
+function C(c, q, ch, e, f) { return { c: c, q: q, ch: ch, e: e, f: f || '', t: 'c' }; }
+function F(c, q, ac, e, f) { return { c: c, q: q, ac: ac, e: e, f: f || '', t: 'f' }; }
+var TESTS = [null];
+var TITLES = [null, '細胞と光合成', '植物のからだ', '消化のしくみ', '吸収・排出・呼吸', '総合チャレンジ'];
+var TSUB = [null, '細胞のつくりと光合成の基本', '葉・茎・根と蒸散', '消化液・消化酵素・栄養素', '小腸・肝臓・腎臓・肺', '全単元ミックスの総仕上げ'];
+
+TESTS[1] = [
+  C('cell', '図の③は、細胞内に必ず1つあり、遺伝情報(DNA)が入っているつくりである。名称はどれか。', ['核', '細胞膜', '細胞質', '液胞'], '③は核です。核には遺伝情報(DNA)が入っていて、染色液で染まります。1つの細胞に必ず1つあります。', 'cells:3'),
+  C('cell', '図の⑥は、細胞膜の外側を囲む丈夫なつくりである。名称はどれか。', ['細胞壁', '液胞', '葉緑体', '細胞質'], '⑥は細胞壁です。植物細胞の細胞膜の外側にあり、細胞の形を保ち体を支えます。動物細胞(図B)にはありません。', 'cells:6'),
+  C('cell', '植物細胞にも動物細胞にも共通してあるつくりの組み合わせはどれか。', ['核・細胞膜・細胞質', '核・細胞壁・液胞', '細胞膜・葉緑体・液胞', '細胞壁・細胞質・葉緑体'], '共通するつくりは「核・細胞膜・細胞質」の3つ。細胞壁・液胞・葉緑体は植物細胞だけにあります。'),
+  F('cell', '図の⑤は、核のまわりの部分(核以外の細胞の内部)である。名称を答えよ。', ['細胞質', 'さいぼうしつ'], '⑤は細胞質です。核の外側から細胞膜の内側までの部分をまとめてそう呼びます。', 'cells:5'),
+  C('cell', '図の⑧は、緑色の粒で光合成を行うつくりである。名称はどれか。', ['葉緑体', 'ミトコンドリア', '液胞', 'ゴルジ体'], '⑧は葉緑体です。光のエネルギーを使ってデンプンをつくる、植物細胞だけのつくりです。', 'cells:8'),
+  C('cell', '細胞呼吸でエネルギーをとり出す「工場」の役割をするつくりはどれか。', ['ミトコンドリア', 'リボソーム', 'ゴルジ体', '核'], 'エネルギーをとり出す工場はミトコンドリアです。リボソームはタンパク質をつくり、ゴルジ体はその運び先を決めます。'),
+  C('cell', 'タンパク質がつくられるつくりと、つくられたタンパク質の運び先を決めるつくりの組み合わせとして正しいものはどれか。', ['リボソーム・ゴルジ体', 'ゴルジ体・リボソーム', 'ミトコンドリア・リボソーム', 'リボソーム・ミトコンドリア'], 'つくる→リボソーム、運び先を決める→ゴルジ体。「つくる工場」と「配送センター」の関係です。'),
+  F('cell', '図の⑮は、養分とともに細胞呼吸に使われる気体である。何か。', ['酸素', 'さんそ', 'O2'], '細胞は養分と酸素からエネルギーをとり出します。⑮は酸素です。', 'resp:15'),
+  C('cell', '図の⑯と⑰にあたる、細胞呼吸で放出される物質の組み合わせはどれか。', ['二酸化炭素と水', '酸素と水', '二酸化炭素と養分', '酸素と二酸化炭素'], '細胞呼吸では、エネルギーといっしょに二酸化炭素と水が放出されます。酸素は使う側です。', 'resp:16'),
+  F('photo', '光合成でつくられる、ヨウ素液で青紫色になる物質は何か。', ['デンプン', 'でんぷん'], '植物は光合成でデンプンをつくります。デンプンはヨウ素液で青紫色になります(ヨウ素デンプン反応)。'),
+  C('photo', 'デンプンができたかどうかを確かめるために使う薬品はどれか。', ['ヨウ素液', 'BTB液', '石灰水', '酢酸カーミン液'], 'デンプンの確認にはヨウ素液を使います。BTB液と石灰水は二酸化炭素を調べる薬品です。'),
+  C('photo', 'ふ入りの葉の一部にアルミニウムはくをかぶせ、光を当てた。図の①光が当たった緑色の部分、②光が当たったふの部分、③光が当たらなかった緑色の部分、④光が当たらなかったふの部分のうち、ヨウ素液で青紫色になるのはどこか。', ['①', '②', '③', '④'], '青紫色になるのは①だけ。光合成には「光が当たること」と「葉緑体のある緑色の部分であること」の両方が必要です。', 'leafexp:b'),
+  C('photo', '葉を90℃のエタノールにひたすのは何のためか。', ['緑色を脱色して、ヨウ素液の色の変化を見やすくするため', '葉にデンプンをたくさんつくらせるため', '葉をかたくして切りやすくするため', '光合成をさかんにするため'], 'エタノールで葉の緑色をぬく(脱色)と、ヨウ素液の青紫色がはっきり見えます。'),
+  C('photo', 'ふ入りの葉の実験の結果から、わかることはどれか。', ['デンプンは、葉の光が当たっている緑色の部分でつくられる', 'デンプンは、葉の緑色でない部分でつくられる', 'デンプンは、光が当たらなくてもつくられる', 'デンプンは、葉のどの部分でも同じようにつくられる'], '反応があったのは光が当たった緑色の部分だけ。ほかの3つが変化しなかったので、光と緑色の両方が必要だとわかります。', 'leafexp'),
+  F('photo', '光合成が行われる、細胞の中の緑色の粒を何というか。', ['葉緑体', 'ようりょくたい'], '光を当てたオオカナダモの葉では、葉緑体が青く染まります。光合成は葉緑体で行われます。', 'elodea:1'),
+  C('photo', '植物に光が当たったとき、空気中から取り入れる気体と出す気体の組み合わせはどれか。', ['取り入れる:二酸化炭素 / 出す:酸素', '取り入れる:酸素 / 出す:二酸化炭素', '取り入れる:二酸化炭素 / 出す:水蒸気', '取り入れる:酸素 / 出す:水素'], '光合成では二酸化炭素を取り入れ、酸素を出します。(細胞呼吸は逆の向きです)'),
+  C('photo', '図の①のようにBTB液が黄色を示しているとき、液は何性か。', ['酸性', '中性', 'アルカリ性', '判断できない'], 'BTB液は酸性で黄色、中性で緑色、アルカリ性で青色。二酸化炭素が溶けると弱い酸性になります。', 'btb:1'),
+  C('photo', '二酸化炭素を調べる薬品と反応の組み合わせとして正しいものはどれか。', ['石灰水:白くにごる / BTB液:黄色に近づく', '石灰水:青くなる / BTB液:白くにごる', '石灰水:黄色になる / BTB液:青くなる', '石灰水:赤くなる / BTB液:緑色になる'], '二酸化炭素があると、石灰水は白くにごり、BTB液は酸性側の黄色に近づきます。'),
+  C('plant', '葉でつくられた養分が通る管はどれか。', ['師管', '道管', '気孔', '根毛'], '葉でつくられた養分を運ぶのは師管。道管は水と無機養分の通り道です。'),
+  C('plant', '葉の気孔のまわりにある、2つの三日月形の細胞を何というか。', ['孔辺細胞', '葉緑体', '根毛', '表皮細胞'], '気孔は2つの孔辺細胞で囲まれたすき間です。', 'leaf:2')
+];
+
+TESTS[2] = [
+  F('plant', '図の①は、2つの三日月形の細胞で囲まれたすき間である。名称を答えよ。', ['気孔', 'きこう'], '①は気孔です。水蒸気の出口であり、二酸化炭素や酸素の出入り口でもあります。', 'leaf:1'),
+  C('plant', '図の②(気孔を囲む2つの細胞)の名称はどれか。', ['孔辺細胞', '表皮細胞', '道管', '葉緑体'], '②は孔辺細胞。気孔の数は葉の裏側のほうが多いです。', 'leaf:2'),
+  C('plant', '気孔を出入りする気体の組み合わせとして正しいものはどれか。', ['水蒸気・二酸化炭素・酸素', '水蒸気だけ', '二酸化炭素・窒素だけ', '酸素・水素だけ'], '気孔は水蒸気の出口で、二酸化炭素と酸素の出入り口でもあります。'),
+  F('plant', '根から吸い上げられた水が、気孔から水蒸気となって出ていくことを何というか。', ['蒸散', 'じょうさん'], 'これを蒸散といいます。蒸散で水が失われる分、根から新しい水が吸い上げられます。'),
+  C('plant', '気孔の数が多いのは、葉のどちら側か。', ['葉の裏側', '葉の表側', '表側と裏側で同じ', '茎の側'], '蒸散の実験(P.30 図31)から、気孔の数は葉の裏側 > 葉の表側とわかります。'),
+  F('plant', '図の③は、水を運ぶはたらきをもつ管である。名称を答えよ。', ['道管', 'どうかん'], '③は道管。水や無機養分の通り道です。', 'leaf:3'),
+  C('plant', '図の④(師管)のはたらきはどれか。', ['葉でつくられた養分を運ぶ', '根から吸い上げた水を運ぶ', '気体を出入りさせる', '光合成を行う'], '師管は、葉でつくられた養分を運ぶ管です。', 'leaf:4'),
+  F('plant', '道管と師管が集まった束を何というか。', ['維管束', 'いかんそく'], '道管と師管をまとめて維管束といいます。茎・根・葉につながっています。', 'leaf:5'),
+  C('plant', '図の葉の断面で、道管と師管の位置として正しいものはどれか。', ['道管が表側、師管が裏側', '道管が裏側、師管が表側', 'どちらも表側', 'どちらも裏側'], '葉では、道管が表側(上側)、師管が裏側(下側)に並んでいます。', 'leaf'),
+  C('plant', '根の先の根毛があると、水を効率よく吸収できるのはなぜか。', ['根の表面積が広くなるから', '根が太くなるから', '光合成ができるから', '根が長くなるから'], '根毛で根の表面積が広くなり、水や無機養分に接する面が増えます。小腸の柔毛と同じ発想です。', 'root:1'),
+  C('plant', '蒸散の実験で、水面に油を注ぐのはなぜか。', ['水が蒸発するのを防ぐため', '水を温めるため', '気孔をふさぐため', '水の量を増やすため'], '水面から直接蒸発すると、植物の蒸散量が正しくはかれません。油のふたで蒸発を防ぎます。', 'transp'),
+  C('plant', '蒸散の実験で、葉にワセリンをぬるのはなぜか。', ['気孔をふさぐため', '葉を乾かすため', '光を当てるため', '根から水を吸わせるため'], 'ワセリンで気孔をふさぎ、蒸散する場所を限定します。', 'transp'),
+  C('plant', '図の実験で、水の減少量はA(処理なし)が5.3cm³、B(すべての葉の裏にワセリン)が1.8cm³だった。葉の裏側からの蒸散量は何cm³か。', ['3.5', '7.1', '1.8', '5.3'], 'A-B = 5.3-1.8 = 3.5cm³。Bでふさがれている裏側の分だけ、Aのほうが多く蒸散します。', 'transp'),
+  C('plant', '双子葉類の特徴として正しい組み合わせはどれか。', ['子葉2枚・網状脈・主根と側根', '子葉1枚・網状脈・主根と側根', '子葉2枚・平行脈・ひげ根', '子葉1枚・平行脈・主根と側根'], '双子葉類は、子葉2枚・網状脈・主根と側根(維管束は輪のように並ぶ)。単子葉類は子葉1枚・平行脈・ひげ根です。'),
+  C('photo', 'オオカナダモの葉に光を当て、ヨウ素液につけると細胞内の粒が青く染まった。この粒の名称と、できた物質の組み合わせはどれか。', ['葉緑体・デンプン', 'ミトコンドリア・デンプン', '葉緑体・酸素', '核・タンパク質'], '青く染まったのは葉緑体で、中にデンプンができたことを示します。', 'elodea'),
+  C('photo', '石灰水に二酸化炭素を通すとどうなるか。', ['白くにごる', '青くなる', '赤くなる', '変化しない'], '二酸化炭素があると石灰水は白くにごります。二酸化炭素の確認に使います。'),
+  C('photo', '図の①(黄色)、②(緑色)、③(青色)のBTB液は、それぞれ何性か。', ['酸性・中性・アルカリ性', '中性・酸性・アルカリ性', 'アルカリ性・中性・酸性', '酸性・アルカリ性・中性'], '黄色=酸性、緑色=中性、青色=アルカリ性。二酸化炭素の量は黄色(①)の液がもっとも多いです。', 'btb'),
+  C('photo', '息をふきこんで黄色にしたBTB液に水草を入れ、明るいところに置いた。しばらくすると液の色はどうなるか。', ['緑色〜青色に近づく', 'もっと濃い黄色になる', '赤色になる', '色は変わらない'], '水草の光合成で二酸化炭素が使われて減るため、液は酸性から中性・アルカリ性の側へ(緑〜青へ)変わります。'),
+  C('cell', '動物細胞にはなく、植物細胞だけにあるつくりはどれか。', ['細胞壁', '核', '細胞膜', '細胞質'], '細胞壁は植物細胞だけにあります。核・細胞膜・細胞質は共通のつくりです。', 'cells'),
+  C('cell', '貯蔵物質や不要な物質がふくまれている液をもつ、植物細胞のつくりはどれか。', ['液胞', '葉緑体', 'ゴルジ体', '核'], '⑦は液胞。貯蔵物質や不要な物質を含む液をもつ、町でいう「倉庫」です。', 'cells:7')
+];
+
+TESTS[3] = [
+  C('digest', '主にエネルギー源になり、体をつくる材料にもなる栄養素はどれか。', ['タンパク質', '脂肪', '炭水化物', '無機質'], '肉・魚・豆腐に多いタンパク質は、エネルギー源にも体をつくる材料にもなります。'),
+  C('digest', '3大栄養素の組み合わせはどれか。', ['炭水化物・タンパク質・脂肪', '炭水化物・タンパク質・ビタミン', '脂肪・無機質・ビタミン', 'タンパク質・無機質・ビタミン'], '3大栄養素は炭水化物・タンパク質・脂肪。無機質とビタミンは体の調子をととのえる栄養素です。'),
+  C('digest', 'Ca、P、NaCl、Feなどの栄養素(無機質)の主なはたらきはどれか。', ['体の調子をととのえる', '主にエネルギー源になる', '体を動かす筋肉をつくる', '養分を分解する'], '無機質(ミネラル)は体の調子をととのえるはたらきをします。'),
+  F('digest', '栄養分を、吸収されやすい状態に変えるはたらきを何というか。', ['消化', 'しょうか'], 'これを消化といいます。消化に関係する器官全体は消化器官です。'),
+  C('digest', '食べ物の通り道で、口から肛門までつづく1本の管を何というか。', ['消化管', '消化器官', '消化液', '消化酵素'], '食べ物の通り道は消化管。消化器官は、消化液を出す器官もふくめた全体のことです。'),
+  C('digest', '食べ物が通る順序として正しいものはどれか。', ['口→食道→胃→小腸→大腸→肛門', '口→胃→食道→小腸→大腸→肛門', '口→食道→胃→大腸→小腸→肛門', '口→食道→小腸→胃→大腸→肛門'], '口→食道→胃→小腸→大腸→肛門の順です。小腸が先、大腸があと、と覚えましょう。', 'digest'),
+  C('digest', '図の⑩は、胆汁をつくる器官である。名称はどれか。', ['肝臓', '胆のう', 'すい臓', '胃'], '胆汁をつくるのは肝臓。つくられた胆汁は胆のうにたくわえられます。', 'digest:10'),
+  C('digest', '図の⑪(胆のう)のはたらきはどれか。', ['胆汁をたくわえる', '胆汁をつくる', '胃液をつくる', 'すい液をつくる'], '胆のうは、肝臓でつくられた胆汁をたくわえる袋です。', 'digest:11'),
+  F('digest', '図の⑬は、すい液を出す器官である。名称を答えよ。', ['すい臓', '膵臓', 'すいぞう'], '⑬はすい臓。すい液にはアミラーゼ・トリプシン・リパーゼという3種類の消化酵素がふくまれます。', 'digest:13'),
+  C('digest', '胆汁についての説明として正しいものはどれか。', ['消化酵素をふくまないが、脂肪の消化を助ける', 'タンパク質を分解する', 'デンプンを分解する', '胃の中で出される'], '胆汁には消化酵素がありませんが、脂肪をこまかい粒にして、リパーゼがはたらきやすくします。', 'enzymes:3'),
+  F('digest', 'だ液にふくまれる、デンプンを分解する消化酵素を何というか。', ['アミラーゼ', 'あみらーぜ'], 'だ液のアミラーゼがデンプン(炭水化物)を分解します。ごはんをよくかむと甘く感じる理由です。', 'enzymes:1'),
+  C('digest', '胃液にふくまれ、タンパク質を分解する消化酵素はどれか。', ['ペプシン', 'アミラーゼ', 'リパーゼ', 'マルターゼ'], '胃液のペプシンがタンパク質を分解します。', 'enzymes:2'),
+  C('digest', 'すい液にふくまれ、脂肪を分解する消化酵素はどれか。', ['リパーゼ', 'トリプシン', 'アミラーゼ', 'ペプシン'], 'すい液のリパーゼが脂肪を分解します。トリプシンはタンパク質、アミラーゼは炭水化物担当です。', 'enzymes:6'),
+  C('digest', '小腸の壁の消化酵素(腸液)で、炭水化物をブドウ糖にまで分解するのはどれか。', ['マルターゼ', 'ペプチダーゼ', 'リパーゼ', 'ペプシン'], 'マルターゼは炭水化物、ペプチダーゼはタンパク質を最終段階まで分解します。', 'enzymes:7'),
+  C('digest', 'タンパク質が最終的に分解されてできる物質は何か。', ['アミノ酸', 'ブドウ糖', '脂肪酸', 'モノグリセリド'], 'タンパク質は最終的にアミノ酸まで分解されます。', 'enzymes:10'),
+  C('digest', '脂肪が最終的に分解されてできる物質の組み合わせはどれか。', ['脂肪酸とモノグリセリド', 'ブドウ糖とアミノ酸', 'アミノ酸とモノグリセリド', '脂肪酸とブドウ糖'], '脂肪は脂肪酸とモノグリセリドに分解されます。', 'enzymes:11'),
+  C('digest', '消化酵素がもっともよくはたらく温度はどれか。', ['体温ぐらい(約40℃)', '0℃ぐらい', '約80℃', '約100℃'], '消化酵素は体温ぐらいの温度で最もよくはたらきます。熱すぎるとはたらきを失います。'),
+  C('absorb', '炭水化物が最終的に分解されてできる物質は何か。', ['ブドウ糖', 'アミノ酸', '脂肪酸', 'モノグリセリド'], '炭水化物はブドウ糖まで分解されて、小腸で吸収されます。', 'enzymes:9'),
+  F('absorb', '小腸の壁のひだの表面を覆っている、小さな突起を何というか。', ['柔毛', 'じゅうもう', 'にゅうもう'], '小腸の表面は柔毛で覆われています。', 'villus:1'),
+  C('absorb', '小腸の壁に柔毛が多数あることのよい点はどれか。', ['表面積が大きくなり、養分を効率よく吸収できる', '消化酵素がたくさん出る', '食べ物が早く通りぬける', '胆汁がたくさんつくられる'], '柔毛のおかげで表面積が大きくなり、養分を効率よく吸収できます。', 'villus')
+];
+
+TESTS[4] = [
+  C('absorb', '柔毛で、ブドウ糖とアミノ酸が吸収されて入るところはどれか。', ['毛細血管', 'リンパ管', '胆のう', '門脈'], 'ブドウ糖とアミノ酸は柔毛の毛細血管に入ります。', 'villus:2'),
+  C('absorb', '脂肪酸とモノグリセリドが吸収されて入るところはどれか。', ['リンパ管', '毛細血管', '門脈', '肝臓'], '脂肪の分解物はリンパ管に入ります。', 'villus:3'),
+  F('absorb', '図の【？】にあたる、小腸から肝臓へ向かう血管を何というか。', ['門脈', 'もんみゃく'], '毛細血管に吸収された養分は門脈に入り、肝臓へ運ばれます。', 'absorb:r1c4'),
+  C('absorb', '図の【？】にあたる、肝臓でブドウ糖が変化して貯蔵される物質は何か。', ['グリコーゲン', 'デンプン', 'タンパク質', '脂肪酸'], 'ブドウ糖は肝臓でグリコーゲンに変えられ、一時的にたくわえられます。', 'absorb:r1c6'),
+  C('absorb', '図の【？】にあたる、アミノ酸の一部が肝臓で変えられる物質は何か。', ['タンパク質', 'デンプン', 'グリコーゲン', '尿素'], 'アミノ酸の一部は肝臓でタンパク質に変えられ、体をつくる材料になります。', 'absorb:r2c6'),
+  C('absorb', '肝臓のはたらきとして正しくないものはどれか。', ['尿をつくる', '胆汁をつくる', '有害な物質を無害にする', '養分を貯蔵する'], '尿をつくるのは腎臓です。肝臓は尿素までつくって腎臓に送ります。'),
+  C('absorb', 'リンパ管に入った脂肪は、最終的にどこで血液に合流するか。', ['首の下の太い静脈', '小腸の毛細血管', '肝臓の門脈', '腎臓'], '脂肪はリンパ管を通り、首の下の太い静脈で血液に合流します。', 'absorb:r3c5'),
+  F('excrete', '生物が生きるための活動でできた不要な物質を、体外に出すはたらきを何というか。', ['排出', 'はいしゅつ'], 'これを排出といいます。肺は二酸化炭素を、腎臓は尿素などを体外へ出します。'),
+  C('excrete', 'タンパク質(アミノ酸)を分解すると、有毒な物質ができる。何か。', ['アンモニア', '尿素', '二酸化炭素', '酸素'], 'タンパク質を分解すると有毒なアンモニアができます。'),
+  C('excrete', '肝臓は有毒なアンモニアを、どの物質に変えるか。', ['尿素', 'アミノ酸', 'グリコーゲン', '胆汁'], 'アンモニアは肝臓で無害な尿素に変えられ、そのあと腎臓へ運ばれます。'),
+  C('excrete', '血液をろ過して、不要な物質や水分を尿としてとり出す器官はどれか。', ['腎臓', '肝臓', 'ぼうこう', '輸尿管'], '尿をつくるのは腎臓。ぼうこうは尿をためる袋です。', 'kidney:1'),
+  C('excrete', '尿が体外に出るまでの通り道として正しいものはどれか。', ['腎臓→輸尿管→ぼうこう→体外', '腎臓→ぼうこう→輸尿管→体外', '輸尿管→腎臓→ぼうこう→体外', 'ぼうこう→腎臓→輸尿管→体外'], '「ジン・ユ・ボウ」の順。腎臓でつくられた尿は輸尿管を通ってぼうこうにためられます。', 'kidney'),
+  C('excrete', '尿をつくるとき、腎臓の中で再吸収される物質はどれか。', ['水・アミノ酸・ブドウ糖', '尿素', 'アンモニア', '二酸化炭素'], '体に必要な水・アミノ酸・ブドウ糖などは血液にもどされます。尿素などの不要な物質は尿になります。', 'nephron:2'),
+  F('lung', '気管が左右に分かれた管を何というか。', ['気管支', 'きかんし'], '気管は左右に分かれて気管支になり、肺の中で枝分かれして広がります。', 'lung:2'),
+  C('lung', '気管支の先にある、うすい膜の袋を何というか。', ['肺胞', '肺', '柔毛', '気孔'], '気管支の先にある袋が肺胞。ここで酸素と二酸化炭素の交換(ガス交換)が行われます。', 'lung:3'),
+  C('lung', '肺胞が多数あることのよい点はどれか。', ['空気にふれる表面積が大きくなり、ガス交換を効率よくできる', '空気が早く通りぬける', '肺が自分で動けるようになる', '血液の量が少なくなる'], '肺胞が多いと表面積が大きくなり、酸素と二酸化炭素の交換を効率よくできます。', 'lung'),
+  C('lung', '肺は筋肉をもたない。呼吸運動は何によって行われるか。', ['横隔膜と、ろっ骨を動かす胸の筋肉', '肺そのものの筋肉', '心臓の筋肉', '胃の筋肉'], '肺は自分で動けません。横隔膜やろっ骨を動かす筋肉が、肺の入る空間の大きさを変えています。', 'breath:2'),
+  C('lung', '息を吸うときの、ろっ骨と横隔膜の動きとして正しいものはどれか。', ['ろっ骨が引き上げられ、横隔膜が縮んで下がる', 'ろっ骨がもとにもどり、横隔膜が上がる', 'ろっ骨が引き上げられ、横隔膜が上がる', 'ろっ骨がもとにもどり、横隔膜が下がる'], '吸うときは、ろっ骨が上がり横隔膜が下がって胸の空間が広がります。すると肺がふくらみ空気が入ります。', 'breath'),
+  C('lung', '息をはくとき、肺はどうなるか。', ['もとの大きさにもどる', 'さらに広がる', '縮んで消える', '変わらない'], 'はくときは、ろっ骨がもどり横隔膜が上がって、肺はもとの大きさにもどります。', 'breath'),
+  C('lung', '空気中の酸素は、肺胞でどこにとりこまれるか。', ['血液', '気管', '胃', '筋肉'], '酸素は肺胞のまわりの毛細血管の血液(赤血球)にとりこまれ、全身へ運ばれます。', 'lung:4')
+];
+
+TESTS[5] = [
+  C('cell', '細胞呼吸を行うために、細胞が材料として使うものはどれか。', ['養分と酸素', '二酸化炭素と水', 'デンプンと水', '酸素と二酸化炭素'], '細胞呼吸の材料は養分と酸素。できるのはエネルギー・二酸化炭素・水です。', 'resp'),
+  C('cell', '肺やえらを使って行う呼吸(外呼吸)に対して、細胞が行っている呼吸を何というか。', ['内呼吸(細胞呼吸)', '外呼吸', '光合成', '蒸散'], '体の中の細胞1つ1つが行う呼吸が内呼吸(細胞呼吸)です。'),
+  F('photo', '光が当たった植物が、二酸化炭素を取り入れてデンプンをつくるはたらきを何というか。', ['光合成', 'こうごうせい'], 'これが光合成です。'),
+  C('photo', 'ふ入りの葉で、光が当たったふの部分(緑色でない部分)がヨウ素液で変化しなかった理由はどれか。', ['葉緑体がなく、光合成ができないから', '光が当たらなかったから', 'ヨウ素液が届かなかったから', 'デンプンがすべて使われたから'], 'ふの部分には葉緑体がないので、光が当たっても光合成ができません。', 'leafexp'),
+  C('photo', 'BTB液に二酸化炭素を多く溶かしたとき、液の色は何色に近づくか。', ['黄色', '緑色', '青色', '赤色'], '二酸化炭素が溶けると酸性になり、黄色に近づきます。', 'btb'),
+  C('plant', 'A(処理なし)の水の減少量が5.3cm³、C(すべての葉の表側にワセリン)が3.9cm³だった。葉の表側からの蒸散量は何cm³か。', ['1.4', '9.2', '3.9', '5.3'], 'A-C = 5.3-3.9 = 1.4cm³。Cでふさがれた表側の分が差になります。', 'transp'),
+  C('plant', '図のAとBのうち、ひげ根をもつ植物(単子葉類)の茎の断面と、その維管束の並び方の組み合わせはどれか。', ['B・散らばっている', 'A・散らばっている', 'B・輪のように並ぶ', 'A・輪のように並ぶ'], '単子葉類の茎では維管束が散らばっています(B)。双子葉類は輪のように並びます(A)。', 'bundle'),
+  C('plant', '水が通る管と、葉でつくられた養分が通る管の組み合わせとして正しいものはどれか。', ['水:道管 / 養分:師管', '水:師管 / 養分:道管', '水:道管 / 養分:道管', '水:師管 / 養分:師管'], '水は道管、養分は師管を通ります。'),
+  C('digest', '次のうち、消化液を出さない器官はどれか。', ['食道', '胃', '肝臓', 'すい臓'], '食道は食べ物の通り道で、消化液は出しません。胃は胃液、肝臓は胆汁、すい臓はすい液を出します。', 'digest'),
+  C('digest', '胃液にふくまれる消化酵素と、それが分解する栄養素の組み合わせとして正しいものはどれか。', ['ペプシン・タンパク質', 'アミラーゼ・タンパク質', 'ペプシン・炭水化物', 'リパーゼ・タンパク質'], '胃液のペプシンはタンパク質を分解します。', 'enzymes'),
+  F('digest', 'すい液にふくまれ、タンパク質を分解する消化酵素を答えよ。', ['トリプシン', 'とりぷしん'], 'すい液のトリプシンがタンパク質を分解します。', 'enzymes:5'),
+  C('digest', '胆汁についての記述として正しいものはどれか。', ['肝臓でつくられ、胆のうにたくわえられる', '胆のうでつくられ、肝臓にたくわえられる', 'すい臓でつくられる', 'タンパク質を分解する酵素をふくむ'], '胆汁は肝臓でつくられ、胆のうにたくわえられます。酵素はふくみません。'),
+  C('absorb', '柔毛から吸収された脂肪酸とモノグリセリドは、もう一度何になってリンパ管に入るか。', ['脂肪', 'タンパク質', 'グリコーゲン', 'ブドウ糖'], '脂肪酸とモノグリセリドは柔毛でふたたび脂肪になり、リンパ管に入ります。', 'absorb:r3c3'),
+  C('absorb', '小腸から肝臓へ向かう血管(門脈)を通って運ばれるのはどれか。', ['ブドウ糖とアミノ酸', '脂肪', '二酸化炭素', '尿'], '毛細血管に吸収されたブドウ糖とアミノ酸が門脈を通って肝臓に運ばれます。脂肪はリンパ管ルートです。'),
+  F('absorb', '肝臓が、アルコールなどの有害な物質を無害な物質に変えるはたらきを何というか。', ['解毒', 'げどく'], 'これを解毒といいます。'),
+  C('excrete', '尿をつくるときの「ろ過」で、血液からこし出されるものについて正しいものはどれか。', ['必要な物質も不要な物質もこし出される', '不要な物質だけがこし出される', '必要な物質だけがこし出される', '何もこし出されない'], 'ろ過ではいったん必要・不要にかかわらずこし出され、そのあと必要な物質だけが再吸収されます。', 'nephron:1'),
+  F('excrete', '腎臓でつくられた尿を、ぼうこうへ運ぶ管を何というか。', ['輸尿管', 'ゆにょうかん'], '腎臓とぼうこうをつなぐ管が輸尿管です。', 'kidney:2'),
+  C('lung', '肺には筋肉がないのに息を吸えるのはなぜか。', ['横隔膜が下がり、ろっ骨が上がって胸の空間が広がるから', '肺が自分でふくらむから', '心臓が空気を送りこむから', '気管が太くなるから'], '胸の空間が広がると肺もいっしょに広がって、空気が入ります。', 'breath'),
+  C('lung', '細胞呼吸で発生した二酸化炭素は、肺でどのように体外に出されるか。', ['肺胞の中に出され、気管を通って体外へ', '気管支から直接血液へもどる', '胃を通って体外へ', '腎臓から尿として出る'], '血液が運んできた二酸化炭素は肺胞の中に出され、気管を通って息といっしょに体外へ出ます。', 'lung'),
+  C('lung', '空気が通る順序として正しいものはどれか。', ['気管→気管支→肺胞', '気管支→気管→肺胞', '肺胞→気管支→気管', '気管→肺胞→気管支'], '鼻・口から入った空気は、気管→気管支→肺胞の順に進みます。', 'lung')
+];
+
+/* ===== アプリ本体 1: 状態・ユーティリティ・グラフ・セッション ===== */
+var KEY = 'rika-chu2-v1', S = null, V = { v: 'home' }, Z = null, CT = null, ctx = 'home', memoImg = '', memoOpen = false;
+var LVN = ['見習い細胞', '核の番人', '葉緑体ハンター', '光合成博士', '蒸散マスター', '消化の探検家', '小腸の冒険者', 'じん臓スペシャリスト', '肺胞の達人', '生物のからだマスター'];
+var ICON = {
+  home: '<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
+  book: '<path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4zM20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/>',
+  pencil: '<path d="M4 20l4-1 11-11a2 2 0 0 0-3-3L5 16zM14 7l3 3"/>',
+  timer: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/>',
+  cards: '<rect x="3" y="6" width="14" height="14" rx="2"/><path d="M8 3h12a1 1 0 0 1 1 1v12"/>',
+  chart: '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+  data: '<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>',
+  memo: '<path d="M5 4h14a1 1 0 0 1 1 1v11l-4 4H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zM8 9h8M8 13h5"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/>',
+  star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>'
+};
+function ic(n) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON[n] + '</svg>'; }
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function today() { var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function dayNum(s) { var p = s.split('-'); return Math.round(Date.UTC(+p[0], +p[1] - 1, +p[2]) / 86400000); }
+function pct(c, n) { return n ? Math.round(c * 100 / n) : 0; }
+function fmtDate(ts) { var d = new Date(ts); return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+function fmtSec(s) { return pad(Math.floor(s / 60)) + ':' + pad(s % 60); }
+function catOf(k) { var i; for (i = 0; i < CATS.length; i++) { if (CATS[i].k === k) { return CATS[i]; } } return CATS[0]; }
+function hash(s) { var h = 7, i; for (i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) >>> 0; } return h; }
+function rng(seed) { var a = seed >>> 0; return function () { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; }; }
+function shuffle(arr, r) { var a = arr.slice(), i, j, t; for (i = a.length - 1; i > 0; i--) { j = Math.floor(r() * (i + 1)); t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function norm(s) {
+  s = String(s || '');
+  if (s.normalize) { try { s = s.normalize('NFKC'); } catch (e) { } }
+  s = s.replace(/[\s　・、。,.\-]/g, '').toLowerCase();
+  return s.replace(/[ァ-ヶ]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 96); });
+}
+function toast(m) {
+  var t = $('toast'); if (!t) { return; } t.textContent = m; t.hidden = false;
+  clearTimeout(toast.h); toast.h = setTimeout(function () { t.hidden = true; }, 2600);
+}
+
+/* ---- 状態 ---- */
+function defState() { return { v: 1, theme: 'auto', xp: 0, days: [], attempts: [], qs: {}, units: {}, cards: {}, notes: {}, goal: { d: '', n: 0 }, badges: {} }; }
+function load() {
+  try { var r = localStorage.getItem(KEY); if (r) { S = JSON.parse(r); } } catch (e) { S = null; }
+  S = fixState(S);
+}
+function fixState(o) {
+  var d = defState(), k;
+  if (!o || typeof o !== 'object') { return d; }
+  for (k in d) { if (o[k] === undefined || o[k] === null) { o[k] = d[k]; } }
+  if (!(o.days instanceof Array)) { o.days = []; }
+  if (!(o.attempts instanceof Array)) { o.attempts = []; }
+  return o;
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { toast('端末に保存できませんでした。JSONで書き出してください'); } }
+function applyTheme() {
+  var r = document.documentElement;
+  if (S.theme === 'light' || S.theme === 'dark') { r.setAttribute('data-theme', S.theme); } else { r.removeAttribute('data-theme'); }
+}
+function isDark() {
+  if (S.theme === 'dark') { return true; } if (S.theme === 'light') { return false; }
+  return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+}
+
+/* ---- 問題データ展開 ---- */
+var QMAP = {}, QIDS = [];
+(function () {
+  var t, i, id, q;
+  for (t = 1; t <= 5; t++) {
+    for (i = 0; i < TESTS[t].length; i++) {
+      q = TESTS[t][i]; id = 't' + t + '-' + pad(i + 1);
+      q.id = id; q.test = t; q.no = i + 1; QMAP[id] = q; QIDS.push(id);
+    }
+  }
+})();
+function prep(id, seed) {
+  var raw = QMAP[id], o = { id: id, c: raw.c, q: raw.q, e: raw.e, f: raw.f, t: raw.t, test: raw.test, no: raw.no };
+  if (raw.t === 'c') {
+    var r = rng(hash(id) + seed), order = shuffle([0, 1, 2, 3], r), i;
+    o.ch = []; for (i = 0; i < 4; i++) { o.ch.push(raw.ch[order[i]]); if (order[i] === 0) { o.ans = i; } }
+  } else { o.ac = raw.ac; }
+  return o;
+}
+function correctText(q) { return q.t === 'c' ? q.ch[q.ans] : q.ac[0]; }
+function gradeFill(q, text) { var n = norm(text), i; if (!n) { return false; } for (i = 0; i < q.ac.length; i++) { if (norm(q.ac[i]) === n) { return true; } } return false; }
+
+/* ---- 集計 ---- */
+function catStats() {
+  var o = {}, id, q;
+  CATS.forEach(function (c) { o[c.k] = { n: 0, c: 0 }; });
+  for (id in S.qs) { q = QMAP[id]; if (q) { o[q.c].n += S.qs[id].n; o[q.c].c += S.qs[id].c; } }
+  return o;
+}
+function totals() { var n = 0, c = 0, id; for (id in S.qs) { if (QMAP[id]) { n += S.qs[id].n; c += S.qs[id].c; } } return { n: n, c: c }; }
+function bestOf(mode, test) { var b = -1; S.attempts.forEach(function (a) { if (a.mode === mode && a.test === test && a.score > b) { b = a.score; } }); return b; }
+function countOf(mode, test) { var n = 0; S.attempts.forEach(function (a) { if (a.mode === mode && a.test === test) { n++; } }); return n; }
+function level() { var xp = S.xp, L = Math.floor(Math.sqrt(xp / 30)) + 1, lo = 30 * (L - 1) * (L - 1), hi = 30 * L * L; return { L: L, name: LVN[Math.min(L - 1, LVN.length - 1)], lo: lo, hi: hi, p: Math.round((xp - lo) * 100 / (hi - lo)) }; }
+function streak() {
+  var d = S.days.slice().sort(), n = 0, cur = dayNum(today()), i;
+  if (!d.length) { return 0; }
+  var last = dayNum(d[d.length - 1]);
+  if (cur - last > 1) { return 0; }
+  n = 1; for (i = d.length - 1; i > 0; i--) { if (dayNum(d[i]) - dayNum(d[i - 1]) === 1) { n++; } else { break; } }
+  return n;
+}
+function touchDay() { var t = today(); if (S.days.indexOf(t) < 0) { S.days.push(t); if (S.days.length > 400) { S.days.shift(); } } if (S.goal.d !== t) { S.goal = { d: t, n: 0 }; } }
+function addXP(n) { S.xp += n; }
+function rec(id, ok) {
+  touchDay();
+  var r = S.qs[id] || { n: 0, c: 0 }; r.n++; if (ok) { r.c++; } S.qs[id] = r;
+  S.goal.n++;
+}
+function cardsMastered() { var n = 0, i; for (i = 0; i < CARDS.length; i++) { if (S.cards[i] && S.cards[i].b >= 3) { n++; } } return n; }
+function unitsRead() { var n = 0; CATS.forEach(function (c) { if (S.units[c.k]) { n++; } }); return n; }
+function overall() {
+  var a = unitsRead() / CATS.length, p = 0, e = 0, t;
+  for (t = 1; t <= 5; t++) { if (countOf('practice', t) > 0) { p++; } if (bestOf('exam', t) >= 70) { e++; } }
+  var m = cardsMastered() / CARDS.length;
+  return Math.round((a + p / 5 + e / 5 + m) / 4 * 100);
+}
+function weakCats() {
+  var st = catStats(), arr = [];
+  CATS.forEach(function (c) { if (st[c.k].n >= 3) { arr.push({ c: c, p: pct(st[c.k].c, st[c.k].n) }); } });
+  arr.sort(function (a, b) { return a.p - b.p; }); return arr;
+}
+
+/* ---- バッジ ---- */
+var BADGES = [
+  ['first', '初めてのテスト', function () { return S.attempts.length >= 1; }],
+  ['s80', '80点クリア', function () { return S.attempts.some(function (a) { return a.test > 0 && a.score >= 80; }); }],
+  ['s100', '満点!', function () { return S.attempts.some(function (a) { return a.test > 0 && a.score === 100; }); }],
+  ['st3', '3日連続', function () { return streak() >= 3; }],
+  ['read', '全単元を読破', function () { return unitsRead() === CATS.length; }],
+  ['card', '暗記カード30枚マスター', function () { return cardsMastered() >= 30; }],
+  ['all5', '5回すべて挑戦', function () { var t; for (t = 1; t <= 5; t++) { if (countOf('practice', t) + countOf('exam', t) === 0) { return false; } } return true; }],
+  ['exam', '本番で70点以上', function () { return S.attempts.some(function (a) { return a.mode === 'exam' && a.score >= 70; }); }]
+];
+function badgeCheck() {
+  var news = [];
+  BADGES.forEach(function (b) { if (!S.badges[b[0]] && b[2]()) { S.badges[b[0]] = today(); news.push(b[1]); } });
+  return news;
+}
+
+/* ---- グラフ ---- */
+function radar(vals, labels) {
+  var n = vals.length, cx = 150, cy = 124, R = 80, i, k, s = '', pts = [], a, x, y;
+  function P(i2, r) { var an = -Math.PI / 2 + i2 * 2 * Math.PI / n; return [cx + r * Math.cos(an), cy + r * Math.sin(an)]; }
+  for (k = 1; k <= 4; k++) {
+    var ring = []; for (i = 0; i < n; i++) { ring.push(P(i, R * k / 4).join(',')); }
+    s += '<polygon class="gl" points="' + ring.join(' ') + '"/>';
+  }
+  for (i = 0; i < n; i++) { a = P(i, R); s += '<line class="gl" x1="' + cx + '" y1="' + cy + '" x2="' + a[0] + '" y2="' + a[1] + '"/>'; }
+  for (i = 0; i < n; i++) { pts.push(P(i, R * Math.max(vals[i], 3) / 100).join(',')); }
+  s += '<polygon class="pf" points="' + pts.join(' ') + '"/>';
+  for (i = 0; i < n; i++) { a = P(i, R * Math.max(vals[i], 3) / 100); s += '<circle class="pd" cx="' + a[0] + '" cy="' + a[1] + '" r="3.5"/>'; }
+  for (i = 0; i < n; i++) {
+    a = P(i, R + 20); x = a[0]; y = a[1] + 4;
+    s += '<text x="' + x + '" y="' + y + '" text-anchor="' + (x < cx - 8 ? 'end' : (x > cx + 8 ? 'start' : 'middle')) + '">' + labels[i] + '</text>';
+    s += '<text class="tt" x="' + x + '" y="' + (y + 13) + '" text-anchor="' + (x < cx - 8 ? 'end' : (x > cx + 8 ? 'start' : 'middle')) + '">' + vals[i] + '%</text>';
+  }
+  return '<svg class="ch2" viewBox="0 0 300 250" role="img" aria-label="単元別正答率のレーダーチャート">' + s + '</svg>';
+}
+function lineChart(pts) {
+  var W = 320, H = 190, l = 30, r = 14, t = 14, b = 28, n = pts.length, i, s = '', xs = [], x, y, d = [];
+  function X(i2) { return n === 1 ? (l + (W - l - r) / 2) : l + (W - l - r) * i2 / (n - 1); }
+  function Y(v) { return t + (H - t - b) * (1 - v / 100); }
+  [0, 50, 80, 100].forEach(function (v) {
+    s += '<line class="gl' + (v === 80 ? '" stroke-dasharray="4 3' : '') + '" x1="' + l + '" y1="' + Y(v) + '" x2="' + (W - r) + '" y2="' + Y(v) + '"/><text x="' + (l - 5) + '" y="' + (Y(v) + 4) + '" text-anchor="end">' + v + '</text>';
+  });
+  for (i = 0; i < n; i++) { d.push(X(i) + ',' + Y(pts[i].y)); }
+  if (n > 1) { s += '<polyline class="pl" points="' + d.join(' ') + '"/>'; }
+  for (i = 0; i < n; i++) {
+    x = X(i); y = Y(pts[i].y);
+    s += '<circle class="pd" cx="' + x + '" cy="' + y + '" r="4.5"/>';
+    if (i === n - 1 || n <= 8) { s += '<text class="tt" x="' + x + '" y="' + (y - 9) + '" text-anchor="middle">' + pts[i].y + '</text>'; }
+    if (n <= 10 || i % 2 === 0) { s += '<text x="' + x + '" y="' + (H - 8) + '" text-anchor="middle">' + pts[i].x + '</text>'; }
+  }
+  return '<svg class="ch2" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="点数の推移">' + s + '</svg>';
+}
+function catBars(st) {
+  var s = '';
+  CATS.forEach(function (c) {
+    var v = st[c.k], p = pct(v.c, v.n);
+    s += '<div class="hb ' + c.cl + '"><span>' + c.n + '</span><div class="bar"><i style="width:' + p + '%"></i></div><em class="num">' + (v.n ? p + '%' : '—') + '</em></div>';
+  });
+  return s;
+}
+function donut(p, label) {
+  var r = 38, c = 2 * Math.PI * r, d = c * p / 100;
+  return '<svg class="ch2" viewBox="0 0 110 110" style="max-width:130px" role="img" aria-label="' + label + '"><circle cx="55" cy="55" r="' + r + '" fill="none" stroke="var(--surface2)" stroke-width="14"/><circle cx="55" cy="55" r="' + r + '" fill="none" stroke="var(--accent)" stroke-width="14" stroke-dasharray="' + d + ' ' + (c - d) + '" transform="rotate(-90 55 55)" stroke-linecap="round"/><text class="tt" x="55" y="62" text-anchor="middle" style="font-size:20px">' + p + '%</text></svg>';
+}
+function mascot(mood, sz) {
+  var mouth = mood === 'cheer' ? '<path d="M30 50 Q40 66 50 50 Z" fill="#7a2230"/>' : (mood === 'think' ? '<path d="M33 54 H47" stroke="#13302a" stroke-width="3" stroke-linecap="round" fill="none"/>' : '<path d="M30 50 Q40 60 50 50" stroke="#13302a" stroke-width="3" stroke-linecap="round" fill="none"/>');
+  return '<svg width="' + sz + '" height="' + sz + '" viewBox="0 0 80 80" role="img" aria-label="マスコットのセルくん"><circle cx="40" cy="42" r="33" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="3.5"/><circle cx="40" cy="20" r="9" fill="var(--iodine)"/><circle cx="37" cy="17" r="2.5" fill="#fff" opacity=".8"/><circle cx="29" cy="38" r="4.2" fill="#13302a"/><circle cx="51" cy="38" r="4.2" fill="#13302a"/><circle cx="30.5" cy="36.5" r="1.4" fill="#fff"/><circle cx="52.5" cy="36.5" r="1.4" fill="#fff"/><ellipse cx="20" cy="50" rx="4" ry="2.6" fill="var(--fgreen)" opacity=".7"/><ellipse cx="60" cy="50" rx="4" ry="2.6" fill="var(--fgreen)" opacity=".7"/>' + mouth + '</svg>';
+}
+function confetti() {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+  var w = document.createElement('div'), i, e, cl = ['var(--k1)', 'var(--k2)', 'var(--k3)', 'var(--k4)', 'var(--k5)', 'var(--btb)'];
+  w.className = 'cf'; w.setAttribute('aria-hidden', 'true');
+  for (i = 0; i < 46; i++) { e = document.createElement('i'); e.style.left = Math.random() * 100 + '%'; e.style.background = cl[i % cl.length]; e.style.animationDelay = (Math.random() * .8) + 's'; e.style.transform = 'rotate(' + Math.random() * 90 + 'deg)'; w.appendChild(e); }
+  document.body.appendChild(w); setTimeout(function () { if (w.parentNode) { w.parentNode.removeChild(w); } }, 4200);
+}
+
+/* ---- セッション(テスト/本番/復習) ---- */
+var OK_MSG = ['ナイス! その調子!', '正解! 理由もバッチリだね', 'いいぞ! 実力がついてきてる', 'すごい、ここは得意だね!', 'ピンポーン! つぎも行こう'];
+var NG_MSG = ['おしい! 解説を読めば次は取れるよ', 'まちがいは記憶のチャンス!', 'ここで気づけてラッキー!', '大丈夫。復習リストに入れておくね'];
+function startSession(mode, ids, title, test) {
+  var seed = Math.floor(Math.random() * 100000), qs = ids.map(function (id) { return prep(id, seed); });
+  Z = { mode: mode, title: title, test: test || 0, qs: qs, i: 0, ans: [], res: [], flags: [], t0: Date.now(), limit: mode === 'exam' ? 2400 : 0, xp0: S.xp, lv0: level().L, ask: '', combo: 0, seed: seed, fin: false };
+  if (Z.timer) { clearInterval(Z.timer); }
+  if (mode === 'exam') { Z.timer = setInterval(tick, 1000); }
+  V = { v: 'quiz' };
+  window.scrollTo(0, 0); render();
+}
+function tick() {
+  if (!Z || Z.mode !== 'exam' || Z.fin) { clearInterval(Z && Z.timer); return; }
+  var left = Z.limit - Math.floor((Date.now() - Z.t0) / 1000), el = $('timer');
+  if (left <= 0) { finish(); return; }
+  if (el) { el.textContent = fmtSec(left); el.className = 'timer' + (left <= 300 ? ' low' : ''); }
+}
+function testIds(t) { var a = [], i; for (i = 1; i <= 20; i++) { a.push('t' + t + '-' + pad(i)); } return a; }
+function answered(i) { return Z.mode === 'exam' ? (Z.ans[i] !== undefined && Z.ans[i] !== null && Z.ans[i] !== '') : !!Z.res[i]; }
+function pickChoice(n) {
+  var q = Z.qs[Z.i];
+  if (Z.mode === 'exam') { Z.ans[Z.i] = n; render(); return; }
+  if (Z.res[Z.i]) { return; }
+  var ok = (n === q.ans); Z.res[Z.i] = { ok: ok, g: q.ch[n] }; Z.ans[Z.i] = n;
+  liveRec(q, ok);
+}
+function submitFill() {
+  var q = Z.qs[Z.i], el = $('fillv'), v = el ? el.value : '';
+  if (Z.mode === 'exam') { Z.ans[Z.i] = v; toast(v ? '回答を保存しました' : '空欄です'); render(); return; }
+  if (Z.res[Z.i] || !norm(v)) { return; }
+  var ok = gradeFill(q, v); Z.res[Z.i] = { ok: ok, g: v }; Z.ans[Z.i] = v;
+  liveRec(q, ok);
+}
+function liveRec(q, ok) {
+  rec(q.id, ok); addXP(ok ? 10 : 2);
+  if (ok) { Z.combo++; Z.msg = (Z.combo >= 3 ? Z.combo + '連続正解!! ' : '') + pick(OK_MSG); } else { Z.combo = 0; Z.msg = pick(NG_MSG); }
+  save(); render();
+}
+function finish() {
+  if (!Z || Z.fin) { return; }
+  Z.fin = true; if (Z.timer) { clearInterval(Z.timer); }
+  var items = [], correct = 0, i, q, ok, g;
+  for (i = 0; i < Z.qs.length; i++) {
+    q = Z.qs[i];
+    if (Z.mode === 'exam') {
+      g = Z.ans[i];
+      if (g === undefined || g === null || g === '') { ok = false; g = ''; }
+      else if (q.t === 'c') { ok = (g === q.ans); g = q.ch[g]; } else { ok = gradeFill(q, g); }
+      rec(q.id, ok); addXP(ok ? 12 : 2);
+    } else { ok = Z.res[i] ? Z.res[i].ok : false; g = Z.res[i] ? Z.res[i].g : ''; }
+    if (ok) { correct++; }
+    items.push({ q: q.id, c: q.c, ok: ok, g: String(g), a: correctText(q) });
+  }
+  var total = Z.qs.length, score = Z.test > 0 ? correct * 5 : Math.round(correct * 100 / total);
+  var secs = Math.min(Math.floor((Date.now() - Z.t0) / 1000), 99999), bonus = 30 + (score >= 80 ? 30 : 0) + (score === 100 ? 40 : 0);
+  addXP(bonus); touchDay();
+  var a = { id: Date.now(), mode: Z.mode, test: Z.test, title: Z.title, ts: Date.now(), secs: secs, score: score, correct: correct, total: total, items: items };
+  S.attempts.push(a); if (S.attempts.length > 150) { S.attempts.shift(); }
+  a.xp = S.xp - Z.xp0; a.lvUp = level().L > Z.lv0; a.news = badgeCheck();
+  save();
+  V = { v: 'result', id: a.id }; window.scrollTo(0, 0); render();
+  if (score >= 80) { setTimeout(confetti, 250); }
+}
+function findAttempt(id) { var i; for (i = 0; i < S.attempts.length; i++) { if (S.attempts[i].id === id) { return S.attempts[i]; } } return null; }
+function weakIds(max) {
+  var arr = [], id, r;
+  for (id in S.qs) { r = S.qs[id]; if (QMAP[id] && r.n > 0 && r.c < r.n) { arr.push({ id: id, p: r.c / r.n, n: r.n }); } }
+  arr.sort(function (a, b) { return a.p - b.p || b.n - a.n; });
+  return arr.slice(0, max).map(function (x) { return x.id; });
+}
+
+/* ---- メモ(コメント欄) ---- */
+var CTXN = { home: 'ホーム', lessons: '解説モード', tests: 'テストモード', exam: '本番モード', cards: '暗記モード', stats: '成績', data: 'データ' };
+function ctxName() {
+  if (ctx.indexOf('q:') === 0) { var q = QMAP[ctx.slice(2)]; return q ? 'テスト' + q.test + ' 第' + q.no + '問' : '問題'; }
+  if (ctx.indexOf('u:') === 0) { return '解説:' + catOf(ctx.slice(2)).n; }
+  if (ctx.indexOf('c:') === 0) { var c = CARDS[+ctx.slice(2)]; return c ? '暗記カード:' + c[1] : '暗記カード'; }
+  return CTXN[ctx] || ctx;
+}
+function memoRender() {
+  var list = S.notes[ctx] || [], s = '', i;
+  for (i = 0; i < list.length; i++) {
+    s += '<div class="note">' + esc(list[i].t) + (list[i].img ? '<img src="' + list[i].img + '" alt="添付画像">' : '') + '<div class="d"><span>' + fmtDate(list[i].ts) + '</span><button class="btn g s" data-a="memoDel" data-p="' + i + '">削除</button></div></div>';
+  }
+  if (!s) { s = '<div class="sub" style="padding:6px 2px">この画面に関するメモや気づきを残せます。写真(ノートの写真など)も添付できます。</div>'; }
+  $('mlist').innerHTML = s;
+  $('mctx').textContent = ctxName();
+  $('mprev').innerHTML = memoImg ? '<img class="pv" src="' + memoImg + '" alt="添付予定の画像"> <button class="btn g s" data-a="memoImgDel">画像を外す</button>' : '';
+  $('memo').className = memoOpen ? 'open' : '';
+}
+function memoAdd() {
+  var t = $('mtext').value.replace(/^\s+|\s+$/g, '');
+  if (!t && !memoImg) { return; }
+  if (!S.notes[ctx]) { S.notes[ctx] = []; }
+  S.notes[ctx].push({ t: t, img: memoImg, ts: Date.now() });
+  $('mtext').value = ''; memoImg = ''; save(); memoRender(); toast('メモを保存しました');
+}
+function readImage(file) {
+  if (!file) { return; }
+  var fr = new FileReader();
+  fr.onload = function () {
+    var im = new Image();
+    im.onload = function () {
+      var m = 800, w = im.width, h = im.height, k = Math.min(1, m / Math.max(w, h)), cv = document.createElement('canvas');
+      cv.width = Math.round(w * k); cv.height = Math.round(h * k);
+      cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height);
+      memoImg = cv.toDataURL('image/jpeg', 0.72); memoRender();
+    };
+    im.onerror = function () { toast('画像を読み込めませんでした'); };
+    im.src = fr.result;
+  };
+  fr.readAsDataURL(file);
+}
+
+/* ===== アプリ本体 2: 画面・イベント・初期化 ===== */
+var NAVS = [['home', 'ホーム', 'home'], ['lessons', '解説', 'book'], ['tests', 'テスト', 'pencil'], ['exam', '本番', 'timer'], ['cards', '暗記', 'cards'], ['stats', '成績', 'chart'], ['data', 'データ', 'data']];
+
+function homeMsg() {
+  var w = weakCats(), st = streak(), n = S.attempts.length;
+  if (!n && !unitsRead()) { return 'はじめまして、セルくんだよ! まずは「解説」で1単元読んで、5問だけやってみよう。'; }
+  if (st >= 3) { return st + '日れんぞく学習中! この調子で記憶に定着させよう。'; }
+  if (w.length && w[0].p < 70) { return 'いまの伸びしろは「' + w[0].c.n + '」。解説を読み直してから、もう一度ためしてみよう!'; }
+  return pick(['まちがえた問題は、あなたの伸びしろ。1問ずつ確実にいこう!', '毎日10問だけでも、1か月で300問。小さな積み重ねが点数になるよ。', '暗記カードは「思い出す」練習。見るだけより何倍も記憶に残るよ。', '覚えたつもりが落とし穴。本番モードで実力をチェックしよう!']);
+}
+function nextAction() {
+  var i, c, t, w = weakCats();
+  for (i = 0; i < CATS.length; i++) { if (!S.units[CATS[i].k]) { return { t: '解説モードで「' + CATS[i].n + '」を読もう', a: 'lesson', p: CATS[i].k }; } }
+  for (t = 1; t <= 5; t++) { if (countOf('practice', t) === 0) { return { t: 'テストモード 第' + t + '回「' + TITLES[t] + '」に挑戦', a: 'start', p: 'practice|' + t }; } }
+  if (w.length && w[0].p < 80) { return { t: '苦手な「' + w[0].c.n + '」の暗記カードで復習', a: 'cardsGo', p: w[0].c.k }; }
+  for (t = 1; t <= 5; t++) { if (bestOf('exam', t) < 80) { return { t: '本番モード 第' + t + '回で80点を目指そう', a: 'start', p: 'exam|' + t }; } }
+  return { t: '全回クリア! 本番モードで満点をねらおう', a: 'go', p: 'exam' };
+}
+
+function vHome() {
+  var lv = level(), st = streak(), tt = totals(), ov = overall(), goal = (S.goal.d === today() ? S.goal.n : 0), cs = catStats(), s = '', nx = nextAction(), t, c;
+  var done = 0; for (t = 1; t <= 5; t++) { if (countOf('practice', t) + countOf('exam', t) > 0) { done++; } }
+  s += '<div class="pg"><div class="card hero"><div>' + mascot(S.attempts.length ? 'happy' : 'cheer', 84) + '</div><div class="lvl"><div class="bubble">' + homeMsg() + '</div><div class="row"><b>Lv.' + lv.L + ' ' + lv.name + '</b><span class="sub num">' + S.xp + ' XP ・ 次のレベルまであと ' + (lv.hi - S.xp) + '</span></div><div class="bar" role="progressbar" aria-valuenow="' + lv.p + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + lv.p + '%"></i></div></div></div>';
+  s += '<div class="stats4"><div class="st"><b class="num">' + st + '</b><span>連続学習日数</span></div><div class="st"><b class="num">' + (tt.n ? pct(tt.c, tt.n) + '%' : '—') + '</b><span>累計の正答率</span></div><div class="st"><b class="num">' + done + '/5</b><span>挑戦した回</span></div><div class="st"><b class="num">' + cardsMastered() + '/' + CARDS.length + '</b><span>暗記マスター</span></div></div>';
+  s += '<div class="card"><div class="row" style="justify-content:space-between;align-items:flex-start"><div style="flex:1;min-width:220px"><h3>全体の進み具合</h3><div class="sub">解説・テスト・本番・暗記の4つを平均した達成度です</div></div><div class="ring" style="--p:' + ov + '"><i class="num">' + ov + '%</i></div></div><hr>';
+  s += prog('解説モード(読了)', unitsRead(), CATS.length) + prog('テストモード(5回に挑戦)', (function () { var n = 0; for (t = 1; t <= 5; t++) { if (countOf('practice', t)) { n++; } } return n; })(), 5) + prog('本番モード(70点以上)', (function () { var n = 0; for (t = 1; t <= 5; t++) { if (bestOf('exam', t) >= 70) { n++; } } return n; })(), 5) + prog('暗記モード(マスター)', cardsMastered(), CARDS.length);
+  s += '</div>';
+  s += '<div class="card row" style="justify-content:space-between"><div style="flex:1;min-width:200px"><span class="chip iod">つぎのおすすめ</span><h3 style="margin-top:6px">' + esc(nx.t) + '</h3></div><button class="btn" data-a="' + nx.a + '" data-p="' + esc(nx.p) + '">はじめる</button><div class="row" title="今日の目標"><div class="ring" style="--p:' + Math.min(100, goal * 10) + ';width:56px;height:56px"><i class="num" style="width:42px;height:42px">' + Math.min(goal, 99) + '</i></div><span class="sub">今日の目標<br>10問 / ' + goal + '問</span></div></div>';
+  s += '<div class="sect"><h3 style="margin-bottom:8px">5回のテスト</h3><div class="grid5">';
+  for (t = 1; t <= 5; t++) {
+    var bp = bestOf('practice', t), be = bestOf('exam', t);
+    s += '<button class="tcard" data-a="go" data-p="tests"><b>第' + t + '回</b><span class="sub">' + TITLES[t] + '</span><span class="chip ' + (bp >= 80 ? 'ok' : '') + '">練習 ' + (bp >= 0 ? bp + '点' : '—') + '</span><span class="chip ' + (be >= 80 ? 'ok' : '') + '">本番 ' + (be >= 0 ? be + '点' : '—') + '</span></button>';
+  }
+  s += '</div></div>';
+  s += '<div class="card"><h3 style="margin-bottom:6px">単元ごとの習熟度</h3>' + catBars(cs) + '<div class="sub" style="margin-top:6px">棒は累計の正答率です。まだ解いていない単元は「—」と表示されます。</div></div>';
+  s += '<div class="card"><h3 style="margin-bottom:8px">バッジ</h3><div class="badges">';
+  BADGES.forEach(function (b) { s += '<span class="bdg' + (S.badges[b[0]] ? ' on' : '') + '">' + ic('star') + b[1] + '</span>'; });
+  s += '</div></div></div>';
+  return s;
+}
+function prog(label, a, b) { return '<div class="hb" style="grid-template-columns:150px 1fr 56px"><span>' + label + '</span><div class="bar"><i style="width:' + pct(a, b) + '%"></i></div><em class="num">' + a + '/' + b + '</em></div>'; }
+
+function vLessons() {
+  var s = '<div class="pg"><h2 class="pt">解説モード</h2><div class="sub">プリントの内容を単元ごとに、図とたとえ話でていねいに解説します。読んだら「読了」にして、確認問題で定着させよう。</div><div class="grid">', cs = catStats();
+  CATS.forEach(function (c) {
+    var v = cs[c.k];
+    s += '<button class="ucard" data-a="lesson" data-p="' + c.k + '"><span class="dot ' + c.cl + '">' + c.i + '</span><span style="flex:1;min-width:0"><b>' + c.n + '</b><br><span class="sub">' + c.p + '</span><br>' + (S.units[c.k] ? '<span class="chip ok">読了</span> ' : '<span class="chip">未読</span> ') + (v.n ? '<span class="chip iod">正答率 ' + pct(v.c, v.n) + '%</span>' : '') + '</span></button>';
+  });
+  return s + '</div></div>';
+}
+function vLesson(k) {
+  var c = catOf(k), L = LESSONS[k], s = '', i, idx = c.i - 1;
+  ctx = 'u:' + k;
+  s += '<div class="pg"><div class="row"><button class="btn g s" data-a="go" data-p="lessons">&larr; 単元一覧</button><span class="chip iod">' + c.p + '</span></div><h2 class="pt"><span class="dot ' + c.cl + '" style="width:40px;height:40px;border-radius:12px;display:grid;place-items:center">' + c.i + '</span>' + c.n + '</h2><div class="card">' + L.lead + '</div>';
+  for (i = 0; i < L.secs.length; i++) {
+    var x = L.secs[i];
+    s += '<div class="card lsec"><h3><b>' + (i + 1) + '</b>' + x.h + '</h3>' + (x.fig ? figHTML(x.fig, true) : '') + x.html + (x.key ? '<div class="key"><small>POINT</small>' + x.key + '</div>' : '') + (x.mn ? '<div class="mn"><small>覚え方</small>' + x.mn + '</div>' : '') + '</div>';
+  }
+  s += '<div class="card"><h3 style="margin-bottom:8px">読み終わったら</h3><div class="row"><button class="btn' + (S.units[k] ? ' g' : '') + '" data-a="read" data-p="' + k + '">' + (S.units[k] ? '読了済み(もう一度読んだ)' : '読了にする(+20XP)') + '</button><button class="btn i" data-a="unitq" data-p="' + k + '">確認問題5問</button><button class="btn o" data-a="cardsGo" data-p="' + k + '">暗記カード</button></div></div>';
+  s += '<div class="row" style="justify-content:space-between">' + (idx > 0 ? '<button class="btn g" data-a="lesson" data-p="' + CATS[idx - 1].k + '">&larr; ' + CATS[idx - 1].n + '</button>' : '<span></span>') + (idx < CATS.length - 1 ? '<button class="btn g" data-a="lesson" data-p="' + CATS[idx + 1].k + '">' + CATS[idx + 1].n + ' &rarr;</button>' : '') + '</div></div>';
+  return s;
+}
+
+function vTests(mode) {
+  var ex = (mode === 'exam'), s = '<div class="pg"><h2 class="pt">' + (ex ? 'テスト本番モード' : 'テストモード') + '</h2>', t, w = weakIds(10);
+  s += '<div class="card">' + (ex ? '<b>制限時間 40分・20問・100点満点。</b><br>答えは最後まで表示されません。見直し用の「しるし」と問題一覧が使えます。終了後に点数・グラフ・解説のレポートが出ます。' : '<b>1問ごとに答え合わせと解説が出る練習モードです。</b><br>図は答えを入力すると名前つきで表示されます。まちがえた問題はあとで「まちがい復習」でやり直せます。') + '</div><div class="grid">';
+  for (t = 1; t <= 5; t++) {
+    var b = bestOf(mode, t), n = countOf(mode, t), ids = {}, i, cats = '';
+    TESTS[t].forEach(function (q) { ids[q.c] = 1; });
+    CATS.forEach(function (c) { if (ids[c.k]) { cats += '<span class="chip ' + '">' + c.s + '</span> '; } });
+    s += '<div class="tcard"><div class="row" style="justify-content:space-between"><h3>第' + t + '回 ' + TITLES[t] + '</h3>' + (b >= 80 ? '<span class="chip ok">80点超え</span>' : '') + '</div><span class="sub">' + TSUB[t] + '</span><div class="row" style="gap:4px">' + cats + '</div><div class="row" style="justify-content:space-between"><span class="sub num">最高 ' + (b >= 0 ? '<b class="big" style="font-size:22px">' + b + '</b>点' : '—') + ' ・ ' + n + '回</span><button class="btn' + (ex ? ' i' : '') + '" data-a="start" data-p="' + mode + '|' + t + '">' + (ex ? '本番スタート' : 'はじめる') + '</button></div></div>';
+  }
+  s += '</div>';
+  if (!ex) {
+    s += '<div class="card"><h3 style="margin-bottom:8px">単元ミニテスト(5問)・まちがい復習</h3><div class="row">';
+    CATS.forEach(function (c) { s += '<button class="btn g s" data-a="unitq" data-p="' + c.k + '">' + c.s + '</button>'; });
+    s += '<button class="btn w s" data-a="weak"' + (w.length ? '' : ' disabled') + '>苦手問題を復習(' + w.length + ')</button></div></div>';
+  }
+  return s + '</div>';
+}
+
+function figFor(q, named) { return q.f ? figHTML(q.f, named) : ''; }
+function vQuiz() {
+  var q = Z.qs[Z.i], n = Z.qs.length, ex = (Z.mode === 'exam'), res = Z.res[Z.i], s = '', i, c = catOf(q.c);
+  ctx = 'q:' + q.id;
+  if (Z.ask === 'quit') { return '<div class="card pg"><h3>やめますか?</h3><div class="sub">ここまでの結果は記録されません' + (Z.mode !== 'exam' ? '(解いた問題の正誤は集計に残ります)' : '') + '。</div><div class="row"><button class="btn w" data-a="quitYes">やめてホームへ</button><button class="btn g" data-a="ask" data-p="">続ける</button></div></div>'; }
+  if (Z.ask === 'submit') {
+    var un = 0; for (i = 0; i < n; i++) { if (!answered(i)) { un++; } }
+    return '<div class="card pg"><h3>提出して採点しますか?</h3><div class="sub">' + (un ? '未回答が <b>' + un + '問</b> あります。未回答は不正解になります。' : 'すべての問題に回答済みです。') + '</div><div class="row"><button class="btn" data-a="submitYes">提出して採点する</button><button class="btn g" data-a="ask" data-p="">見直しに戻る</button></div></div>';
+  }
+  var left = ex ? Math.max(0, Z.limit - Math.floor((Date.now() - Z.t0) / 1000)) : 0;
+  s += '<div class="qwrap"><div class="sticky"><div class="qhead"><div class="row"><b class="qno">第' + (Z.i + 1) + '問</b><span class="sub num">/ ' + n + '</span><span class="chip ' + c.cl + '">' + c.s + '</span></div><div class="row">' + (ex ? '<span class="timer' + (left <= 300 ? ' low' : '') + '" id="timer">' + fmtSec(left) + '</span>' : '<span class="chip">' + esc(Z.title) + '</span>') + '<button class="btn g s" data-a="ask" data-p="quit">やめる</button></div></div><div class="bar" style="margin-top:6px"><i style="width:' + Math.round((Z.i + (res ? 1 : 0)) * 100 / n) + '%"></i></div></div>';
+  s += '<div class="card qwrap">' + (q.f ? figFor(q, !!res) : '') + '<div class="qtxt">' + esc(q.q) + '</div>';
+  if (q.t === 'c') {
+    s += '<div class="ch">';
+    for (i = 0; i < 4; i++) {
+      var cl = 'cb';
+      if (ex) { if (Z.ans[Z.i] === i) { cl += ' sel'; } }
+      else if (res) { if (i === q.ans) { cl += ' ok'; } else if (res.g === q.ch[i]) { cl += ' ng'; } }
+      s += '<button class="' + cl + '" data-a="pick" data-p="' + i + '"' + (res ? ' disabled' : '') + '><i>' + 'ABCD'.charAt(i) + '</i><span>' + esc(q.ch[i]) + '</span></button>';
+    }
+    s += '</div>';
+  } else {
+    var val = ex ? (Z.ans[Z.i] || '') : (res ? res.g : '');
+    s += '<div class="fillin"><input id="fillv" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="答えを入力(ひらがなでもOK)" value="' + esc(val) + '"' + (res ? ' readonly' : '') + '><button class="btn" data-a="sub"' + (res ? ' disabled' : '') + '>' + (ex ? '保存' : '回答') + '</button></div>';
+  }
+  s += '</div>';
+  if (!ex && res) {
+    s += '<div class="fb ' + (res.ok ? 'ok' : 'ng') + '"><div class="row">' + mascot(res.ok ? 'cheer' : 'think', 46) + '<h3>' + (res.ok ? '正解!' : 'ざんねん…') + '</h3><span class="sub">' + esc(Z.msg || '') + '</span></div>' + (res.ok ? '' : '<div>正しい答え:<b> ' + esc(correctText(q)) + '</b>' + (q.t === 'f' ? '(あなたの答え:' + esc(res.g) + ')' : '') + '</div>') + '<div class="exp"><b>解説</b><br>' + esc(q.e) + '</div><div class="row"><button class="btn" data-a="next">' + (Z.i === n - 1 ? '結果を見る' : '次の問題へ') + '</button><button class="btn g" data-a="memoOpen">メモを書く</button></div></div>';
+  }
+  if (ex) {
+    s += '<div class="row"><button class="btn g" data-a="prev"' + (Z.i === 0 ? ' disabled' : '') + '>&larr; 前へ</button><button class="btn g" data-a="flag">' + (Z.flags[Z.i] ? 'しるしを外す' : 'しるしをつける') + '</button><button class="btn g" data-a="next2"' + (Z.i === n - 1 ? ' disabled' : '') + '>次へ &rarr;</button><span class="sp"></span><button class="btn i" data-a="ask" data-p="submit">提出する</button></div>';
+    s += '<div class="card"><div class="sub" style="margin-bottom:6px">問題一覧(青=回答済み、黄=しるし)</div><div class="nav20">';
+    for (i = 0; i < n; i++) { s += '<button class="' + (answered(i) ? 'dn' : '') + (Z.flags[i] ? ' fl' : '') + (i === Z.i ? ' cur' : '') + '" data-a="jump" data-p="' + i + '" aria-label="第' + (i + 1) + '問">' + (i + 1) + '</button>'; }
+    s += '</div></div>';
+  }
+  return s + '</div>';
+}
+
+function vResult() {
+  var a = findAttempt(V.id), s = '', i, cs = {}, rk;
+  if (!a) { return '<div class="card">結果が見つかりません。<button class="btn" data-a="go" data-p="home">ホームへ</button></div>'; }
+  ctx = 'stats';
+  CATS.forEach(function (c) { cs[c.k] = { n: 0, c: 0 }; });
+  a.items.forEach(function (it) { cs[it.c].n++; if (it.ok) { cs[it.c].c++; } });
+  var sc = a.score; rk = sc >= 95 ? 'S' : sc >= 85 ? 'A' : sc >= 70 ? 'B' : sc >= 55 ? 'C' : 'D';
+  var msg = sc === 100 ? '満点!! 完ぺきです。次は本番モードで時間内にもう一度!' : sc >= 90 ? 'すばらしい! 合格ラインは余裕でこえています。' : sc >= 80 ? 'よくできました! あと一歩で満点。まちがいだけ確認しよう。' : sc >= 60 ? 'いい調子。まちがえた問題を復習すれば80点が見えてくるよ。' : 'ここからが伸びしろ! 解説モードで単元を読み直して、もう一度ちょうせん。';
+  s += '<div class="pg"><div class="card"><div class="row" style="justify-content:space-between;align-items:flex-start"><div><span class="chip iod">' + (a.mode === 'exam' ? '本番モード' : (a.mode === 'practice' ? 'テストモード' : '復習')) + '</span><h2 class="pt" style="margin-top:4px">' + esc(a.title) + ' の結果</h2><div class="sub">' + fmtDate(a.ts) + ' ・ 所要 ' + fmtSec(a.secs) + '</div></div>' + mascot(sc >= 80 ? 'cheer' : 'happy', 72) + '</div>';
+  s += '<div class="score" style="margin-top:8px"><div><span class="big num">' + (a.test > 0 ? sc : sc + '%') + '</span>' + (a.test > 0 ? '<span class="sub"> / 100点</span>' : '') + '</div><div><div class="chip ' + (sc >= 80 ? 'ok' : (sc < 60 ? 'ng' : '')) + '">ランク ' + rk + '</div><div class="sub num">' + a.correct + ' / ' + a.total + '問 正解 ・ +' + a.xp + ' XP</div></div></div><div class="bubble" style="margin-top:10px">' + msg + '</div>';
+  if (a.lvUp) { s += '<div class="lvup" style="margin-top:10px">レベルアップ! Lv.' + level().L + ' 「' + level().name + '」になりました</div>'; }
+  if (a.news && a.news.length) { s += '<div class="row" style="margin-top:10px">' + a.news.map(function (b) { return '<span class="bdg on">' + ic('star') + 'バッジ獲得:' + b + '</span>'; }).join('') + '</div>'; }
+  s += '</div>';
+  s += '<div class="charts"><div class="card"><h3 style="margin-bottom:6px">単元ごとの正答率(今回)</h3>' + catBars(cs) + '</div><div class="card"><h3 style="margin-bottom:6px">正解・不正解の内訳</h3><div class="row" style="justify-content:space-around">' + donut(pct(a.correct, a.total), '正答率') + '<div class="sub num">正解 <b style="color:var(--ok)">' + a.correct + '</b><br>不正解 <b style="color:var(--ng)">' + (a.total - a.correct) + '</b></div></div><div class="nav20" style="margin-top:10px">';
+  for (i = 0; i < a.items.length; i++) { s += '<button class="' + (a.items[i].ok ? 'dn' : 'ngc') + '" data-a="jumpr" data-p="' + i + '" style="' + (a.items[i].ok ? 'background:var(--ok-soft);border-color:var(--ok)' : 'background:var(--ng-soft);border-color:var(--ng)') + '">' + (i + 1) + '</button>'; }
+  s += '</div></div><div class="card"><h3 style="margin-bottom:6px">これまでの得意・苦手(累計)</h3>' + radar(CATS.map(function (c) { var v = catStats()[c.k]; return pct(v.c, v.n); }), CATS.map(function (c) { return c.s; })) + '</div></div>';
+  var wr = a.items.filter(function (x) { return !x.ok; });
+  s += '<div class="card"><h3 style="margin-bottom:8px">' + (wr.length ? 'まちがえた問題の解説(' + wr.length + '問)' : 'まちがいはありません!') + '</h3>';
+  if (wr.length) { s += '<div class="sub" style="margin-bottom:8px">図の黄色い番号が問われた場所です。「なぜそうなるか」まで読めば、次は必ず取れます。</div>'; }
+  a.items.forEach(function (it, idx) {
+    var q = QMAP[it.q]; if (it.ok) { return; }
+    s += '<div class="wr" id="r' + idx + '" style="margin-bottom:14px"><div class="row"><b class="qno">第' + (idx + 1) + '問</b><span class="chip ' + catOf(it.c).cl + '">' + catOf(it.c).s + '</span></div>' + (q.f ? figHTML(q.f, true) : '') + '<div class="qtxt" style="font-size:15.5px">' + esc(q.q) + '</div><div>あなたの答え:<b style="color:var(--ng)"> ' + (it.g ? esc(it.g) : '(未回答)') + '</b><br>正しい答え:<b style="color:var(--ok)"> ' + esc(it.a) + '</b></div><div class="exp"><b>解説</b><br>' + esc(q.e) + '</div></div>';
+  });
+  var okc = a.items.filter(function (x) { return x.ok; });
+  if (okc.length) {
+    s += '<details class="q"><summary>正解した問題を見る(' + okc.length + '問)</summary>';
+    a.items.forEach(function (it, idx) { if (it.ok) { var q = QMAP[it.q]; s += '<div style="margin-top:10px"><b class="qno">第' + (idx + 1) + '問</b> ' + esc(q.q) + '<div class="sub">正解:' + esc(it.a) + '</div></div>'; } });
+    s += '</details>';
+  }
+  s += '</div><div class="row">' + (wr.length ? '<button class="btn w" data-a="retry" data-p="' + a.id + '">まちがいだけ復習(' + wr.length + '問)</button>' : '') + (a.test > 0 ? '<button class="btn" data-a="start" data-p="' + a.mode + '|' + a.test + '">もう一度</button>' : '') + '<button class="btn g" data-a="go" data-p="stats">成績を見る</button><button class="btn g" data-a="go" data-p="home">ホーム</button></div></div>';
+  return s;
+}
+
+function vStats() {
+  var tt = totals(), cs = catStats(), s = '', tests = S.attempts.filter(function (a) { return a.test > 0; }), pts, i, avg = 0, best = 0;
+  tests.forEach(function (a) { avg += a.score; if (a.score > best) { best = a.score; } });
+  if (tests.length) { avg = Math.round(avg / tests.length); }
+  pts = tests.slice(-14).map(function (a, i2) { return { x: a.mode === 'exam' ? '本' + a.test : '練' + a.test, y: a.score }; });
+  s += '<div class="pg"><h2 class="pt">成績・統計</h2><div class="stats4"><div class="st"><b class="num">' + tt.n + '</b><span>解いた問題(延べ)</span></div><div class="st"><b class="num">' + (tt.n ? pct(tt.c, tt.n) + '%' : '—') + '</b><span>正答率</span></div><div class="st"><b class="num">' + (tests.length ? avg : '—') + '</b><span>平均点</span></div><div class="st"><b class="num">' + (tests.length ? best : '—') + '</b><span>最高点</span></div></div>';
+  s += '<div class="charts"><div class="card"><h3 style="margin-bottom:6px">点数の推移</h3>' + (pts.length ? lineChart(pts) + '<div class="sub">点線は目標の80点。横軸は「練=テストモード / 本=本番」と回数。</div>' : '<div class="sub">テストを解くと、ここに推移グラフが表示されます。</div>') + '</div>';
+  s += '<div class="card"><h3 style="margin-bottom:6px">単元ごとの得意・苦手</h3>' + radar(CATS.map(function (c) { return pct(cs[c.k].c, cs[c.k].n); }), CATS.map(function (c) { return c.s; })) + '</div></div>';
+  s += '<div class="card"><h3 style="margin-bottom:6px">単元別の正答率と問題数</h3>';
+  CATS.forEach(function (c) { var v = cs[c.k]; s += '<div class="hb ' + c.cl + '" style="grid-template-columns:104px 1fr 110px"><span>' + c.n + '</span><div class="bar"><i style="width:' + pct(v.c, v.n) + '%"></i></div><em class="num">' + (v.n ? pct(v.c, v.n) + '% (' + v.c + '/' + v.n + ')' : '—') + '</em></div>'; });
+  s += '</div>';
+  var w = weakIds(8);
+  s += '<div class="card"><h3 style="margin-bottom:6px">苦手な問題ランキング</h3>';
+  if (!w.length) { s += '<div class="sub">まちがえた問題がここに並びます。</div>'; }
+  w.forEach(function (id) { var q = QMAP[id], r = S.qs[id]; s += '<div class="row" style="padding:6px 0;border-bottom:1px solid var(--line)"><span class="chip ' + catOf(q.c).cl + '">' + catOf(q.c).s + '</span><span style="flex:1;min-width:180px;font-size:13.5px">第' + q.test + '回 問' + q.no + ':' + esc(q.q.length > 44 ? q.q.slice(0, 44) + '…' : q.q) + '</span><span class="chip ng num">' + r.c + '/' + r.n + '</span></div>'; });
+  if (w.length) { s += '<div style="margin-top:10px"><button class="btn w" data-a="weak">苦手問題をまとめて復習</button></div>'; }
+  s += '</div><div class="card"><h3 style="margin-bottom:6px">履歴</h3>';
+  if (!S.attempts.length) { s += '<div class="sub">まだ記録がありません。</div>'; }
+  S.attempts.slice(-10).reverse().forEach(function (a) { s += '<button class="cb" style="width:100%;margin-bottom:6px" data-a="res" data-p="' + a.id + '"><i>' + (a.mode === 'exam' ? '本' : (a.mode === 'practice' ? '練' : '復')) + '</i><span style="flex:1">' + esc(a.title) + '<br><span class="sub">' + fmtDate(a.ts) + '</span></span><b class="num">' + (a.test > 0 ? a.score + '点' : a.score + '%') + '</b></button>'; });
+  return s + '</div></div>';
+}
+
+/* ---- 暗記 ---- */
+function cardsGo(cat) { V = { v: 'cards', tab: 'flash', cat: cat || 'all' }; CT = null; render(); window.scrollTo(0, 0); }
+function cardsBuild(cat) {
+  var now = dayNum(today()), ids = [], pool = [];
+  CARDS.forEach(function (c, i) { if (cat !== 'all' && c[0] !== cat) { return; } pool.push(i); var r = S.cards[i]; if (!r || r.d <= now) { ids.push(i); } });
+  var fresh = false;
+  if (!ids.length) { ids = pool.slice(); fresh = true; }
+  var r2 = rng(Date.now()); ids = shuffle(ids, r2);
+  ids.sort(function (a, b) { return ((S.cards[a] ? S.cards[a].b : -1) - (S.cards[b] ? S.cards[b].b : -1)); });
+  ids = ids.slice(0, 12);
+  CT = { cat: cat, list: ids, i: 0, flip: false, ok: 0, ng: 0, req: 0, fresh: fresh };
+}
+function vCards() {
+  var s = '<div class="pg"><h2 class="pt">暗記モード</h2><div class="tab"><button class="' + (V.tab === 'flash' ? 'on' : '') + '" data-a="ctab" data-p="flash">フラッシュカード</button><button class="' + (V.tab === 'red' ? 'on' : '') + '" data-a="ctab" data-p="red">赤シート</button></div><div class="tab"><button class="' + (V.cat === 'all' ? 'on' : '') + '" data-a="ccat" data-p="all">すべて</button>';
+  CATS.forEach(function (c) { s += '<button class="' + (V.cat === c.k ? 'on' : '') + '" data-a="ccat" data-p="' + c.k + '">' + c.s + '</button>'; });
+  s += '</div>';
+  if (V.tab === 'red') {
+    var keys = V.cat === 'all' ? CATS.map(function (c) { return c.k; }) : [V.cat];
+    s += '<div class="row"><button class="btn g s" data-a="rsCover">赤シートを かぶせる/外す</button><span class="sub">赤い文字(答え)をタップすると1つずつ見られます</span></div><div class="card rsb cover" id="rsb">';
+    keys.forEach(function (k) {
+      s += '<h3 style="margin:10px 0 6px"><span class="chip ' + catOf(k).cl + '">' + catOf(k).n + '</span></h3>';
+      RED[k].forEach(function (p) { s += '<p>' + p.replace(/\{\{(.+?)\}\}/g, '<span class="rs" data-a="rs">$1</span>') + '</p>'; });
+    });
+    return s + '</div></div>';
+  }
+  if (!CT) { cardsBuild(V.cat); }
+  var total = CT.list.length, c;
+  if (CT.i >= total) {
+    return s + '<div class="card" style="text-align:center">' + mascot('cheer', 84) + '<h3>' + (CT.fresh ? 'ひととおり復習おわり!' : '今日の分、完了!') + '</h3><div class="sub">覚えた ' + CT.ok + ' 枚 ・ もう一度 ' + CT.ng + ' 枚。マスター ' + cardsMastered() + ' / ' + CARDS.length + ' 枚</div><div class="row" style="justify-content:center;margin-top:10px"><button class="btn" data-a="cnew">つづけてやる</button><button class="btn g" data-a="go" data-p="home">ホーム</button></div></div></div>';
+  }
+  var idx = CT.list[CT.i]; c = CARDS[idx]; ctx = 'c:' + idx;
+  s += '<div class="sub num">' + (CT.i + 1) + ' / ' + total + ' ・ ' + (CT.fresh ? '復習(すべて覚えた単元)' : '今日の復習') + '</div><div class="bar"><i style="width:' + Math.round(CT.i * 100 / total) + '%"></i></div>';
+  s += '<div class="scene"><div class="cardf' + (CT.flip ? ' flip' : '') + '" data-a="flip" role="button" tabindex="0" aria-label="カードをめくる"><div class="face"><span class="chip ' + catOf(c[0]).cl + '">' + catOf(c[0]).n + '</span><div>' + esc(c[1]) + '</div><span class="sub">タップして答えを見る</span></div><div class="face b"><div>' + esc(c[2]) + '</div></div></div></div>';
+  s += '<div class="row" style="justify-content:center"><button class="btn w" data-a="cng"' + (CT.flip ? '' : ' disabled') + '>もう一度</button><button class="btn" data-a="cok"' + (CT.flip ? '' : ' disabled') + '>覚えた!</button></div><div class="sub" style="text-align:center">「覚えた」を続けると、間隔をあけて出題されます(1日→3日→7日)。3回連続で「マスター」。</div></div>';
+  return s;
+}
+function cardAnswer(ok) {
+  var idx = CT.list[CT.i], r = S.cards[idx] || { b: 0, d: 0 }, gap = [0, 1, 3, 7, 14];
+  touchDay();
+  if (ok) { r.b = Math.min(4, r.b + 1); r.d = dayNum(today()) + gap[r.b]; CT.ok++; addXP(5); }
+  else { r.b = 0; r.d = dayNum(today()); CT.ng++; if (CT.req < 6) { CT.list.push(idx); CT.req++; } }
+  S.cards[idx] = r; CT.i++; CT.flip = false;
+  if (CT.i >= CT.list.length) { addXP(20); var nb = badgeCheck(); if (nb.length) { toast('バッジ獲得:' + nb.join('、')); } confetti(); }
+  save(); render();
+}
+
+/* ---- データ ---- */
+function vData() {
+  ctx = 'data';
+  return '<div class="pg"><h2 class="pt">データの保存・読み込み</h2><div class="card"><div class="sub">成績・進み具合・暗記カードの状況・メモ(画像つき)をJSONファイルで保存できます。端末を変えるときやバックアップに使ってください。ブラウザにも自動で保存されています。</div><div class="row" style="margin-top:10px"><button class="btn" data-a="exportJSON">JSONを書き出す</button><button class="btn g" data-a="copyJSON">JSONをコピー</button></div></div>' +
+    '<div class="card"><h3 style="margin-bottom:6px">読み込み</h3><div class="row"><label class="btn g" for="jfile">JSONファイルを選ぶ</label><input id="jfile" type="file" accept="application/json,.json" class="sr"></div><div class="sub" style="margin:8px 0 4px">または、コピーしたJSONをここに貼り付けて「読み込む」を押します。</div><textarea class="json" id="jtext" aria-label="JSON貼り付け欄" placeholder="ここにJSONを貼り付け"></textarea><div class="row" style="margin-top:8px"><button class="btn i" data-a="importJSON">読み込む(いまのデータは置き換わります)</button></div></div>' +
+    '<div class="card"><h3 style="margin-bottom:6px">リセット</h3><div class="sub">すべての成績・メモ・進捗を消します。先に書き出しておくと安心です。</div><div class="row" style="margin-top:8px" id="rstbox"><button class="btn w" data-a="reset">すべて消去する</button></div></div></div>';
+}
+function exportJSON(copyOnly) {
+  var txt = JSON.stringify({ app: 'rika-chu2', exportedAt: new Date().toISOString(), data: S });
+  if (copyOnly) {
+    try { navigator.clipboard.writeText(txt).then(function () { toast('コピーしました'); }, function () { fallbackCopy(txt); }); } catch (e) { fallbackCopy(txt); }
+    return;
+  }
+  var name = 'rika-test-' + today() + '.json';
+  function fb() {
+    try { var b = new Blob([txt], { type: 'application/json' }), u = URL.createObjectURL(b), a = document.createElement('a'); a.href = u; a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(u); }, 600); toast('書き出しました(' + name + ')'); }
+    catch (e) { fallbackCopy(txt); }
+  }
+  if (window.claude && window.claude.use) {
+    window.claude.use('downloads').then(function (d) {
+      if (!d) { fb(); return; }
+      d.save({ filename: name, data: txt }).then(function () { toast('保存しました'); }, function (e) { if (e && e.code === 'declined') { toast('保存をキャンセルしました'); } else { fallbackCopy(txt); } });
+    }, function () { fb(); });
+  } else { fb(); }
+}
+function fallbackCopy(txt) {
+  var t = $('jtext');
+  if (t) { t.value = txt; t.focus(); t.select(); toast('下の欄にJSONを表示しました。コピーして保存してください'); } else { toast('ダウンロードできませんでした。データ画面でコピーしてください'); }
+}
+function importText(txt) {
+  try {
+    var o = JSON.parse(txt), d = o && o.data ? o.data : o;
+    if (!d || typeof d !== 'object' || !(d.attempts instanceof Array)) { toast('このJSONは読み込めません'); return; }
+    S = fixState(d); applyTheme(); save(); toast('読み込みました(成績' + S.attempts.length + '件)'); V = { v: 'home' }; render();
+  } catch (e) { toast('JSONの形式が正しくありません'); }
+}
+
+/* ---- 描画 ---- */
+function curNav() {
+  if (V.v === 'lesson') { return 'lessons'; }
+  if (V.v === 'result') { return 'stats'; }
+  if (V.v === 'quiz') { return Z && Z.mode === 'exam' ? 'exam' : 'tests'; }
+  return V.v;
+}
+function render() {
+  var h = '', k;
+  switch (V.v) {
+    case 'home': ctx = 'home'; h = vHome(); break;
+    case 'lessons': ctx = 'lessons'; h = vLessons(); break;
+    case 'lesson': h = vLesson(V.k); break;
+    case 'tests': ctx = 'tests'; h = vTests('practice'); break;
+    case 'exam': ctx = 'exam'; h = vTests('exam'); break;
+    case 'quiz': h = vQuiz(); break;
+    case 'result': h = vResult(); break;
+    case 'cards': ctx = 'cards'; h = vCards(); break;
+    case 'stats': ctx = 'stats'; h = vStats(); break;
+    case 'data': h = vData(); break;
+    default: h = vHome();
+  }
+  $('main').innerHTML = h;
+  k = curNav();
+  var els = document.querySelectorAll('[data-nav]'), i;
+  for (i = 0; i < els.length; i++) { var on = els[i].getAttribute('data-nav') === k; els[i].className = els[i].className.replace(/ on/g, '') + (on ? ' on' : ''); if (on) { els[i].setAttribute('aria-current', 'page'); } else { els[i].removeAttribute('aria-current'); } }
+  memoRender();
+  var tb = document.querySelectorAll('.thbtn'), moon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z"/></svg>';
+  for (i = 0; i < tb.length; i++) { tb[i].setAttribute('aria-label', isDark() ? 'ライトモードにする' : 'ダークモードにする'); tb[i].firstChild.outerHTML = isDark() ? ic('sun') : moon; }
+  var tw = document.querySelectorAll('.thlab'); for (i = 0; i < tw.length; i++) { tw[i].textContent = isDark() ? 'ライト' : 'ダーク'; }
+}
+function go(v, p) {
+  if (Z && Z.timer) { clearInterval(Z.timer); }
+  if (v !== 'quiz') { if (Z && !Z.fin && Z.mode === 'exam') { Z = null; } }
+  V = { v: v }; if (v === 'lesson') { V.k = p; }
+  if (v === 'cards') { V.tab = 'flash'; V.cat = 'all'; CT = null; }
+  memoOpen = false; memoImg = '';
+  render(); window.scrollTo(0, 0);
+}
+function unitIds(k) {
+  var all = QIDS.filter(function (id) { return QMAP[id].c === k; }), wr = [], rest = [], r = rng(Date.now());
+  all.forEach(function (id) { var x = S.qs[id]; if (x && x.c < x.n) { wr.push(id); } else { rest.push(id); } });
+  return shuffle(wr, r).concat(shuffle(rest, r)).slice(0, 5);
+}
+
+/* ---- イベント ---- */
+function act(a, p, el) {
+  var q, parts;
+  switch (a) {
+    case 'go': go(p); break;
+    case 'lesson': go('lesson', p); break;
+    case 'read': if (!S.units[p]) { S.units[p] = today(); addXP(20); touchDay(); var nb = badgeCheck(); toast('読了しました! +20XP' + (nb.length ? ' バッジ:' + nb.join('、') : '')); save(); } render(); break;
+    case 'unitq': startSession('unit', unitIds(p), '確認問題:' + catOf(p).n, 0); break;
+    case 'weak': var w = weakIds(10); if (!w.length) { toast('まちがえた問題はまだありません'); } else { startSession('retry', w, '苦手問題の復習', 0); } break;
+    case 'start': parts = p.split('|'); startSession(parts[0], testIds(+parts[1]), '第' + parts[1] + '回 ' + TITLES[+parts[1]], +parts[1]); break;
+    case 'retry': var at = findAttempt(+p); if (at) { startSession('retry', at.items.filter(function (x) { return !x.ok; }).map(function (x) { return x.q; }), 'まちがい復習', 0); } break;
+    case 'res': V = { v: 'result', id: +p }; render(); window.scrollTo(0, 0); break;
+    case 'pick': pickChoice(+p); break;
+    case 'sub': submitFill(); break;
+    case 'next': if (Z.i >= Z.qs.length - 1) { finish(); } else { Z.i++; Z.msg = ''; render(); window.scrollTo(0, 0); } break;
+    case 'next2': if (Z.i < Z.qs.length - 1) { Z.i++; render(); window.scrollTo(0, 0); } break;
+    case 'prev': if (Z.i > 0) { Z.i--; render(); window.scrollTo(0, 0); } break;
+    case 'jump': Z.i = +p; render(); window.scrollTo(0, 0); break;
+    case 'jumpr': var el2 = $('r' + p); if (el2) { el2.scrollIntoView({ behavior: 'smooth', block: 'start' }); } break;
+    case 'flag': Z.flags[Z.i] = !Z.flags[Z.i]; render(); break;
+    case 'ask': Z.ask = p || ''; render(); break;
+    case 'quitYes': if (Z.timer) { clearInterval(Z.timer); } Z.fin = true; save(); go('home'); break;
+    case 'submitYes': finish(); break;
+    case 'ctab': V.tab = p; render(); break;
+    case 'ccat': V.cat = p; CT = null; render(); break;
+    case 'cardsGo': cardsGo(p); break;
+    case 'cnew': CT = null; render(); window.scrollTo(0, 0); break;
+    case 'flip': CT.flip = !CT.flip; render(); break;
+    case 'cok': cardAnswer(true); break;
+    case 'cng': cardAnswer(false); break;
+    case 'rs': el.className = el.className.indexOf(' open') >= 0 ? 'rs' : 'rs open'; break;
+    case 'rsCover': var b = $('rsb'); if (b) { var cv = b.className.indexOf('cover') >= 0; b.className = 'card rsb' + (cv ? '' : ' cover'); var sp = b.querySelectorAll('.rs'), j; for (j = 0; j < sp.length; j++) { sp[j].className = 'rs'; } } break;
+    case 'theme': S.theme = isDark() ? 'light' : 'dark'; applyTheme(); save(); render(); break;
+    case 'memoOpen': memoOpen = true; memoRender(); break;
+    case 'memoClose': memoOpen = false; memoRender(); break;
+    case 'memoAdd': memoAdd(); break;
+    case 'memoDel': if (S.notes[ctx]) { S.notes[ctx].splice(+p, 1); if (!S.notes[ctx].length) { delete S.notes[ctx]; } save(); memoRender(); } break;
+    case 'memoImgDel': memoImg = ''; memoRender(); break;
+    case 'exportJSON': exportJSON(false); break;
+    case 'copyJSON': exportJSON(true); break;
+    case 'importJSON': importText($('jtext').value); break;
+    case 'reset': $('rstbox').innerHTML = '<span class="sub">本当にすべて消しますか?</span> <button class="btn w" data-a="resetYes">消去する</button> <button class="btn g" data-a="go" data-p="data">やめる</button>'; break;
+    case 'resetYes': S = defState(); applyTheme(); save(); toast('消去しました'); go('home'); break;
+  }
+}
+function init() {
+  load(); applyTheme();
+  var sideN = '', tabN = '';
+  NAVS.forEach(function (n) {
+    sideN += '<button class="nv" data-nav="' + n[0] + '" data-a="go" data-p="' + n[0] + '">' + ic(n[2]) + '<span>' + n[1] + '</span></button>';
+    if (n[0] !== 'data') { tabN += '<button data-nav="' + n[0] + '" data-a="go" data-p="' + n[0] + '">' + ic(n[2]) + '<span>' + n[1] + '</span></button>'; }
+  });
+  $('navs').innerHTML = sideN; $('tabs').innerHTML = tabN;
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    while (t && t !== document && !(t.getAttribute && t.getAttribute('data-a'))) { t = t.parentNode; }
+    if (!t || t === document) { return; }
+    act(t.getAttribute('data-a'), t.getAttribute('data-p'), t);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target && e.target.id === 'fillv') { e.preventDefault(); submitFill(); }
+    if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.className && String(e.target.className).indexOf('cardf') >= 0) { e.preventDefault(); act('flip'); }
+  });
+  $('mfile').addEventListener('change', function (e) { readImage(e.target.files && e.target.files[0]); e.target.value = ''; });
+  document.addEventListener('change', function (e) {
+    if (e.target && e.target.id === 'jfile' && e.target.files && e.target.files[0]) {
+      var fr = new FileReader(); fr.onload = function () { importText(String(fr.result)); }; fr.readAsText(e.target.files[0]); e.target.value = '';
+    }
+  });
+  render();
+}
+init();
+
+</script>
+
+</body></html>
